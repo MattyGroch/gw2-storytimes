@@ -953,6 +953,141 @@
         );
     }
 
+    function CategoryColumn({ category, times, missionId, onSubmitted }) {
+        const isFull = category === 'full';
+        const accent = isFull ? 'text-gw2-gold-light' : 'text-yellow-400';
+        const accentColor = isFull ? '#c8a84e' : '#facc15';
+        const Icon = isFull ? BookOpen : Zap;
+        const label = isFull ? 'Full Experience' : 'Speedrun';
+
+        const [duration, setDuration] = useState('');
+        const [submitStatus, setSubmitStatus] = useState(null);
+        const [submitting, setSubmitting] = useState(false);
+        const [sentimentStatus, setSentimentStatus] = useState(null);
+        const [sentimentSubmitting, setSentimentSubmitting] = useState(false);
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const mins = parseFloat(duration);
+            if (isNaN(mins) || mins < 1 || mins > 480) {
+                setSubmitStatus({ type: 'error', message: '1–480 minutes' });
+                return;
+            }
+            setSubmitting(true);
+            setSubmitStatus(null);
+            try {
+                const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, duration_mins: mins }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    setSubmitStatus({ type: 'error', message: data.error || 'Failed' });
+                } else {
+                    setSubmitStatus({ type: 'success', message: 'Submitted!' });
+                    setDuration('');
+                    onSubmitted?.();
+                }
+            } catch {
+                setSubmitStatus({ type: 'error', message: 'Network error' });
+            }
+            setSubmitting(false);
+        }
+
+        async function handleRate(option) {
+            if (!times.avg_mins || sentimentSubmitting) return;
+            const durationMins = Math.round(times.avg_mins * option.multiplier * 100) / 100;
+            setSentimentSubmitting(true);
+            setSentimentStatus(null);
+            try {
+                const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, duration_mins: durationMins }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    setSentimentStatus({ type: 'error', message: data.error || 'Failed' });
+                } else {
+                    setSentimentStatus({ type: 'success', message: `${formatTime(durationMins)} (${option.label.toLowerCase()})` });
+                    onSubmitted?.();
+                }
+            } catch {
+                setSentimentStatus({ type: 'error', message: 'Network error' });
+            }
+            setSentimentSubmitting(false);
+        }
+
+        return (
+            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg" style={{ borderTop: `3px solid ${accentColor}` }}>
+                <div className="p-4">
+                    <div className="flex items-center gap-1.5 mb-3">
+                        <Icon size={16} className={accent} />
+                        <h4 className={`text-sm font-bold ${accent} font-display`}>{label}</h4>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                        <TimeStat label="Seed" value={times.seed_mins} colorClass="text-gray-300" />
+                        <TimeStat label="Average" value={times.avg_mins} colorClass={accent} />
+                        <TimeStat label="Fastest" value={times.min_mins} colorClass="text-green-400" />
+                        <TimeStat label="Slowest" value={times.max_mins} colorClass="text-red-400" />
+                    </div>
+                    <p className="text-[10px] text-gray-600 mt-2 text-center">
+                        {times.submissions} submission{times.submissions !== 1 ? 's' : ''}
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="border-t border-stone-800 p-4">
+                    <h5 className="text-xs font-bold text-gray-400 mb-2 font-display">Submit Your Time</h5>
+                    <div className="flex gap-2">
+                        <input
+                            type="number" min="1" max="480" step="1"
+                            value={duration} onChange={e => setDuration(e.target.value)}
+                            placeholder="Minutes"
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 w-full focus:outline-none focus:border-gw2-gold-dark"
+                        />
+                        <button type="submit" disabled={submitting}
+                            className="gw2-gradient text-stone-900 font-bold text-xs px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0 flex items-center gap-1">
+                            <Send size={12} />
+                        </button>
+                    </div>
+                    {submitStatus && (
+                        <div className={`mt-1.5 text-[10px] flex items-center gap-1 ${submitStatus.type === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+                            {submitStatus.type === 'error' ? <AlertCircle size={10} /> : <CheckCircle size={10} />}
+                            {submitStatus.message}
+                        </div>
+                    )}
+                </form>
+
+                {times.avg_mins && (
+                    <div className="border-t border-stone-800 p-4">
+                        <h5 className="text-xs font-bold text-gray-400 mb-1 font-display">Accurate?</h5>
+                        <p className="text-[9px] text-gray-600 mb-2">Based on avg of {formatTime(times.avg_mins)}</p>
+                        <div className="grid grid-cols-5 gap-1">
+                            {SENTIMENT_OPTIONS.map(opt => (
+                                <button
+                                    key={opt.score}
+                                    onClick={() => handleRate(opt)}
+                                    disabled={sentimentSubmitting}
+                                    className={`${opt.color} ${opt.textColor} rounded-md py-1.5 px-0.5 text-center transition-all disabled:opacity-50 disabled:cursor-not-allowed`}
+                                >
+                                    <div className="text-sm font-bold leading-none">{opt.score}</div>
+                                    <div className="text-[7px] sm:text-[8px] mt-0.5 leading-tight opacity-80">{opt.label}</div>
+                                </button>
+                            ))}
+                        </div>
+                        {sentimentStatus && (
+                            <div className={`mt-1.5 text-[10px] flex items-center gap-1 ${sentimentStatus.type === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+                                {sentimentStatus.type === 'error' ? <AlertCircle size={10} /> : <CheckCircle size={10} />}
+                                {sentimentStatus.message}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     // Collapse race-variant duplicates (e.g. SotO/JW prologues) into one mission
     function deduplicateMissions(missions) {
         const seen = new Map();
@@ -1303,46 +1438,12 @@
                             </span>
                         )}
                     </div>
-
-                    <div className="border-t border-stone-800 p-4 sm:p-6">
-                        <div className="grid grid-cols-2 gap-6">
-                            <div>
-                                <div className="flex items-center gap-1.5 mb-3">
-                                    <BookOpen size={16} className="text-gw2-gold-light" />
-                                    <h4 className="text-sm font-bold text-gw2-gold-light font-display">Full Experience</h4>
-                                </div>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <TimeStat label="Seed" value={full.seed_mins} colorClass="text-gray-300" />
-                                    <TimeStat label="Average" value={full.avg_mins} colorClass="text-gw2-gold-light" />
-                                    <TimeStat label="Fastest" value={full.min_mins} colorClass="text-green-400" />
-                                    <TimeStat label="Slowest" value={full.max_mins} colorClass="text-red-400" />
-                                </div>
-                                <p className="text-[10px] text-gray-600 mt-2 text-center">
-                                    {full.submissions} submission{full.submissions !== 1 ? 's' : ''}
-                                </p>
-                            </div>
-
-                            <div>
-                                <div className="flex items-center gap-1.5 mb-3">
-                                    <Zap size={16} className="text-yellow-400" />
-                                    <h4 className="text-sm font-bold text-yellow-400 font-display">Speedrun</h4>
-                                </div>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <TimeStat label="Seed" value={speed.seed_mins} colorClass="text-gray-300" />
-                                    <TimeStat label="Average" value={speed.avg_mins} colorClass="text-yellow-400" />
-                                    <TimeStat label="Fastest" value={speed.min_mins} colorClass="text-green-400" />
-                                    <TimeStat label="Slowest" value={speed.max_mins} colorClass="text-red-400" />
-                                </div>
-                                <p className="text-[10px] text-gray-600 mt-2 text-center">
-                                    {speed.submissions} submission{speed.submissions !== 1 ? 's' : ''}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <SubmitForm missionId={mission.id} missionName={mission.name} onSubmitted={reload} />
-                <SentimentRating missionId={mission.id} currentAvgMins={full.avg_mins} onSubmitted={reload} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <CategoryColumn category="full" times={full} missionId={mission.id} onSubmitted={reload} />
+                    <CategoryColumn category="speed" times={speed} missionId={mission.id} onSubmitted={reload} />
+                </div>
             </div>
         );
     }
