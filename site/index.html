@@ -355,7 +355,7 @@
             if (r.type === 'story') {
                 onNavigate('season', r.season_id, null, { type: 'story', name: r.name });
             } else {
-                onNavigate('mission', r.id, r.season_id, { type: 'mission' });
+                onNavigate('season', r.season_id, null, { type: 'mission', missionId: r.id });
             }
             setDropdownOpen(false);
             setQuery('');
@@ -1287,7 +1287,13 @@
         }, [seasonId]);
 
         useEffect(() => {
-            if (!season || highlight?.type !== 'story') return;
+            if (!season || !highlight) return;
+            if (highlight.type === 'mission' && highlight.missionId) {
+                setDrawerMissionId(highlight.missionId);
+                onHighlightDone?.();
+                return;
+            }
+            if (highlight.type !== 'story') return;
             const timer = setTimeout(() => {
                 const el = document.querySelector(`[data-story-name="${CSS.escape(highlight.name)}"]`);
                 if (el) {
