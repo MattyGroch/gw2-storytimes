@@ -264,6 +264,10 @@
         return m > 0 ? `${h} hr ${m} min` : `${h} hr`;
     }
 
+    function slugify(str) {
+        return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
     async function apiFetch(path) {
         const res = await fetch(`${API_BASE}${path}`);
         if (!res.ok) throw new Error(`API error: ${res.status}`);
@@ -1191,30 +1195,103 @@
 
     // --- App ---
 
+    function parseRoute(pathname, slugToId) {
+        const parts = pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+        if (parts.length === 0) return { view: 'home', viewId: null, seasonId: null };
+        if (parts[0] === 'about') return { view: 'about', viewId: null, seasonId: null };
+        const seasonId = slugToId[parts[0]];
+        if (!seasonId) return { view: 'home', viewId: null, seasonId: null };
+        if (parts.length >= 2) {
+            const missionId = parseInt(parts[1], 10);
+            if (!isNaN(missionId)) return { view: 'mission', viewId: missionId, seasonId };
+        }
+        return { view: 'season', viewId: seasonId, seasonId };
+    }
+
     function App() {
         const [view, setView] = useState('home');
         const [viewId, setViewId] = useState(null);
-        const [history, setHistory] = useState([]);
+        const [currentSeasonId, setCurrentSeasonId] = useState(null);
+        const [slugToId, setSlugToId] = useState(null);
+        const [idToSlug, setIdToSlug] = useState({});
+
+        useEffect(() => {
+            apiFetch('/seasons').then(seasons => {
+                const s2id = {};
+                const id2s = {};
+                for (const s of seasons) {
+                    const slug = slugify(s.name);
+                    s2id[slug] = s.id;
+                    id2s[s.id] = slug;
+                }
+                setSlugToId(s2id);
+                setIdToSlug(id2s);
+
+                const route = parseRoute(window.location.pathname, s2id);
+                setView(route.view);
+                setViewId(route.viewId);
+                setCurrentSeasonId(route.seasonId);
+
+                window.history.replaceState({ view: route.view, viewId: route.viewId, seasonId: route.seasonId }, '');
+            }).catch(() => {
+                setSlugToId({});
+            });
+        }, []);
+
+        useEffect(() => {
+            if (!slugToId) return;
+            function handlePopState(e) {
+                const state = e.state;
+                if (state) {
+                    setView(state.view || 'home');
+                    setViewId(state.viewId || null);
+                    setCurrentSeasonId(state.seasonId || null);
+                } else {
+                    const route = parseRoute(window.location.pathname, slugToId);
+                    setView(route.view);
+                    setViewId(route.viewId);
+                    setCurrentSeasonId(route.seasonId);
+                }
+                window.scrollTo(0, 0);
+            }
+            window.addEventListener('popstate', handlePopState);
+            return () => window.removeEventListener('popstate', handlePopState);
+        }, [slugToId]);
 
         function navigate(v, id = null) {
-            setHistory(prev => [...prev, { view, viewId }]);
+            let path = '/';
+            let seasonId = currentSeasonId;
+            if (v === 'about') {
+                path = '/about';
+                seasonId = null;
+            } else if (v === 'season') {
+                path = '/' + (idToSlug[id] || id);
+                seasonId = id;
+            } else if (v === 'mission') {
+                const slug = idToSlug[currentSeasonId] || 'mission';
+                path = '/' + slug + '/' + id;
+            } else if (v === 'home') {
+                seasonId = null;
+            }
+
+            const state = { view: v, viewId: id, seasonId };
+            window.history.pushState(state, '', path);
             setView(v);
             setViewId(id);
+            setCurrentSeasonId(seasonId);
             window.scrollTo(0, 0);
         }
 
         function goBack() {
-            const prev = history[history.length - 1];
-            if (prev) {
-                setHistory(h => h.slice(0, -1));
-                setView(prev.view);
-                setViewId(prev.viewId);
-                window.scrollTo(0, 0);
-            } else {
-                setView('home');
-                setViewId(null);
-            }
+            window.history.back();
         }
+
+        if (slugToId === null) return (
+            <div className="min-h-screen pb-12">
+                <Navbar onNavigate={() => {}} view="home" />
+                <div className="max-w-4xl mx-auto px-4 py-8"><Loading /></div>
+            </div>
+        );
 
         return (
             <div className="min-h-screen pb-12">
