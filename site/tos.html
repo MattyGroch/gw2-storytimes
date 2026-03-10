@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — GW2 Story Times</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gw2: {
+                            gold: '#c8a84e',
+                            'gold-light': '#dcc075',
+                            'gold-dark': '#8a6b2d',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #13110f;
+            color: #e8e0d6;
+        }
+        .card-bg {
+            background-color: #1e1b17;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #13110f; }
+        ::-webkit-scrollbar-thumb { background: #4a443a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b6355; }
+    </style>
+</head>
+<body>
+    <div class="max-w-2xl mx-auto px-4 py-12">
+        <p class="mb-6">
+            <a href="/" class="text-gw2-gold hover:text-gw2-gold-light text-sm transition-colors">&larr; Back to Story Times</a>
+        </p>
+
+        <h1 class="text-3xl font-bold font-display mb-2">Terms of Service</h1>
+        <p class="text-sm text-gray-500 mb-8">Last updated: March 9, 2026</p>
+
+        <div class="card-bg rounded-lg border border-stone-800 p-6 space-y-6 text-sm text-gray-300 leading-relaxed">
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Acceptance of Terms</h2>
+                <p>
+                    By accessing or using GW2 Story Times ("the Application"), you agree to be bound
+                    by these Terms of Service. If you do not agree, please do not use the Application.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Description of Service</h2>
+                <p>
+                    GW2 Story Times is a free, open-source web application that provides community-driven
+                    estimated completion times for Guild Wars 2 story missions. It includes a public REST
+                    API and a frontend interface for browsing and submitting time data.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Community Submissions</h2>
+                <p>
+                    Users may submit time estimates and sentiment ratings for individual missions.
+                    Submissions are anonymous and cannot be individually attributed or retracted.
+                    By submitting data, you grant the Application a perpetual, irrevocable license to
+                    use, aggregate, and display that data as part of the community database.
+                </p>
+                <p class="mt-2">
+                    You agree not to submit intentionally false, misleading, or spam data. We reserve
+                    the right to discard or adjust submissions that appear to be abusive.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">API Usage</h2>
+                <p>
+                    The GW2 Story Times API is provided free of charge for personal and non-commercial use.
+                    Automated access is subject to rate limits (60 requests per minute per IP). We reserve
+                    the right to block or throttle excessive usage at our discretion.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Intellectual Property</h2>
+                <p>
+                    Guild Wars 2, ArenaNet, and all associated logos, content, and trademarks are the
+                    property of NCSOFT Corporation and/or ArenaNet, LLC. This Application is an independent
+                    fan project and is not affiliated with, endorsed by, or sponsored by ArenaNet or NCSOFT.
+                </p>
+                <p class="mt-2">
+                    Mission synopsis text displayed in the Application is sourced from ArenaNet's public
+                    Guild Wars 2 API and remains the intellectual property of ArenaNet/NCSOFT.
+                </p>
+                <p class="mt-2">
+                    The Application's source code is available under an open-source license on
+                    <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" class="text-gw2-gold hover:text-gw2-gold-light transition-colors">GitHub</a>.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Disclaimer of Warranties</h2>
+                <p>
+                    The Application is provided "as is" and "as available" without warranties of any kind,
+                    either express or implied. Time estimates are community-sourced and may not accurately
+                    reflect your personal gameplay experience. Actual completion times vary based on play
+                    style, familiarity, and in-game factors.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Limitation of Liability</h2>
+                <p>
+                    To the fullest extent permitted by law, the authors and contributors of GW2 Story
+                    Times shall not be liable for any damages arising from your use of the Application,
+                    including but not limited to reliance on inaccurate time estimates, service
+                    interruptions, or data loss.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Third-Party Services</h2>
+                <p>
+                    The Application loads resources from third-party CDNs (unpkg, Tailwind CSS, Google
+                    Fonts) and sources mission data from ArenaNet's Guild Wars 2 API. Your use of these
+                    services is subject to their respective terms and policies. We are not responsible
+                    for the availability or conduct of these third-party services.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Changes to These Terms</h2>
+                <p>
+                    We may update these Terms of Service from time to time. Changes will be reflected
+                    by an updated "Last updated" date at the top of this page. Continued use of the
+                    Application after changes constitutes acceptance of the revised terms.
+                </p>
+            </section>
+        </div>
+
+        <footer class="text-center text-xs text-gray-600 mt-12 pb-4">
+            <a href="/" class="hover:text-gray-400 transition-colors">GW2 Story Times</a>
+            <span class="mx-1.5">·</span>
+            <a href="/privacy.html" class="hover:text-gray-400 transition-colors">Privacy Policy</a>
+            <span class="mx-1.5">·</span>
+            <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" class="hover:text-gray-400 transition-colors">GitHub</a>
+        </footer>
+    </div>
+</body>
+</html>

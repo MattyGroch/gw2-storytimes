@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — GW2 Story Times</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gw2: {
+                            gold: '#c8a84e',
+                            'gold-light': '#dcc075',
+                            'gold-dark': '#8a6b2d',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #13110f;
+            color: #e8e0d6;
+        }
+        .card-bg {
+            background-color: #1e1b17;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #13110f; }
+        ::-webkit-scrollbar-thumb { background: #4a443a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b6355; }
+    </style>
+</head>
+<body>
+    <div class="max-w-2xl mx-auto px-4 py-12">
+        <p class="mb-6">
+            <a href="/" class="text-gw2-gold hover:text-gw2-gold-light text-sm transition-colors">&larr; Back to Story Times</a>
+        </p>
+
+        <h1 class="text-3xl font-bold font-display mb-2">Privacy Policy</h1>
+        <p class="text-sm text-gray-500 mb-8">Last updated: March 9, 2026</p>
+
+        <div class="card-bg rounded-lg border border-stone-800 p-6 space-y-6 text-sm text-gray-300 leading-relaxed">
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Overview</h2>
+                <p>
+                    GW2 Story Times is a community-driven web application that provides estimated
+                    completion times for Guild Wars 2 story missions. It consists of a public REST API
+                    and a frontend interface. We are committed to collecting as little data as possible.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Data We Collect</h2>
+                <p>
+                    When you submit a time estimate or sentiment rating, the following is stored on our server:
+                </p>
+                <ul class="list-disc list-inside space-y-1 ml-1 mt-2">
+                    <li>
+                        <strong class="text-gray-100">Submission data</strong> — the mission ID, category
+                        (full experience or speedrun), duration in minutes, submission source, and timestamp.
+                    </li>
+                    <li>
+                        <strong class="text-gray-100">IP hash</strong> — a one-way hash of your IP address,
+                        used solely for rate limiting (one submission per mission per category per 24 hours).
+                        Your actual IP address is not stored.
+                    </li>
+                </ul>
+                <p class="mt-2">
+                    Browsing mission data and viewing time estimates does not require any personal
+                    information and no data is collected from read-only usage.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Data Stored in Your Browser</h2>
+                <ul class="list-disc list-inside space-y-1 ml-1">
+                    <li>
+                        <strong class="text-gray-100">User Preferences</strong> — settings such as the
+                        synopsis visibility toggle are stored in
+                        <code class="text-gw2-gold-light">localStorage</code> to persist across sessions.
+                    </li>
+                </ul>
+                <p class="mt-2">
+                    No authentication tokens, API keys, or personal identifiers are stored in your browser.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Cookies, Analytics &amp; Tracking</h2>
+                <p>
+                    This application does not use cookies, analytics services, advertising pixels,
+                    fingerprinting, or any other form of tracking. No data about your browsing behavior
+                    is collected or transmitted to any third party.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Third-Party Services</h2>
+                <p>The application loads the following resources from third-party CDNs:</p>
+                <ul class="list-disc list-inside space-y-1 ml-1 mt-2">
+                    <li>React and Babel from <code class="text-gw2-gold-light">unpkg.com</code></li>
+                    <li>Tailwind CSS from <code class="text-gw2-gold-light">cdn.tailwindcss.com</code></li>
+                    <li>Cinzel font from <code class="text-gw2-gold-light">fonts.googleapis.com</code></li>
+                </ul>
+                <p class="mt-2">
+                    Mission description text is sourced from ArenaNet's public Guild Wars 2 API
+                    (<code class="text-gw2-gold-light">api.guildwars2.com</code>) during data seeding.
+                    These services may log standard web request data (such as IP addresses) according
+                    to their own privacy policies. This application has no control over or access to
+                    that data.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Clearing Your Data</h2>
+                <p>
+                    You can remove all locally stored preferences at any time by clearing your browser's
+                    site data for this domain. Submissions to the community database cannot be individually
+                    retracted as they are anonymized and aggregated.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-lg font-bold text-gray-100 font-display mb-2">Open Source</h2>
+                <p>
+                    The complete source code for this application is publicly available on
+                    <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" class="text-gw2-gold hover:text-gw2-gold-light transition-colors">GitHub</a>.
+                    You are welcome to audit the code to verify these claims.
+                </p>
+            </section>
+        </div>
+
+        <footer class="text-center text-xs text-gray-600 mt-12 pb-4">
+            <a href="/" class="hover:text-gray-400 transition-colors">GW2 Story Times</a>
+            <span class="mx-1.5">·</span>
+            <a href="/tos.html" class="hover:text-gray-400 transition-colors">Terms of Service</a>
+            <span class="mx-1.5">·</span>
+            <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" class="hover:text-gray-400 transition-colors">GitHub</a>
+        </footer>
+    </div>
+</body>
+</html>

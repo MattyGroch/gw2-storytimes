@@ -1319,7 +1319,20 @@
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
         const [drawerMissionId, setDrawerMissionId] = useState(null);
+        const [closingMissionId, setClosingMissionId] = useState(null);
         const highlightRefs = useRef({});
+
+        function openMission(id) {
+            if (drawerMissionId && drawerMissionId !== id) {
+                setClosingMissionId(drawerMissionId);
+            }
+            setDrawerMissionId(id);
+        }
+
+        function closeDrawer() {
+            setClosingMissionId(drawerMissionId);
+            setDrawerMissionId(null);
+        }
 
         useEffect(() => {
             setSeason(null);
@@ -1330,7 +1343,7 @@
         useEffect(() => {
             if (!season || !highlight) return;
             if (highlight.type === 'mission' && highlight.missionId) {
-                setDrawerMissionId(highlight.missionId);
+                openMission(highlight.missionId);
                 onHighlightDone?.();
                 return;
             }
@@ -1435,8 +1448,8 @@
                                     return (
                                         <div key={st.id} data-story-name={st.name} className="rounded-lg">
                                             {pathData
-                                                ? <BranchingStoryView story={st} pathData={pathData} onSelectMission={setDrawerMissionId} activeMissionId={drawerMissionId} />
-                                                : <StoryGroup story={st} onSelectMission={setDrawerMissionId} activeMissionId={drawerMissionId} />
+                                                ? <BranchingStoryView story={st} pathData={pathData} onSelectMission={openMission} activeMissionId={drawerMissionId} />
+                                                : <StoryGroup story={st} onSelectMission={openMission} activeMissionId={drawerMissionId} />
                                             }
                                         </div>
                                     );
@@ -1446,8 +1459,11 @@
                     );
                 })}
 
+                {closingMissionId && (
+                    <MissionDrawer key={`closing-${closingMissionId}`} missionId={closingMissionId} onClose={() => setClosingMissionId(null)} color={color} showSynopses={showSynopses} autoClose />
+                )}
                 {drawerMissionId && (
-                    <MissionDrawer missionId={drawerMissionId} onClose={() => setDrawerMissionId(null)} color={color} showSynopses={showSynopses} />
+                    <MissionDrawer key={drawerMissionId} missionId={drawerMissionId} onClose={closeDrawer} color={color} showSynopses={showSynopses} />
                 )}
             </div>
         );
@@ -1512,23 +1528,16 @@
         );
     }
 
-    function MissionDrawer({ missionId, onClose, color, showSynopses }) {
+    function MissionDrawer({ missionId, onClose, color, showSynopses, autoClose }) {
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
-        const [open, setOpen] = useState(false);
+        const [open, setOpen] = useState(!!autoClose);
         const [closing, setClosing] = useState(false);
         const panelRef = useRef(null);
 
         function reload() {
             apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
         }
-
-        const animateClose = useCallback(() => {
-            if (closing) return;
-            setClosing(true);
-            setOpen(false);
-            setTimeout(onClose, 135);
-        }, [onClose, closing]);
 
         useEffect(() => {
             setMission(null);
@@ -1537,15 +1546,25 @@
         }, [missionId]);
 
         useEffect(() => {
-            requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
+            if (autoClose) {
+                requestAnimationFrame(() => {
+                    setClosing(true);
+                    setOpen(false);
+                });
+                const timer = setTimeout(onClose, 150);
+                return () => clearTimeout(timer);
+            } else {
+                requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
+            }
         }, []);
 
         useEffect(() => {
+            if (autoClose) return;
             function handleKey(e) {
-                if (e.key === 'Escape') animateClose();
+                if (e.key === 'Escape') onClose();
             }
             function handleClick(e) {
-                if (panelRef.current && !panelRef.current.contains(e.target)) animateClose();
+                if (panelRef.current && !panelRef.current.contains(e.target)) onClose();
             }
             document.addEventListener('keydown', handleKey);
             document.addEventListener('mousedown', handleClick);
@@ -1553,17 +1572,18 @@
                 document.removeEventListener('keydown', handleKey);
                 document.removeEventListener('mousedown', handleClick);
             };
-        }, [animateClose]);
+        }, [onClose, autoClose]);
 
         const accentColor = color || '#c8a84e';
 
         return (
-            <div ref={panelRef} className={`drawer-panel ${closing ? 'closing' : open ? 'open' : ''}`}>
+            <div ref={panelRef} className={`drawer-panel ${closing ? 'closing' : open ? 'open' : ''}`}
+                style={autoClose ? { pointerEvents: 'none' } : undefined}>
                     <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-stone-800" style={{ background: '#1e1b17' }}>
                         <h3 className="text-sm font-bold text-gray-300 font-display truncate pr-2">
                             {mission ? mission.name : 'Loading...'}
                         </h3>
-                        <button onClick={animateClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
                             <X size={18} />
                         </button>
                     </div>
@@ -1863,9 +1883,11 @@
                     {view === 'about' && <AboutView />}
                 </div>
                 <footer className="text-center text-xs text-gray-600 py-8">
-                    <a href="https://github.com" className="hover:text-gray-400">GitHub</a>
-                    {' · '}
-                    <span>Data sourced from the <a href="https://wiki.guildwars2.com" className="hover:text-gray-400">GW2 Wiki</a> and community submissions</span>
+                    <a href="/privacy.html" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
+                    <span className="mx-1.5">·</span>
+                    <a href="/tos.html" className="hover:text-gray-400 transition-colors">Terms of Service</a>
+                    <span className="mx-1.5">·</span>
+                    <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-colors">GitHub</a>
                 </footer>
             </div>
         );
