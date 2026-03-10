@@ -29,6 +29,7 @@
             background-color: #1e1b17; transform: translateX(100%); transition: transform 0.25s ease-out;
             overflow-y: auto; border-left: 1px solid #292524; }
         .drawer-panel.open { transform: translateX(0); }
+        .drawer-panel.closing { transform: translateX(100%); transition: transform 0.125s ease-in; }
     </style>
     <script>
         tailwind.config = {
@@ -259,6 +260,7 @@
     function MenuIcon(p) { return <IconBase {...p}><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></IconBase>; }
     function SearchIcon(p) { return <IconBase {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></IconBase>; }
     function X(p) { return <IconBase {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IconBase>; }
+    function SettingsGear(p) { return <IconBase {...p}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></IconBase>; }
 
     // --- Utility ---
 
@@ -290,7 +292,7 @@
 
     // --- Components ---
 
-    function Navbar({ onNavigate, view }) {
+    function Navbar({ onNavigate, view, showSynopses, onToggleSynopses }) {
         const [showSiteMenu, setShowSiteMenu] = useState(false);
         const siteMenuRef = useRef(null);
         useEffect(() => {
@@ -301,6 +303,17 @@
             document.addEventListener('mousedown', handler);
             return () => document.removeEventListener('mousedown', handler);
         }, [showSiteMenu]);
+
+        const [showSettings, setShowSettings] = useState(false);
+        const settingsRef = useRef(null);
+        useEffect(() => {
+            if (!showSettings) return;
+            const handler = (e) => {
+                if (settingsRef.current && !settingsRef.current.contains(e.target)) setShowSettings(false);
+            };
+            document.addEventListener('mousedown', handler);
+            return () => document.removeEventListener('mousedown', handler);
+        }, [showSettings]);
 
         const [query, setQuery] = useState('');
         const [searchData, setSearchData] = useState(null);
@@ -470,6 +483,35 @@
                                                     )}
                                                 </button>
                                             ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                        <div className="relative" ref={settingsRef}>
+                            <button onClick={() => setShowSettings(p => !p)}
+                                className={`p-1 rounded transition-colors ${showSettings ? 'text-gw2-gold' : 'text-gray-400 hover:text-gw2-gold-light'}`}
+                                title="Settings">
+                                <SettingsGear size={20} />
+                            </button>
+                            {showSettings && (
+                                <div className="absolute right-0 top-full mt-2 z-30 w-64 card-bg border border-stone-700 rounded-lg shadow-xl p-3">
+                                    <p className="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wider">Settings</p>
+                                    <div className="flex items-center justify-between gap-3">
+                                        <span className="text-sm text-gray-300">Show mission synopses</span>
+                                        <button
+                                            onClick={onToggleSynopses}
+                                            className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 cursor-pointer ${showSynopses ? 'bg-gw2-gold-dark' : 'bg-stone-700'}`}
+                                            role="switch"
+                                            aria-checked={showSynopses}
+                                        >
+                                            <span className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform duration-200 ${showSynopses ? 'translate-x-4' : 'translate-x-0'}`} />
+                                        </button>
+                                    </div>
+                                    {showSynopses && (
+                                        <div className="flex items-center gap-1.5 mt-2 text-yellow-500/80">
+                                            <AlertCircle size={12} className="shrink-0" />
+                                            <span className="text-xs">May contain story spoilers</span>
                                         </div>
                                     )}
                                 </div>
@@ -1272,7 +1314,7 @@
         );
     }
 
-    function SeasonView({ seasonId, onBack, highlight, onHighlightDone }) {
+    function SeasonView({ seasonId, onBack, highlight, onHighlightDone, showSynopses }) {
         const [season, setSeason] = useState(null);
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
@@ -1405,13 +1447,13 @@
                 })}
 
                 {drawerMissionId && (
-                    <MissionDrawer missionId={drawerMissionId} onClose={() => setDrawerMissionId(null)} color={color} />
+                    <MissionDrawer missionId={drawerMissionId} onClose={() => setDrawerMissionId(null)} color={color} showSynopses={showSynopses} />
                 )}
             </div>
         );
     }
 
-    function MissionView({ missionId, onBack, highlight, onHighlightDone }) {
+    function MissionView({ missionId, onBack, highlight, onHighlightDone, showSynopses }) {
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
         const cardRef = useRef(null);
@@ -1458,6 +1500,10 @@
                     </div>
                 </div>
 
+                {showSynopses && mission.description && (
+                    <p className="text-sm text-gray-400 italic leading-relaxed mt-3 px-1">{mission.description}</p>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                     <CategoryColumn category="full" times={full} missionId={mission.id} onSubmitted={reload} />
                     <CategoryColumn category="speed" times={speed} missionId={mission.id} onSubmitted={reload} />
@@ -1466,15 +1512,23 @@
         );
     }
 
-    function MissionDrawer({ missionId, onClose, color }) {
+    function MissionDrawer({ missionId, onClose, color, showSynopses }) {
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
         const [open, setOpen] = useState(false);
+        const [closing, setClosing] = useState(false);
         const panelRef = useRef(null);
 
         function reload() {
             apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
         }
+
+        const animateClose = useCallback(() => {
+            if (closing) return;
+            setClosing(true);
+            setOpen(false);
+            setTimeout(onClose, 135);
+        }, [onClose, closing]);
 
         useEffect(() => {
             setMission(null);
@@ -1488,10 +1542,10 @@
 
         useEffect(() => {
             function handleKey(e) {
-                if (e.key === 'Escape') onClose();
+                if (e.key === 'Escape') animateClose();
             }
             function handleClick(e) {
-                if (panelRef.current && !panelRef.current.contains(e.target)) onClose();
+                if (panelRef.current && !panelRef.current.contains(e.target)) animateClose();
             }
             document.addEventListener('keydown', handleKey);
             document.addEventListener('mousedown', handleClick);
@@ -1499,17 +1553,17 @@
                 document.removeEventListener('keydown', handleKey);
                 document.removeEventListener('mousedown', handleClick);
             };
-        }, [onClose]);
+        }, [animateClose]);
 
         const accentColor = color || '#c8a84e';
 
         return (
-            <div ref={panelRef} className={`drawer-panel ${open ? 'open' : ''}`}>
+            <div ref={panelRef} className={`drawer-panel ${closing ? 'closing' : open ? 'open' : ''}`}>
                     <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-stone-800" style={{ background: '#1e1b17' }}>
                         <h3 className="text-sm font-bold text-gray-300 font-display truncate pr-2">
                             {mission ? mission.name : 'Loading...'}
                         </h3>
-                        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
+                        <button onClick={animateClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
                             <X size={18} />
                         </button>
                     </div>
@@ -1532,6 +1586,9 @@
                                         )}
                                     </div>
                                 </div>
+                                {showSynopses && mission.description && (
+                                    <p className="text-sm text-gray-400 italic leading-relaxed mb-4 px-1">{mission.description}</p>
+                                )}
                                 <div className="space-y-4">
                                     <CategoryColumn category="full" times={mission.times.full} missionId={mission.id} onSubmitted={reload} />
                                     <CategoryColumn category="speed" times={mission.times.speed} missionId={mission.id} onSubmitted={reload} />
@@ -1704,6 +1761,16 @@
         const [highlight, setHighlight] = useState(null);
         const [slugToId, setSlugToId] = useState(null);
         const [idToSlug, setIdToSlug] = useState({});
+        const [showSynopses, setShowSynopses] = useState(() => {
+            const stored = localStorage.getItem('gw2st_show_synopses');
+            return stored === 'true';
+        });
+        const toggleSynopses = useCallback(() => {
+            setShowSynopses(prev => {
+                localStorage.setItem('gw2st_show_synopses', String(!prev));
+                return !prev;
+            });
+        }, []);
 
         useEffect(() => {
             apiFetch('/seasons').then(seasons => {
@@ -1788,11 +1855,11 @@
 
         return (
             <div className="min-h-screen pb-12">
-                <Navbar onNavigate={navigate} view={view} />
+                <Navbar onNavigate={navigate} view={view} showSynopses={showSynopses} onToggleSynopses={toggleSynopses} />
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
-                    {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
-                    {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} />}
+                    {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} />}
                     {view === 'about' && <AboutView />}
                 </div>
                 <footer className="text-center text-xs text-gray-600 py-8">

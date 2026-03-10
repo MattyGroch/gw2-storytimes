@@ -48,7 +48,7 @@ function importSeedData() {
   const seedPath = path.join(__dirname, '..', 'seed-data.json');
   if (!fs.existsSync(seedPath)) {
     console.log('No seed-data.json found, skipping seed import');
-    return;
+    return [];
   }
 
   const data = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
@@ -69,9 +69,54 @@ function importSeedData() {
 
   importAll();
   console.log('Seed data imported successfully');
+  return (data.missions || []).map(m => m.id);
 }
 
-importSeedData();
+async function fetchDescriptions(missionIds) {
+  if (!missionIds.length) return;
+
+  const needsDescription = missionIds.filter(id => {
+    const row = db.getDb().prepare('SELECT description FROM missions WHERE id = ?').get(id);
+    return !row || !row.description;
+  });
+
+  if (!needsDescription.length) {
+    console.log('All missions already have descriptions, skipping GW2 API fetch');
+    return;
+  }
+
+  console.log(`Fetching descriptions for ${needsDescription.length} missions from GW2 API...`);
+  const CHUNK_SIZE = 200;
+  let updated = 0;
+
+  for (let i = 0; i < needsDescription.length; i += CHUNK_SIZE) {
+    const chunk = needsDescription.slice(i, i + CHUNK_SIZE);
+    try {
+      const url = `https://api.guildwars2.com/v2/quests?ids=${chunk.join(',')}`;
+      const res = await fetch(url);
+      if (!res.ok) {
+        console.warn(`GW2 API returned ${res.status} for chunk ${i / CHUNK_SIZE + 1}, skipping`);
+        continue;
+      }
+      const quests = await res.json();
+      for (const q of quests) {
+        if (!q.goals || !q.goals.length) continue;
+        const desc = q.goals.map(g => g.complete).filter(Boolean).join(' ');
+        if (desc) {
+          db.getDb().prepare('UPDATE missions SET description = ? WHERE id = ?').run(desc, q.id);
+          updated++;
+        }
+      }
+    } catch (err) {
+      console.warn(`Failed to fetch descriptions for chunk ${i / CHUNK_SIZE + 1}:`, err.message);
+    }
+  }
+
+  console.log(`Updated descriptions for ${updated} missions`);
+}
+
+const missionIds = importSeedData();
+fetchDescriptions(missionIds).catch(err => console.warn('Description fetch failed:', err.message));
 
 app.listen(PORT, () => {
   console.log(`GW2 Story Times API listening on port ${PORT}`);

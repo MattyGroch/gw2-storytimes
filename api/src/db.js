@@ -38,7 +38,8 @@ function initSchema() {
       name TEXT NOT NULL,
       "order" INTEGER NOT NULL,
       seed_full_mins REAL,
-      seed_speed_mins REAL
+      seed_speed_mins REAL,
+      description TEXT
     );
 
     CREATE TABLE IF NOT EXISTS submissions (
@@ -60,6 +61,11 @@ function initSchema() {
     CREATE INDEX IF NOT EXISTS idx_submissions_ratelimit
       ON submissions(ip_hash, mission_id, category, created_at);
   `);
+
+  const cols = db.prepare("PRAGMA table_info(missions)").all().map(c => c.name);
+  if (!cols.includes('description')) {
+    db.exec("ALTER TABLE missions ADD COLUMN description TEXT");
+  }
 }
 
 // ---- Season queries ----
@@ -134,7 +140,8 @@ const MISSION_SELECT = `
     s.name AS season_name,
     m."order",
     m.seed_full_mins,
-    m.seed_speed_mins
+    m.seed_speed_mins,
+    m.description
   FROM missions m
   JOIN stories st ON st.id = m.story_id
   JOIN seasons s ON s.id = st.season_id
@@ -200,6 +207,7 @@ function formatMission(row) {
     season_name: row.season_name,
     order: row.order,
     races: row.races ? JSON.parse(row.races) : null,
+    description: row.description || null,
     times: {
       full: {
         seed_mins: row.seed_full_mins,
@@ -269,17 +277,18 @@ function upsertStory(id, seasonId, name, groupName, order, races) {
   `).run(id, seasonId, name, groupName, order, racesJson);
 }
 
-function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins) {
+function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins, description) {
   getDb().prepare(`
-    INSERT INTO missions (id, story_id, name, "order", seed_full_mins, seed_speed_mins)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO missions (id, story_id, name, "order", seed_full_mins, seed_speed_mins, description)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       story_id = excluded.story_id,
       name = excluded.name,
       "order" = excluded."order",
       seed_full_mins = COALESCE(excluded.seed_full_mins, missions.seed_full_mins),
-      seed_speed_mins = COALESCE(excluded.seed_speed_mins, missions.seed_speed_mins)
-  `).run(id, storyId, name, order, seedFullMins, seedSpeedMins);
+      seed_speed_mins = COALESCE(excluded.seed_speed_mins, missions.seed_speed_mins),
+      description = COALESCE(excluded.description, missions.description)
+  `).run(id, storyId, name, order, seedFullMins, seedSpeedMins, description || null);
 }
 
 module.exports = {
