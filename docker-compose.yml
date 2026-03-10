@@ -8,6 +8,7 @@ services:
     environment:
       - DB_PATH=/data/storytimes.db
       - IP_HASH_SALT=${IP_HASH_SALT}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     volumes:
       - storytimes-data:/data
     labels:
