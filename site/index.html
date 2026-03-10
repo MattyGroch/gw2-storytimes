@@ -25,6 +25,11 @@
             100% { box-shadow: 0 0 0 0px rgba(200, 168, 78, 0), 0 0 0px rgba(200, 168, 78, 0); }
         }
         .search-highlight { animation: search-highlight 3s ease-out forwards; }
+        .drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 60; }
+        .drawer-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 420px; z-index: 70;
+            background-color: #1e1b17; transform: translateX(100%); transition: transform 0.25s ease-out;
+            overflow-y: auto; border-left: 1px solid #292524; }
+        .drawer-panel.open { transform: translateX(0); }
     </style>
     <script>
         tailwind.config = {
@@ -561,14 +566,15 @@
         );
     }
 
-    function MissionRow({ mission, onSelect }) {
+    function MissionRow({ mission, onSelect, activeMissionId }) {
         const fullAvg = mission.times?.full?.avg_mins;
         const speedAvg = mission.times?.speed?.avg_mins;
+        const isActive = mission.id === activeMissionId;
 
         return (
             <button
                 onClick={() => onSelect(mission.id)}
-                className="flex items-center justify-between p-2 rounded hover:bg-white/5 w-full text-left transition-colors group"
+                className={`flex items-center justify-between p-2 rounded w-full text-left transition-colors group ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
             >
                 <div className="min-w-0 flex-1">
                     <span className="text-sm text-gray-200 group-hover:text-gw2-gold-light transition-colors truncate block">
@@ -589,7 +595,7 @@
         );
     }
 
-    function StoryGroup({ story, onSelectMission }) {
+    function StoryGroup({ story, onSelectMission, activeMissionId }) {
         const [expanded, setExpanded] = useState(true);
         const races = story.races;
         const raceLabel = races?.length === 1 ? races[0] : null;
@@ -611,7 +617,7 @@
                 {expanded && (
                     <div className="ml-2 border-l border-stone-800 pl-2">
                         {missions.map(m => (
-                            <MissionRow key={m.id} mission={m} onSelect={onSelectMission} />
+                            <MissionRow key={m.id} mission={m} onSelect={onSelectMission} activeMissionId={activeMissionId} />
                         ))}
                     </div>
                 )}
@@ -619,7 +625,7 @@
         );
     }
 
-    function QuestEntry({ entry, findMission, onSelectMission }) {
+    function QuestEntry({ entry, findMission, onSelectMission, activeMissionId }) {
         if (Array.isArray(entry)) {
             const alts = entry.map(n => findMission(n)).filter(Boolean);
             if (alts.length === 0) return null;
@@ -630,7 +636,7 @@
                             {i > 0 && <span className="text-[9px] text-gray-600 px-0.5">/</span>}
                             <button
                                 onClick={() => onSelectMission(m.id)}
-                                className="flex items-center gap-1 px-1 py-0.5 rounded hover:bg-white/5 transition-colors group text-left min-w-0"
+                                className={`flex items-center gap-1 px-1 py-0.5 rounded transition-colors group text-left min-w-0 ${m.id === activeMissionId ? 'bg-white/10' : 'hover:bg-white/5'}`}
                             >
                                 <span className="text-[11px] text-amber-200/70 group-hover:text-gw2-gold-light transition-colors truncate">{m.name}</span>
                                 <span className="text-[10px] text-gw2-gold-light shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
@@ -642,10 +648,10 @@
         }
         const m = findMission(entry);
         if (!m) return null;
-        return <MissionRow mission={m} onSelect={onSelectMission} />;
+        return <MissionRow mission={m} onSelect={onSelectMission} activeMissionId={activeMissionId} />;
     }
 
-    function QuestEntryCompact({ entry, findMission, onSelectMission }) {
+    function QuestEntryCompact({ entry, findMission, onSelectMission, activeMissionId }) {
         if (Array.isArray(entry)) {
             const alts = entry.map(n => findMission(n)).filter(Boolean);
             if (alts.length === 0) return null;
@@ -656,7 +662,7 @@
                             {i > 0 && <div className="text-[8px] text-gray-600 text-center">or</div>}
                             <button
                                 onClick={() => onSelectMission(m.id)}
-                                className="flex items-center justify-between w-full px-1 py-0.5 rounded hover:bg-white/5 transition-colors group text-left"
+                                className={`flex items-center justify-between w-full px-1 py-0.5 rounded transition-colors group text-left ${m.id === activeMissionId ? 'bg-white/10' : 'hover:bg-white/5'}`}
                             >
                                 <span className="text-[11px] text-amber-200/70 group-hover:text-gw2-gold-light transition-colors truncate block">{m.name}</span>
                                 <span className="text-[10px] text-gw2-gold-light ml-1 shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
@@ -671,7 +677,7 @@
         return (
             <button
                 onClick={() => onSelectMission(m.id)}
-                className="flex items-center justify-between w-full px-1 py-1 rounded hover:bg-white/5 transition-colors group text-left"
+                className={`flex items-center justify-between w-full px-1 py-1 rounded transition-colors group text-left ${m?.id === activeMissionId ? 'bg-white/10' : 'hover:bg-white/5'}`}
             >
                 <span className="text-[11px] text-gray-300 group-hover:text-gw2-gold-light transition-colors truncate block">{m.name}</span>
                 <span className="text-[10px] text-gw2-gold-light ml-1 shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
@@ -697,19 +703,19 @@
         return total;
     }
 
-    function SharedQuestBlock({ quests, findMission, onSelectMission, label }) {
+    function SharedQuestBlock({ quests, findMission, onSelectMission, label, activeMissionId }) {
         if (!quests || quests.length === 0) return null;
         return (
             <div className="mb-2 border-l-2 border-stone-700 pl-2">
                 {label && <div className="text-[9px] text-gray-600 uppercase tracking-wider mb-1 pl-1">{label}</div>}
                 {quests.map((entry, i) => (
-                    <QuestEntry key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} />
+                    <QuestEntry key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} activeMissionId={activeMissionId} />
                 ))}
             </div>
         );
     }
 
-    function BranchingStoryView({ story, pathData, onSelectMission }) {
+    function BranchingStoryView({ story, pathData, onSelectMission, activeMissionId }) {
         const missionsByName = useMemo(() => {
             const map = {};
             for (const m of story.missions) map[m.name] = m;
@@ -747,7 +753,7 @@
                                 )}
                             </div>
 
-                            <SharedQuestBlock quests={part.shared} findMission={findMission} onSelectMission={onSelectMission} />
+                            <SharedQuestBlock quests={part.shared} findMission={findMission} onSelectMission={onSelectMission} activeMissionId={activeMissionId} />
 
                             {hasMultiplePaths && (
                                 <div className={`grid gap-2 ${pathKeys.length <= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-5'} grid-cols-1`}>
@@ -762,7 +768,7 @@
                                                     )}
                                                 </div>
                                                 {part.paths[pathLabel].map((entry, i) => (
-                                                    <QuestEntryCompact key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} />
+                                                    <QuestEntryCompact key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} activeMissionId={activeMissionId} />
                                                 ))}
                                             </div>
                                         );
@@ -770,7 +776,7 @@
                                 </div>
                             )}
 
-                            <SharedQuestBlock quests={part.sharedTail} findMission={findMission} onSelectMission={onSelectMission} label="continues..." />
+                            <SharedQuestBlock quests={part.sharedTail} findMission={findMission} onSelectMission={onSelectMission} activeMissionId={activeMissionId} label="continues..." />
                         </div>
                     );
                 })}
@@ -1267,10 +1273,11 @@
         );
     }
 
-    function SeasonView({ seasonId, onSelectMission, onBack, highlight, onHighlightDone }) {
+    function SeasonView({ seasonId, onBack, highlight, onHighlightDone }) {
         const [season, setSeason] = useState(null);
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
+        const [drawerMissionId, setDrawerMissionId] = useState(null);
         const highlightRefs = useRef({});
 
         useEffect(() => {
@@ -1381,8 +1388,8 @@
                                     return (
                                         <div key={st.id} data-story-name={st.name} className="rounded-lg">
                                             {pathData
-                                                ? <BranchingStoryView story={st} pathData={pathData} onSelectMission={onSelectMission} />
-                                                : <StoryGroup story={st} onSelectMission={onSelectMission} />
+                                                ? <BranchingStoryView story={st} pathData={pathData} onSelectMission={setDrawerMissionId} activeMissionId={drawerMissionId} />
+                                                : <StoryGroup story={st} onSelectMission={setDrawerMissionId} activeMissionId={drawerMissionId} />
                                             }
                                         </div>
                                     );
@@ -1391,6 +1398,10 @@
                         </div>
                     );
                 })}
+
+                {drawerMissionId && (
+                    <MissionDrawer missionId={drawerMissionId} onClose={() => setDrawerMissionId(null)} color={color} />
+                )}
             </div>
         );
     }
@@ -1447,6 +1458,81 @@
                     <CategoryColumn category="speed" times={speed} missionId={mission.id} onSubmitted={reload} />
                 </div>
             </div>
+        );
+    }
+
+    function MissionDrawer({ missionId, onClose, color }) {
+        const [mission, setMission] = useState(null);
+        const [error, setError] = useState(null);
+        const [open, setOpen] = useState(false);
+        const panelRef = useRef(null);
+
+        function reload() {
+            apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
+        }
+
+        useEffect(() => {
+            setMission(null);
+            setError(null);
+            reload();
+        }, [missionId]);
+
+        useEffect(() => {
+            requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
+            document.body.style.overflow = 'hidden';
+            return () => { document.body.style.overflow = ''; };
+        }, []);
+
+        useEffect(() => {
+            function handleKey(e) {
+                if (e.key === 'Escape') onClose();
+            }
+            document.addEventListener('keydown', handleKey);
+            return () => document.removeEventListener('keydown', handleKey);
+        }, [onClose]);
+
+        const accentColor = color || '#c8a84e';
+
+        return (
+            <React.Fragment>
+                <div className="drawer-backdrop" onClick={onClose} />
+                <div ref={panelRef} className={`drawer-panel ${open ? 'open' : ''}`}>
+                    <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-stone-800" style={{ background: '#1e1b17' }}>
+                        <h3 className="text-sm font-bold text-gray-300 font-display truncate pr-2">
+                            {mission ? mission.name : 'Loading...'}
+                        </h3>
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
+                            <X size={18} />
+                        </button>
+                    </div>
+                    <div className="p-4">
+                        {error ? (
+                            <ErrorBox message={error} />
+                        ) : !mission ? (
+                            <Loading />
+                        ) : (
+                            <React.Fragment>
+                                <div className="rounded-lg border border-stone-800 overflow-hidden shadow-lg mb-4"
+                                    style={{ borderLeft: `4px solid ${accentColor}` }}>
+                                    <div className="p-4" style={{ background: `linear-gradient(to right, ${accentColor}20, transparent)` }}>
+                                        <p className="text-xs text-gray-500 mb-1">{mission.story_name} · {mission.group_name}</p>
+                                        <h2 className="text-lg font-bold font-display text-gray-100">{mission.name}</h2>
+                                        {mission.races && (
+                                            <span className="inline-block text-[10px] bg-stone-700 text-gray-400 px-1.5 py-0.5 rounded mt-2">
+                                                {mission.races.join(', ')} only
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <CategoryColumn category="full" times={mission.times.full} missionId={mission.id} onSubmitted={reload} />
+                                    <CategoryColumn category="speed" times={mission.times.speed} missionId={mission.id} onSubmitted={reload} />
+                                </div>
+                            </React.Fragment>
+                        )}
+                    </div>
+                </div>
+            </React.Fragment>
         );
     }
 
@@ -1698,7 +1784,7 @@
                 <Navbar onNavigate={navigate} view={view} />
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
-                    {view === 'season' && <SeasonView seasonId={viewId} onSelectMission={(id) => navigate('mission', id)} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
                     {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
                     {view === 'about' && <AboutView />}
                 </div>
