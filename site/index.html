@@ -1338,8 +1338,8 @@
 
         return (
             <div>
-                <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4">
-                    <ArrowLeft size={16} /> All Seasons
+                <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-300 hover:text-gw2-gold-light transition-colors mb-5 py-1.5">
+                    <ArrowLeft size={18} /> <span className="font-medium">All Stories</span>
                 </button>
                 <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg mb-6"
                     style={{ borderLeft: `4px solid ${color}` }}>
@@ -1784,7 +1784,7 @@
                 <Navbar onNavigate={navigate} view={view} />
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
-                    {view === 'season' && <SeasonView seasonId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
                     {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
                     {view === 'about' && <AboutView />}
                 </div>
