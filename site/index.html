@@ -1491,7 +1491,7 @@
                 if (e.key === 'Escape') onClose();
             }
             function handleClick(e) {
-                if (panelRef.current && !panelRef.current.contains(e.target) && !e.target.closest('button, a, input')) onClose();
+                if (panelRef.current && !panelRef.current.contains(e.target)) onClose();
             }
             document.addEventListener('keydown', handleKey);
             document.addEventListener('mousedown', handleClick);
