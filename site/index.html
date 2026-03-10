@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GW2 Story Times</title>
     <meta name="description" content="Community-driven completion times for every Guild Wars 2 story mission">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -276,9 +277,7 @@
             <nav className="card-bg border-b border-stone-800 sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
                     <button onClick={() => onNavigate('home')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <div className="w-8 h-8 rounded gw2-gradient flex items-center justify-center">
-                            <Clock size={18} className="text-stone-900" />
-                        </div>
+                        <img src="logo.svg" alt="GW2 Story Times" className="w-8 h-8 rounded" />
                         <span className="font-bold text-xl hidden sm:inline font-display text-gw2-gold-light">GW2 Story Times</span>
                         <span className="font-bold text-lg sm:hidden font-display text-gw2-gold-light">Story Times</span>
                     </button>
