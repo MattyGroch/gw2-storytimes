@@ -24,7 +24,7 @@
             0%   { box-shadow: 0 0 0 2px rgba(200, 168, 78, 0.6), 0 0 12px rgba(200, 168, 78, 0.25); }
             100% { box-shadow: 0 0 0 0px rgba(200, 168, 78, 0), 0 0 0px rgba(200, 168, 78, 0); }
         }
-        .search-highlight { animation: search-highlight 1.5s ease-out forwards; }
+        .search-highlight { animation: search-highlight 3s ease-out forwards; }
     </style>
     <script>
         tailwind.config = {
@@ -1152,7 +1152,7 @@
                     setTimeout(() => {
                         el.classList.remove('search-highlight');
                         onHighlightDone?.();
-                    }, 1500);
+                    }, 3000);
                 } else {
                     onHighlightDone?.();
                 }
@@ -1275,7 +1275,7 @@
                 const timer = setTimeout(() => {
                     cardRef.current?.classList.remove('search-highlight');
                     onHighlightDone?.();
-                }, 1500);
+                }, 3000);
                 return () => clearTimeout(timer);
             }
         }, [mission, highlight]);
