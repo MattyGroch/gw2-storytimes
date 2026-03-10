@@ -8,6 +8,7 @@ const seasonsRouter = require('./routes/seasons');
 const missionsRouter = require('./routes/missions');
 const submissionsRouter = require('./routes/submissions');
 const estimateRouter = require('./routes/estimate');
+const adminRouter = require('./routes/admin');
 
 const PORT = process.env.PORT || 3000;
 
@@ -22,6 +23,7 @@ app.use('/v1/seasons', seasonsRouter);
 app.use('/v1/missions', missionsRouter);
 app.use('/v1/missions', submissionsRouter);
 app.use('/v1/estimate', estimateRouter);
+app.use('/v1/admin', adminRouter);
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — GW2 Story Times</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gw2: { gold: '#c8a84e', 'gold-light': '#dcc075', 'gold-dark': '#8a6b2d' }
+                    },
+                    fontFamily: { display: ['Cinzel', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #13110f; color: #e8e0d6; }
+        .card-bg { background-color: #1e1b17; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #13110f; }
+        ::-webkit-scrollbar-thumb { background: #4a443a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b6355; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    const API_BASE = window.location.origin + '/v1';
+
+    function getToken() { return sessionStorage.getItem('admin_token') || ''; }
+    function setToken(t) { sessionStorage.setItem('admin_token', t); }
+
+    function adminFetch(path, opts = {}) {
+        return fetch(`${API_BASE}/admin${path}`, {
+            ...opts,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`,
+                ...(opts.headers || {}),
+            },
+        });
+    }
+
+    const SOURCE_BADGES = {
+        manual:    { label: 'Manual',    bg: 'bg-sky-900/60',    text: 'text-sky-300' },
+        sentiment: { label: 'Sentiment', bg: 'bg-purple-900/60', text: 'text-purple-300' },
+        api:       { label: 'API',       bg: 'bg-amber-900/60',  text: 'text-amber-300' },
+    };
+
+    function SourceBadge({ source }) {
+        const s = SOURCE_BADGES[source] || { label: source, bg: 'bg-stone-700', text: 'text-gray-300' };
+        return <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${s.bg} ${s.text}`}>{s.label}</span>;
+    }
+
+    function formatDate(iso) {
+        if (!iso) return '—';
+        const d = new Date(iso + 'Z');
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            + ' ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function LoginForm({ onLogin }) {
+        const [pass, setPass] = useState('');
+        const [error, setError] = useState(null);
+        const [loading, setLoading] = useState(false);
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            if (!pass.trim()) return;
+            setLoading(true);
+            setError(null);
+            setToken(pass.trim());
+            try {
+                const res = await adminFetch('/submissions?limit=1');
+                if (res.ok) {
+                    onLogin();
+                } else {
+                    setError('Invalid passphrase');
+                    setToken('');
+                }
+            } catch {
+                setError('Connection failed');
+                setToken('');
+            }
+            setLoading(false);
+        }
+
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="card-bg rounded-lg border border-stone-800 p-8 w-full max-w-sm shadow-xl">
+                    <h1 className="text-xl font-bold font-display text-center mb-6" style={{color:'#e8e0d6'}}>Admin Access</h1>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="password"
+                            value={pass}
+                            onChange={e => setPass(e.target.value)}
+                            placeholder="Enter passphrase"
+                            className="w-full bg-stone-800 border border-stone-700 rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-gw2-gold-dark transition-colors"
+                            autoFocus
+                        />
+                        {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
+                        <button type="submit" disabled={loading}
+                            className="w-full mt-4 bg-gw2-gold-dark text-stone-900 font-bold text-sm px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+                            {loading ? 'Verifying...' : 'Sign In'}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
+
+    function SubmissionsPanel() {
+        const [data, setData] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        const [page, setPage] = useState(1);
+        const [filters, setFilters] = useState({ category: '', source: '', mission_id: '' });
+        const [deleting, setDeleting] = useState(null);
+
+        const load = useCallback(async () => {
+            setLoading(true);
+            setError(null);
+            const params = new URLSearchParams({ page, limit: 50 });
+            if (filters.category) params.set('category', filters.category);
+            if (filters.source) params.set('source', filters.source);
+            if (filters.mission_id) params.set('mission_id', filters.mission_id);
+            try {
+                const res = await adminFetch(`/submissions?${params}`);
+                if (!res.ok) {
+                    if (res.status === 401) {
+                        setToken('');
+                        window.location.reload();
+                        return;
+                    }
+                    throw new Error('Failed to load');
+                }
+                setData(await res.json());
+            } catch (err) {
+                setError(err.message);
+            }
+            setLoading(false);
+        }, [page, filters]);
+
+        useEffect(() => { load(); }, [load]);
+
+        async function handleDelete(id) {
+            setDeleting(id);
+            try {
+                const res = await adminFetch(`/submissions/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    load();
+                } else {
+                    const d = await res.json();
+                    alert(d.error || 'Delete failed');
+                }
+            } catch {
+                alert('Network error');
+            }
+            setDeleting(null);
+        }
+
+        function updateFilter(key, value) {
+            setFilters(prev => ({ ...prev, [key]: value }));
+            setPage(1);
+        }
+
+        const pagination = data?.pagination;
+
+        return (
+            <div className="min-h-screen pb-12">
+                <nav className="card-bg border-b border-stone-800 sticky top-0 z-50">
+                    <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                                <img src="/logo.svg" alt="" className="w-7 h-7 rounded" />
+                                <span className="font-bold text-lg font-display" style={{color:'#e8e0d6'}}>Story Times</span>
+                            </a>
+                            <span className="text-xs bg-red-900/60 text-red-300 px-2 py-0.5 rounded font-medium">Admin</span>
+                        </div>
+                        <button onClick={() => { setToken(''); window.location.reload(); }}
+                            className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                            Sign Out
+                        </button>
+                    </div>
+                </nav>
+
+                <div className="max-w-6xl mx-auto px-4 py-6">
+                    <h1 className="text-xl font-bold font-display mb-4" style={{color:'#e8e0d6'}}>Submissions</h1>
+
+                    <div className="flex flex-wrap gap-3 mb-4">
+                        <select value={filters.category} onChange={e => updateFilter('category', e.target.value)}
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-gw2-gold-dark">
+                            <option value="">All Categories</option>
+                            <option value="full">Full Experience</option>
+                            <option value="speed">Speedrun</option>
+                        </select>
+                        <select value={filters.source} onChange={e => updateFilter('source', e.target.value)}
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 focus:outline-none focus:border-gw2-gold-dark">
+                            <option value="">All Sources</option>
+                            <option value="manual">Manual</option>
+                            <option value="sentiment">Sentiment</option>
+                            <option value="api">API</option>
+                        </select>
+                        <input type="text" value={filters.mission_id} onChange={e => updateFilter('mission_id', e.target.value)}
+                            placeholder="Mission ID"
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 w-28 focus:outline-none focus:border-gw2-gold-dark"
+                        />
+                        {(filters.category || filters.source || filters.mission_id) && (
+                            <button onClick={() => { setFilters({ category: '', source: '', mission_id: '' }); setPage(1); }}
+                                className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                                Clear filters
+                            </button>
+                        )}
+                        {pagination && (
+                            <span className="text-xs text-gray-500 ml-auto self-center">
+                                {pagination.total} submission{pagination.total !== 1 ? 's' : ''}
+                            </span>
+                        )}
+                    </div>
+
+                    {error && <div className="text-red-400 text-sm mb-4">{error}</div>}
+
+                    <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs">
+                                <thead>
+                                    <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                        <th className="px-3 py-2.5 font-medium">ID</th>
+                                        <th className="px-3 py-2.5 font-medium">Mission</th>
+                                        <th className="px-3 py-2.5 font-medium">Category</th>
+                                        <th className="px-3 py-2.5 font-medium">Duration</th>
+                                        <th className="px-3 py-2.5 font-medium">Avg</th>
+                                        <th className="px-3 py-2.5 font-medium">Diff</th>
+                                        <th className="px-3 py-2.5 font-medium">Source</th>
+                                        <th className="px-3 py-2.5 font-medium">Date</th>
+                                        <th className="px-3 py-2.5 font-medium">IP Hash</th>
+                                        <th className="px-3 py-2.5 font-medium w-16"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loading && !data ? (
+                                        <tr><td colSpan={10} className="px-3 py-8 text-center text-gray-500">Loading...</td></tr>
+                                    ) : !data?.submissions?.length ? (
+                                        <tr><td colSpan={10} className="px-3 py-8 text-center text-gray-500">No submissions found</td></tr>
+                                    ) : data.submissions.map(s => {
+                                        const diff = s.avg_mins ? s.duration_mins - s.avg_mins : null;
+                                        const diffPct = s.avg_mins ? ((diff / s.avg_mins) * 100) : null;
+                                        const isOutlier = diffPct !== null && Math.abs(diffPct) > 50;
+                                        return (
+                                            <tr key={s.id} className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors ${isOutlier ? 'bg-red-900/10' : ''}`}>
+                                                <td className="px-3 py-2 text-gray-500 font-mono">{s.id}</td>
+                                                <td className="px-3 py-2 text-gray-200 max-w-[200px] truncate" title={`ID: ${s.mission_id}`}>
+                                                    {s.mission_name}
+                                                    <span className="text-gray-600 ml-1">#{s.mission_id}</span>
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    <span className={s.category === 'full' ? 'text-gw2-gold-light' : 'text-yellow-400'}>
+                                                        {s.category === 'full' ? 'Full' : 'Speed'}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-2 text-gray-200 font-mono">{s.duration_mins.toFixed(1)}m</td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono">{s.avg_mins ? s.avg_mins.toFixed(1) + 'm' : '—'}</td>
+                                                <td className="px-3 py-2 font-mono">
+                                                    {diffPct !== null ? (
+                                                        <span className={Math.abs(diffPct) > 50 ? 'text-red-400 font-bold' : Math.abs(diffPct) > 25 ? 'text-yellow-400' : 'text-gray-500'}>
+                                                            {diff > 0 ? '+' : ''}{diffPct.toFixed(0)}%
+                                                        </span>
+                                                    ) : '—'}
+                                                </td>
+                                                <td className="px-3 py-2"><SourceBadge source={s.source} /></td>
+                                                <td className="px-3 py-2 text-gray-500 whitespace-nowrap">{formatDate(s.created_at)}</td>
+                                                <td className="px-3 py-2 text-gray-600 font-mono" title={s.ip_hash}>{s.ip_hash ? s.ip_hash.slice(0, 8) + '...' : '—'}</td>
+                                                <td className="px-3 py-2">
+                                                    <button
+                                                        onClick={() => { if (confirm(`Delete submission #${s.id}?\n${s.mission_name} — ${s.duration_mins}m (${s.category})`)) handleDelete(s.id); }}
+                                                        disabled={deleting === s.id}
+                                                        className="text-red-500/60 hover:text-red-400 transition-colors disabled:opacity-30 text-xs font-medium"
+                                                    >
+                                                        {deleting === s.id ? '...' : 'Delete'}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {pagination && pagination.pages > 1 && (
+                        <div className="flex items-center justify-between mt-4">
+                            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
+                                className="text-xs text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                                &larr; Previous
+                            </button>
+                            <span className="text-xs text-gray-500">
+                                Page {pagination.page} of {pagination.pages}
+                            </span>
+                            <button onClick={() => setPage(p => Math.min(pagination.pages, p + 1))} disabled={page >= pagination.pages}
+                                className="text-xs text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+                                Next &rarr;
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    function App() {
+        const [authed, setAuthed] = useState(!!getToken());
+
+        if (!authed) return <LoginForm onLogin={() => setAuthed(true)} />;
+        return <SubmissionsPanel />;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

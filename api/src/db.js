@@ -291,6 +291,54 @@ function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins, de
   `).run(id, storyId, name, order, seedFullMins, seedSpeedMins, description || null);
 }
 
+// ---- Admin queries ----
+
+function getSubmissions({ page = 1, limit = 50, mission_id, category, source } = {}) {
+  const conditions = [];
+  const params = [];
+
+  if (mission_id) { conditions.push('s.mission_id = ?'); params.push(mission_id); }
+  if (category) { conditions.push('s.category = ?'); params.push(category); }
+  if (source) { conditions.push('s.source = ?'); params.push(source); }
+
+  const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
+  const offset = (page - 1) * limit;
+
+  return getDb().prepare(`
+    SELECT
+      s.id, s.mission_id, m.name AS mission_name,
+      s.category, s.duration_mins, s.source, s.created_at, s.ip_hash,
+      avg_t.avg_mins
+    FROM submissions s
+    JOIN missions m ON m.id = s.mission_id
+    LEFT JOIN (
+      SELECT mission_id, category, AVG(duration_mins) AS avg_mins
+      FROM submissions GROUP BY mission_id, category
+    ) avg_t ON avg_t.mission_id = s.mission_id AND avg_t.category = s.category
+    ${where}
+    ORDER BY s.created_at DESC
+    LIMIT ? OFFSET ?
+  `).all(...params, limit, offset);
+}
+
+function getSubmissionCount({ mission_id, category, source } = {}) {
+  const conditions = [];
+  const params = [];
+
+  if (mission_id) { conditions.push('mission_id = ?'); params.push(mission_id); }
+  if (category) { conditions.push('category = ?'); params.push(category); }
+  if (source) { conditions.push('source = ?'); params.push(source); }
+
+  const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
+
+  return getDb().prepare(`SELECT COUNT(*) AS total FROM submissions ${where}`).get(...params).total;
+}
+
+function deleteSubmission(id) {
+  const result = getDb().prepare('DELETE FROM submissions WHERE id = ?').run(id);
+  return result.changes > 0;
+}
+
 module.exports = {
   getDb,
   getAllSeasons,
@@ -304,4 +352,7 @@ module.exports = {
   upsertSeason,
   upsertStory,
   upsertMission,
+  getSubmissions,
+  getSubmissionCount,
+  deleteSubmission,
 };

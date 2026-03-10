@@ -13,12 +13,14 @@ router.post(
   (req, res) => {
     const missionId = parseInt(req.params.id, 10);
     const { category, duration_mins } = req.body;
+    const VALID_SOURCES = ['manual', 'sentiment', 'api'];
+    const source = VALID_SOURCES.includes(req.body.source) ? req.body.source : 'api';
 
     if (!db.missionExists(missionId)) {
       return res.status(404).json({ error: 'Mission not found' });
     }
 
-    db.createSubmission(missionId, category, duration_mins, req.ipHash);
+    db.createSubmission(missionId, category, duration_mins, req.ipHash, source);
 
     res.status(201).json({ message: 'Submission recorded', mission_id: missionId, category, duration_mins });
   }

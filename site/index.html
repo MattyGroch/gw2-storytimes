@@ -870,7 +870,7 @@
                 const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category, duration_mins: mins }),
+                    body: JSON.stringify({ category, duration_mins: mins, source: 'manual' }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
@@ -947,7 +947,7 @@
                 const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category: 'full', duration_mins: durationMins }),
+                    body: JSON.stringify({ category: 'full', duration_mins: durationMins, source: 'sentiment' }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
@@ -1028,7 +1028,7 @@
                 const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category, duration_mins: mins }),
+                    body: JSON.stringify({ category, duration_mins: mins, source: 'manual' }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
@@ -1053,7 +1053,7 @@
                 const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ category, duration_mins: durationMins }),
+                    body: JSON.stringify({ category, duration_mins: durationMins, source: 'sentiment' }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
