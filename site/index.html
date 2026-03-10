@@ -1129,9 +1129,34 @@
         );
     }
 
+    function ApiEndpoint({ method, path, desc, example, response }) {
+        const methodColor = method === 'POST' ? 'text-green-400' : 'text-sky-400';
+        return (
+            <div className="border border-stone-700 rounded-lg overflow-hidden">
+                <div className="bg-stone-800/60 px-3 py-2 flex items-center gap-2">
+                    <span className={`text-[10px] font-bold ${methodColor} bg-stone-900 px-1.5 py-0.5 rounded font-mono`}>{method}</span>
+                    <code className="text-xs text-gray-200 font-mono">{path}</code>
+                </div>
+                <div className="px-3 py-2 text-xs text-gray-400">{desc}</div>
+                {example && (
+                    <div className="border-t border-stone-700 px-3 py-2">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Example</p>
+                        <pre className="text-[11px] text-gray-400 font-mono whitespace-pre-wrap overflow-x-auto">{example}</pre>
+                    </div>
+                )}
+                {response && (
+                    <div className="border-t border-stone-700 px-3 py-2">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Response</p>
+                        <pre className="text-[11px] text-gray-400 font-mono whitespace-pre-wrap overflow-x-auto">{response}</pre>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     function AboutView() {
         return (
-            <div>
+            <div className="space-y-4">
                 <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
                     <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">About GW2 Story Times</h2>
                     <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
@@ -1155,21 +1180,71 @@
                                 Community submissions refine these estimates over time.
                             </p>
                         </div>
-                        <div>
-                            <h3 className="text-gw2-gold font-bold font-display mb-1">Open API</h3>
-                            <p>
-                                All data is available via a free REST API with open CORS.
-                                Any community tool can consume it.
-                            </p>
-                            <div className="mt-2 bg-stone-800 rounded-lg p-3 text-xs font-mono text-gray-400">
-                                <p>GET /v1/seasons</p>
-                                <p>GET /v1/seasons/:id</p>
-                                <p>GET /v1/missions</p>
-                                <p>GET /v1/missions/:id</p>
-                                <p>POST /v1/missions/:id/submit</p>
-                                <p>GET /v1/estimate?missions=id1,id2,...</p>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+
+                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-2">Open API</h2>
+                    <p className="text-sm text-gray-400 mb-1">
+                        All data is available via a free REST API. CORS is open to all origins — any browser app can consume it directly.
+                    </p>
+                    <div className="bg-stone-800 rounded-lg px-3 py-2 mb-4 inline-block">
+                        <code className="text-xs text-gw2-gold-light font-mono">https://api.gw2storytimes.com/v1</code>
+                    </div>
+
+                    <div className="space-y-1 text-xs text-gray-400 mb-4">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Rate Limits</p>
+                        <p>100 requests per 15 minutes (global)</p>
+                        <p>10 submissions per minute</p>
+                        <p>1 submission per mission per category per 24 hours (per IP)</p>
+                    </div>
+
+                    <h3 className="text-gw2-gold font-bold font-display mb-3">Endpoints</h3>
+                    <div className="space-y-3">
+                        <ApiEndpoint
+                            method="GET" path="/v1/seasons"
+                            desc="List all seasons with mission counts and total time estimates."
+                            example={'fetch("https://api.gw2storytimes.com/v1/seasons")\n  .then(r => r.json())'}
+                            response={'[\n  {\n    "id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",\n    "name": "My Story",\n    "order": 0,\n    "mission_count": 313,\n    "total_full_mins": 3180.5,\n    "total_speed_mins": 0\n  },\n  ...\n]'}
+                        />
+                        <ApiEndpoint
+                            method="GET" path="/v1/seasons/:id"
+                            desc="Single season with nested stories and their missions."
+                            example={'fetch("https://api.gw2storytimes.com/v1/seasons/215AAA0F-CDAC-4F93-86DA-C155A99B5784")\n  .then(r => r.json())'}
+                            response={'{\n  "id": "215AAA0F-...",\n  "name": "My Story",\n  "order": 0,\n  "stories": [\n    {\n      "id": 8,\n      "name": "My Story (Asura)",\n      "group_name": "Ch. 1-3",\n      "races": ["Asura"],\n      "missions": [\n        {\n          "id": 15,\n          "name": "Explosive Intellect",\n          "times": { "full": { ... }, "speed": { ... } }\n        },\n        ...\n      ]\n    },\n    ...\n  ]\n}'}
+                        />
+                        <ApiEndpoint
+                            method="GET" path="/v1/missions"
+                            desc="All missions with computed average times. Mission IDs correspond to GW2 API quest IDs."
+                            example={'fetch("https://api.gw2storytimes.com/v1/missions")\n  .then(r => r.json())'}
+                            response={'[\n  {\n    "id": 15,\n    "name": "Explosive Intellect",\n    "story_id": 8,\n    "story_name": "My Story (Asura)",\n    "group_name": "Ch. 1-3",\n    "season_id": "215AAA0F-...",\n    "season_name": "My Story",\n    "order": 1,\n    "races": ["Asura"],\n    "times": {\n      "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n      "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n    }\n  },\n  ...\n]'}
+                        />
+                        <ApiEndpoint
+                            method="GET" path="/v1/missions/:id"
+                            desc="Single mission with full time data and submission statistics."
+                            example={'fetch("https://api.gw2storytimes.com/v1/missions/15")\n  .then(r => r.json())'}
+                            response={'{\n  "id": 15,\n  "name": "Explosive Intellect",\n  "story_id": 8,\n  "story_name": "My Story (Asura)",\n  "group_name": "Ch. 1-3",\n  "season_id": "215AAA0F-...",\n  "season_name": "My Story",\n  "order": 1,\n  "races": ["Asura"],\n  "times": {\n    "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n    "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n  }\n}'}
+                        />
+                        <ApiEndpoint
+                            method="POST" path="/v1/missions/:id/submit"
+                            desc="Submit a completion time. Category must be 'full' or 'speed'. Duration must be between 1 and 480 minutes."
+                            example={'fetch("https://api.gw2storytimes.com/v1/missions/15/submit", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ category: "full", duration_mins: 14 })\n})'}
+                            response={'{\n  "message": "Submission recorded",\n  "mission_id": 15,\n  "category": "full",\n  "duration_mins": 14\n}'}
+                        />
+                        <ApiEndpoint
+                            method="GET" path="/v1/estimate?missions=id1,id2&category=full"
+                            desc="Bulk time estimate for a set of mission IDs. Category defaults to 'full'."
+                            example={'fetch("https://api.gw2storytimes.com/v1/estimate?missions=15,16,17&category=full")\n  .then(r => r.json())'}
+                            response={'{\n  "category": "full",\n  "requested": 3,\n  "found": 3,\n  "with_data": 3,\n  "without_data": 0,\n  "total_mins": 36.5,\n  "total_hours": 0.61,\n  "missions": [\n    { "id": 15, "name": "Explosive Intellect", "avg_mins": 12 },\n    ...\n  ]\n}'}
+                        />
+                    </div>
+
+                    <div className="mt-4 space-y-1 text-xs text-gray-400">
+                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Error Responses</p>
+                        <p><code className="text-gray-300">404</code> — Season or mission not found</p>
+                        <p><code className="text-gray-300">400</code> — Validation error (invalid ID, missing fields, duration out of range)</p>
+                        <p><code className="text-gray-300">429</code> — Rate limit exceeded or duplicate submission within 24 hours</p>
+                        <p className="mt-1">All errors return <code className="text-gray-300">{'{ "error": "..." }'}</code></p>
                     </div>
                 </div>
             </div>
