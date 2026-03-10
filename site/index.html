@@ -20,6 +20,11 @@
         ::-webkit-scrollbar-track { background: #13110f; }
         ::-webkit-scrollbar-thumb { background: #4a443a; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #6b6355; }
+        @keyframes search-highlight {
+            0%   { box-shadow: 0 0 0 2px rgba(200, 168, 78, 0.6), 0 0 12px rgba(200, 168, 78, 0.25); }
+            100% { box-shadow: 0 0 0 0px rgba(200, 168, 78, 0), 0 0 0px rgba(200, 168, 78, 0); }
+        }
+        .search-highlight { animation: search-highlight 1.5s ease-out forwards; }
     </style>
     <script>
         tailwind.config = {
@@ -341,9 +346,9 @@
 
         function selectResult(r) {
             if (r.type === 'story') {
-                onNavigate('season', r.season_id);
+                onNavigate('season', r.season_id, null, { type: 'story', name: r.name });
             } else {
-                onNavigate('mission', r.id, r.season_id);
+                onNavigate('mission', r.id, r.season_id, { type: 'mission' });
             }
             setDropdownOpen(false);
             setQuery('');
@@ -1125,16 +1130,35 @@
         );
     }
 
-    function SeasonView({ seasonId, onSelectMission, onBack }) {
+    function SeasonView({ seasonId, onSelectMission, onBack, highlight, onHighlightDone }) {
         const [season, setSeason] = useState(null);
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
+        const highlightRefs = useRef({});
 
         useEffect(() => {
             setSeason(null);
             setSelectedRace(null);
             apiFetch(`/seasons/${seasonId}`).then(setSeason).catch(e => setError(e.message));
         }, [seasonId]);
+
+        useEffect(() => {
+            if (!season || highlight?.type !== 'story') return;
+            const timer = setTimeout(() => {
+                const el = document.querySelector(`[data-story-name="${CSS.escape(highlight.name)}"]`);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('search-highlight');
+                    setTimeout(() => {
+                        el.classList.remove('search-highlight');
+                        onHighlightDone?.();
+                    }, 1500);
+                } else {
+                    onHighlightDone?.();
+                }
+            }, 150);
+            return () => clearTimeout(timer);
+        }, [season, highlight]);
 
         if (error) return <ErrorBox message={error} />;
         if (!season) return <Loading />;
@@ -1217,10 +1241,14 @@
                             <div className="card-bg rounded-lg border border-stone-800 p-3">
                                 {stories.map(st => {
                                     const pathData = BIOGRAPHY_PATHS[st.id];
-                                    if (pathData) {
-                                        return <BranchingStoryView key={st.id} story={st} pathData={pathData} onSelectMission={onSelectMission} />;
-                                    }
-                                    return <StoryGroup key={st.id} story={st} onSelectMission={onSelectMission} />;
+                                    return (
+                                        <div key={st.id} data-story-name={st.name} className="rounded-lg">
+                                            {pathData
+                                                ? <BranchingStoryView story={st} pathData={pathData} onSelectMission={onSelectMission} />
+                                                : <StoryGroup story={st} onSelectMission={onSelectMission} />
+                                            }
+                                        </div>
+                                    );
                                 })}
                             </div>
                         </div>
@@ -1230,15 +1258,27 @@
         );
     }
 
-    function MissionView({ missionId, onBack }) {
+    function MissionView({ missionId, onBack, highlight, onHighlightDone }) {
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
+        const cardRef = useRef(null);
 
         function reload() {
             apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
         }
 
         useEffect(() => { setMission(null); reload(); }, [missionId]);
+
+        useEffect(() => {
+            if (mission && highlight?.type === 'mission' && cardRef.current) {
+                cardRef.current.classList.add('search-highlight');
+                const timer = setTimeout(() => {
+                    cardRef.current?.classList.remove('search-highlight');
+                    onHighlightDone?.();
+                }, 1500);
+                return () => clearTimeout(timer);
+            }
+        }, [mission, highlight]);
 
         if (error) return <ErrorBox message={error} />;
         if (!mission) return <Loading />;
@@ -1252,7 +1292,7 @@
                 <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4">
                     <ArrowLeft size={16} /> {mission.season_name}
                 </button>
-                <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg"
+                <div ref={cardRef} className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg"
                     style={{ borderLeft: `4px solid ${color}` }}>
                     <div className="p-4 sm:p-6" style={{ background: `linear-gradient(to right, ${color}20, transparent)` }}>
                         <p className="text-xs text-gray-500 mb-1">{mission.story_name} · {mission.group_name}</p>
@@ -1465,6 +1505,7 @@
         const [view, setView] = useState('home');
         const [viewId, setViewId] = useState(null);
         const [currentSeasonId, setCurrentSeasonId] = useState(null);
+        const [highlight, setHighlight] = useState(null);
         const [slugToId, setSlugToId] = useState(null);
         const [idToSlug, setIdToSlug] = useState({});
 
@@ -1511,7 +1552,7 @@
             return () => window.removeEventListener('popstate', handlePopState);
         }, [slugToId]);
 
-        function navigate(v, id = null, seasonCtx = null) {
+        function navigate(v, id = null, seasonCtx = null, highlightCtx = null) {
             let path = '/';
             let seasonId = currentSeasonId;
             if (v === 'about') {
@@ -1534,6 +1575,7 @@
             setView(v);
             setViewId(id);
             setCurrentSeasonId(seasonId);
+            setHighlight(highlightCtx);
             window.scrollTo(0, 0);
         }
 
@@ -1553,8 +1595,8 @@
                 <Navbar onNavigate={navigate} view={view} />
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
-                    {view === 'season' && <SeasonView seasonId={viewId} onSelectMission={(id) => navigate('mission', id)} onBack={goBack} />}
-                    {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onSelectMission={(id) => navigate('mission', id)} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
+                    {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} />}
                     {view === 'about' && <AboutView />}
                 </div>
                 <footer className="text-center text-xs text-gray-600 py-8">
