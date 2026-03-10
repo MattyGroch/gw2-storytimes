@@ -1,0 +1,5854 @@
+{
+  "seasons": [
+    {
+      "id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story",
+      "order": 1
+    },
+    {
+      "id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "Living World Season 1",
+      "order": 2
+    },
+    {
+      "id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "Living World Season 2",
+      "order": 3
+    },
+    {
+      "id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "Heart of Thorns",
+      "order": 4
+    },
+    {
+      "id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "Living World Season 3",
+      "order": 5
+    },
+    {
+      "id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "Path of Fire",
+      "order": 6
+    },
+    {
+      "id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "Living World Season 4",
+      "order": 7
+    },
+    {
+      "id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "The Icebrood Saga",
+      "order": 8
+    },
+    {
+      "id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "End of Dragons",
+      "order": 9
+    },
+    {
+      "id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "Secrets of the Obscure",
+      "order": 10
+    },
+    {
+      "id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "Janthir Wilds",
+      "order": 11
+    },
+    {
+      "id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "Visions of Eternity",
+      "order": 12
+    }
+  ],
+  "stories": [
+    {
+      "id": 8,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story (Asura)",
+      "group_name": "Ch. 1-3",
+      "order": 1,
+      "races": [
+        "Asura"
+      ]
+    },
+    {
+      "id": 2,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story (Norn)",
+      "group_name": "Ch. 1-3",
+      "order": 2,
+      "races": [
+        "Norn"
+      ]
+    },
+    {
+      "id": 7,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story (Sylvari)",
+      "group_name": "Ch. 1-3",
+      "order": 3,
+      "races": [
+        "Sylvari"
+      ]
+    },
+    {
+      "id": 1,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story (Charr)",
+      "group_name": "Ch. 1-3",
+      "order": 4,
+      "races": [
+        "Charr"
+      ]
+    },
+    {
+      "id": 3,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "My Story (Human)",
+      "group_name": "Ch. 1-3",
+      "order": 5,
+      "races": [
+        "Human"
+      ]
+    },
+    {
+      "id": 9,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "The Orders of Tyria",
+      "group_name": "Ch. 4-6",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 10,
+      "season_id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",
+      "name": "The Elder Dragon Zhaitan",
+      "group_name": "Ch. 7-8",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 115,
+      "season_id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "1. Flame and Frost",
+      "group_name": "Ep. 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 116,
+      "season_id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "2. Sky Pirates",
+      "group_name": "Ep. 2",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 117,
+      "season_id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "3. Clockwork Chaos",
+      "group_name": "Ep. 3",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 118,
+      "season_id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "4. The Tower of Nightmares",
+      "group_name": "Ep. 4",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 119,
+      "season_id": "A49D0CD7-E725-4141-8E10-180F1CED7CAF",
+      "name": "5. The Battle for Lion's Arch",
+      "group_name": "Ep. 5",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 11,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "1. Gates of Maguuma",
+      "group_name": "Ep. 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 12,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "2. Entanglement",
+      "group_name": "Ep. 2",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 13,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "3. The Dragon's Reach, Part 1",
+      "group_name": "Ep. 3",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 14,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "4. The Dragon's Reach, Part 2",
+      "group_name": "Ep. 4",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 15,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "5. Echoes of the Past",
+      "group_name": "Ep. 5",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 16,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "6. Tangled Paths",
+      "group_name": "Ep. 6",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 17,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "7. Seeds of Truth",
+      "group_name": "Ep. 7",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 18,
+      "season_id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
+      "name": "8. Point of No Return",
+      "group_name": "Ep. 8",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 19,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "1. Prologue: Rally to Maguuma",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 32,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "2. Torn from the Sky",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 41,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "3. Establishing a Foothold",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 34,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "4. The Jungle Provides",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 26,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "5. In Their Footsteps",
+      "group_name": "Act 1",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 33,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "6. Prisoners of the Dragon",
+      "group_name": "Act 1",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 21,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "7. Prized Possessions",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 20,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "8. City of Hope",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 35,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "9. The Predator's Path",
+      "group_name": "Act 2",
+      "order": 9,
+      "races": null
+    },
+    {
+      "id": 31,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "10. Strange Observations",
+      "group_name": "Act 2",
+      "order": 10,
+      "races": null
+    },
+    {
+      "id": 36,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "11. Roots of Terror",
+      "group_name": "Act 3",
+      "order": 11,
+      "races": null
+    },
+    {
+      "id": 23,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "12. The Way In",
+      "group_name": "Act 3",
+      "order": 12,
+      "races": null
+    },
+    {
+      "id": 22,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "13. Buried Insight",
+      "group_name": "Act 3",
+      "order": 13,
+      "races": null
+    },
+    {
+      "id": 42,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "14. Sign Cutting",
+      "group_name": "Act 3",
+      "order": 14,
+      "races": null
+    },
+    {
+      "id": 27,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "15. Bitter Harvest",
+      "group_name": "Act 4",
+      "order": 15,
+      "races": null
+    },
+    {
+      "id": 25,
+      "season_id": "B8901E58-DC9D-4525-ADB2-79C93593291E",
+      "name": "16. Hearts and Minds",
+      "group_name": "Act 4",
+      "order": 16,
+      "races": null
+    },
+    {
+      "id": 46,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "1. Out of the Shadows",
+      "group_name": "Ep. 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 56,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "2. Rising Flames",
+      "group_name": "Ep. 2",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 63,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "3. A Crack in the Ice",
+      "group_name": "Ep. 3",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 64,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "4. The Head of the Snake",
+      "group_name": "Ep. 4",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 65,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "5. Flashpoint",
+      "group_name": "Ep. 5",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 66,
+      "season_id": "09766A86-D88D-4DF2-9385-259E9A8CA583",
+      "name": "6. One Path Ends",
+      "group_name": "Ep. 6",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 83,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "1. Sparking the Flame",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 67,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "2. Blazing a Trail",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 82,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "3. Night of Fires",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 72,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "4. The Sacrifice",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 79,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "5. Crystalline Memories",
+      "group_name": "Act 2",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 69,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "6. Hallowed Ground",
+      "group_name": "Act 2",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 80,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "7. Facing the Truth",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 68,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "8. The Way Forward",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 71,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "9. The Departing",
+      "group_name": "Act 3",
+      "order": 9,
+      "races": null
+    },
+    {
+      "id": 75,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "10. Enemy of My Enemy",
+      "group_name": "Act 3",
+      "order": 10,
+      "races": null
+    },
+    {
+      "id": 76,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "11. Beast of War",
+      "group_name": "Act 3",
+      "order": 11,
+      "races": null
+    },
+    {
+      "id": 81,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "12. To Kill a God",
+      "group_name": "Act 3",
+      "order": 12,
+      "races": null
+    },
+    {
+      "id": 78,
+      "season_id": "EAB597C0-C484-4FD3-9430-31433BAC81B6",
+      "name": "13. Small Victory (Epilogue)",
+      "group_name": "Act 3",
+      "order": 13,
+      "races": null
+    },
+    {
+      "id": 85,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "1. Daybreak",
+      "group_name": "Ep. 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 86,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "2. A Bug in the System",
+      "group_name": "Ep. 2",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 87,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "3. Long Live the Lich",
+      "group_name": "Ep. 3",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 88,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "4. A Star to Guide Us",
+      "group_name": "Ep. 4",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 89,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "5. All or Nothing",
+      "group_name": "Ep. 5",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 90,
+      "season_id": "C22AFD21-667A-4AA8-8210-AC74EAEE58BB",
+      "name": "6. War Eternal",
+      "group_name": "Ep. 6",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 91,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "Prologue: Bound by Blood",
+      "group_name": "Prologue",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 93,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "1. Whisper in the Dark",
+      "group_name": "Ep. 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 94,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "2. Shadow in the Ice",
+      "group_name": "Ep. 2",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 95,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "Visions of the Past: Steel and Fire",
+      "group_name": "Visions",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 96,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "3. No Quarter",
+      "group_name": "Ep. 3",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 97,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "4. Jormag Rising",
+      "group_name": "Ep. 4",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 98,
+      "season_id": "EDCAE800-302A-4D9B-8331-3CC769ADA0B3",
+      "name": "5. Champions",
+      "group_name": "Ep. 5",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 112,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "0. Convergence",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 101,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "1. Old Friends",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 104,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "2. Outreach",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 114,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "3. Your Kind of People",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 113,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "4. Can't Trust a Pirate",
+      "group_name": "Act 1",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 110,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "5. The Scenic Route",
+      "group_name": "Act 2",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 111,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "6. The Future in Jade",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 103,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "7. Deepest Secrets",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 106,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "8. Fallout",
+      "group_name": "Act 3",
+      "order": 9,
+      "races": null
+    },
+    {
+      "id": 102,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "9. To Catch a Spider",
+      "group_name": "Act 3",
+      "order": 10,
+      "races": null
+    },
+    {
+      "id": 99,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "10. Empty",
+      "group_name": "Act 3",
+      "order": 11,
+      "races": null
+    },
+    {
+      "id": 109,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "11. In the Name of the Law",
+      "group_name": "Act 4",
+      "order": 12,
+      "races": null
+    },
+    {
+      "id": 107,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "12. Weight of the World",
+      "group_name": "Act 4",
+      "order": 13,
+      "races": null
+    },
+    {
+      "id": 105,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "13. Extraction Point",
+      "group_name": "Act 5",
+      "order": 14,
+      "races": null
+    },
+    {
+      "id": 100,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "14. The Only One",
+      "group_name": "Act 5",
+      "order": 15,
+      "races": null
+    },
+    {
+      "id": 108,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "15. The Cycle, Reborn",
+      "group_name": "Act 5",
+      "order": 16,
+      "races": null
+    },
+    {
+      "id": 121,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "16. What Lies Beneath",
+      "group_name": "Act 5",
+      "order": 17,
+      "races": null
+    },
+    {
+      "id": 120,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "17. Deep Research",
+      "group_name": "Act 5",
+      "order": 18,
+      "races": null
+    },
+    {
+      "id": 122,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "18. What Lies Within",
+      "group_name": "Act 5",
+      "order": 19,
+      "races": null
+    },
+    {
+      "id": 123,
+      "season_id": "D1B709AB-92B6-4EE9-8B40-2B7C628E5022",
+      "name": "Interlude: Forward",
+      "group_name": "Act 5",
+      "order": 20,
+      "races": null
+    },
+    {
+      "id": 130,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "Prologue: Uncertain Times",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 131,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "1. Commander without a Cause",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 134,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "2. Hell Breaks Loose",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 129,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "3. Mother of Stars",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 132,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "4. Voices beyond the Veil",
+      "group_name": "Act 2",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 127,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "5. The Missing Facet",
+      "group_name": "Act 2",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 126,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "6. Tower of Secrets",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 125,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "7. Mabon's Fate",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 128,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "8. Into the Obscure",
+      "group_name": "Act 3",
+      "order": 9,
+      "races": null
+    },
+    {
+      "id": 133,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "9. The World Spire",
+      "group_name": "Act 3",
+      "order": 10,
+      "races": null
+    },
+    {
+      "id": 124,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "10. Treachery",
+      "group_name": "Act 3",
+      "order": 11,
+      "races": null
+    },
+    {
+      "id": 138,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "11. Duress",
+      "group_name": "Act 3",
+      "order": 12,
+      "races": null
+    },
+    {
+      "id": 135,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "12. The Survivors",
+      "group_name": "Act 3",
+      "order": 13,
+      "races": null
+    },
+    {
+      "id": 136,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "13. Heitor's Gate",
+      "group_name": "Act 3",
+      "order": 14,
+      "races": null
+    },
+    {
+      "id": 139,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "14. The War Council",
+      "group_name": "Act 3",
+      "order": 15,
+      "races": null
+    },
+    {
+      "id": 141,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "15. Forced Hand",
+      "group_name": "Act 3",
+      "order": 16,
+      "races": null
+    },
+    {
+      "id": 140,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "16. Eventide's March",
+      "group_name": "Act 3",
+      "order": 17,
+      "races": null
+    },
+    {
+      "id": 143,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "17. Desperate Measures",
+      "group_name": "Act 3",
+      "order": 18,
+      "races": null
+    },
+    {
+      "id": 144,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "18. The Eleventh Hour",
+      "group_name": "Act 3",
+      "order": 19,
+      "races": null
+    },
+    {
+      "id": 142,
+      "season_id": "AEE99452-D323-4ABB-8F49-D7C0A752CBD1",
+      "name": "19. Sovereign of Nayos",
+      "group_name": "Act 3",
+      "order": 20,
+      "races": null
+    },
+    {
+      "id": 151,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "Prologue: The Tyrian Alliance",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 155,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "1. Unknown Territory",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 147,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "2. Diplomacy and Discovery",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 152,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "3. Home Sweet Home",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 146,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "4. Missing in Action",
+      "group_name": "Act 1",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 154,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "5. Strangers among Lands",
+      "group_name": "Act 1",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 149,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "6. Storm Clouds over Janthir",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 150,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "7. Twice Stricken",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 148,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "8. Finding Balance",
+      "group_name": "Act 2",
+      "order": 9,
+      "races": null
+    },
+    {
+      "id": 145,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "9. Against the Wall",
+      "group_name": "Act 2",
+      "order": 10,
+      "races": null
+    },
+    {
+      "id": 153,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "10. Sorrow in These Halls",
+      "group_name": "Act 2",
+      "order": 11,
+      "races": null
+    },
+    {
+      "id": 156,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "11. Trial and Error",
+      "group_name": "Act 2",
+      "order": 12,
+      "races": null
+    },
+    {
+      "id": 158,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "12. Battle's Eve",
+      "group_name": "Act 2",
+      "order": 13,
+      "races": null
+    },
+    {
+      "id": 157,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "13. Balrior Peak",
+      "group_name": "Act 2",
+      "order": 14,
+      "races": null
+    },
+    {
+      "id": 160,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "14. Into the Valley of Shadow",
+      "group_name": "Act 2",
+      "order": 15,
+      "races": null
+    },
+    {
+      "id": 159,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "15. A Legacy Damned",
+      "group_name": "Act 2",
+      "order": 16,
+      "races": null
+    },
+    {
+      "id": 161,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "16. Penance for the Past",
+      "group_name": "Act 2",
+      "order": 17,
+      "races": null
+    },
+    {
+      "id": 163,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "17. Forced Entry",
+      "group_name": "Act 2",
+      "order": 18,
+      "races": null
+    },
+    {
+      "id": 164,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "18. A Titanic Undertaking",
+      "group_name": "Act 2",
+      "order": 19,
+      "races": null
+    },
+    {
+      "id": 162,
+      "season_id": "5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3",
+      "name": "19. Salvation's Cost",
+      "group_name": "Act 2",
+      "order": 20,
+      "races": null
+    },
+    {
+      "id": 172,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "Prologue: On the Sly",
+      "group_name": "Act 1",
+      "order": 1,
+      "races": null
+    },
+    {
+      "id": 168,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "1. Unscheduled Departures",
+      "group_name": "Act 1",
+      "order": 2,
+      "races": null
+    },
+    {
+      "id": 167,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "2. Solid Ground",
+      "group_name": "Act 1",
+      "order": 3,
+      "races": null
+    },
+    {
+      "id": 165,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "3. Eyes, Ears, and Arms",
+      "group_name": "Act 1",
+      "order": 4,
+      "races": null
+    },
+    {
+      "id": 166,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "4. Truths Unearthed",
+      "group_name": "Act 1",
+      "order": 5,
+      "races": null
+    },
+    {
+      "id": 169,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "5. Beneath the Canopy",
+      "group_name": "Act 2",
+      "order": 6,
+      "races": null
+    },
+    {
+      "id": 173,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "6. Ruins of the Old World",
+      "group_name": "Act 2",
+      "order": 7,
+      "races": null
+    },
+    {
+      "id": 170,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "7. Fumbling in the Dark",
+      "group_name": "Act 2",
+      "order": 8,
+      "races": null
+    },
+    {
+      "id": 171,
+      "season_id": "5F35F25C-AE33-4D92-A061-227CE54FA5DC",
+      "name": "8. Path of Divinity",
+      "group_name": "Act 2",
+      "order": 9,
+      "races": null
+    }
+  ],
+  "missions": [
+    {
+      "id": 15,
+      "story_id": 8,
+      "name": "Explosive Intellect",
+      "order": 1,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 16,
+      "story_id": 8,
+      "name": "Golem Positioning System",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 17,
+      "story_id": 8,
+      "name": "In Snaff's Footsteps",
+      "order": 3,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 18,
+      "story_id": 8,
+      "name": "Monkey Wrench",
+      "order": 4,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 19,
+      "story_id": 8,
+      "name": "Defusing the Problem",
+      "order": 5,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 20,
+      "story_id": 8,
+      "name": "The Things We Do For Love",
+      "order": 6,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 21,
+      "story_id": 8,
+      "name": "The Snaff Prize",
+      "order": 7,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 22,
+      "story_id": 8,
+      "name": "High Maintenance",
+      "order": 8,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 23,
+      "story_id": 8,
+      "name": "A Sparkling Rescue",
+      "order": 9,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 24,
+      "story_id": 8,
+      "name": "Taking Credit Back",
+      "order": 10,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 25,
+      "story_id": 8,
+      "name": "Snaff Would Be Proud",
+      "order": 11,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 26,
+      "story_id": 8,
+      "name": "Political Homicide",
+      "order": 12,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 27,
+      "story_id": 8,
+      "name": "Here, There, Everywhere",
+      "order": 13,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 28,
+      "story_id": 8,
+      "name": "Piece Negotiations",
+      "order": 14,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 29,
+      "story_id": 8,
+      "name": "Readings on the Rise",
+      "order": 15,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 30,
+      "story_id": 8,
+      "name": "Unscheduled Delay",
+      "order": 16,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 31,
+      "story_id": 8,
+      "name": "Unwelcome Visitors",
+      "order": 17,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 32,
+      "story_id": 8,
+      "name": "Stand By Your Krewe",
+      "order": 18,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 33,
+      "story_id": 8,
+      "name": "Gadd's Last Gizmo",
+      "order": 19,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 34,
+      "story_id": 8,
+      "name": "Any Sufficiently Advanced Science",
+      "order": 20,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 35,
+      "story_id": 8,
+      "name": "Beta Test",
+      "order": 21,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 36,
+      "story_id": 8,
+      "name": "Industrial Espionage",
+      "order": 22,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 37,
+      "story_id": 8,
+      "name": "Carry A Big Stick",
+      "order": 23,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 38,
+      "story_id": 8,
+      "name": "Split Second",
+      "order": 24,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 39,
+      "story_id": 8,
+      "name": "Serving up Trouble",
+      "order": 25,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 40,
+      "story_id": 8,
+      "name": "Short Fuse",
+      "order": 26,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 41,
+      "story_id": 8,
+      "name": "I Smell a Rat",
+      "order": 27,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 42,
+      "story_id": 8,
+      "name": "Magnum Opus",
+      "order": 28,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 43,
+      "story_id": 8,
+      "name": "Bad Business",
+      "order": 29,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 44,
+      "story_id": 8,
+      "name": "Where Credit Is Due",
+      "order": 30,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 45,
+      "story_id": 8,
+      "name": "Salt in the Wound",
+      "order": 31,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 46,
+      "story_id": 8,
+      "name": "Free Rein",
+      "order": 32,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 47,
+      "story_id": 8,
+      "name": "Flash Flood",
+      "order": 33,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 48,
+      "story_id": 8,
+      "name": "Bad Forecast",
+      "order": 34,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 49,
+      "story_id": 8,
+      "name": "A Bold New Theory",
+      "order": 35,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 50,
+      "story_id": 8,
+      "name": "Forging Permission",
+      "order": 36,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 51,
+      "story_id": 8,
+      "name": "Hazardous Environment",
+      "order": 37,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 52,
+      "story_id": 8,
+      "name": "Test Subject",
+      "order": 38,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 53,
+      "story_id": 8,
+      "name": "Field Test",
+      "order": 39,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 54,
+      "story_id": 8,
+      "name": "A Meeting of the Minds",
+      "order": 40,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 55,
+      "story_id": 8,
+      "name": "Lines of Communication",
+      "order": 41,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 56,
+      "story_id": 8,
+      "name": "Protest Too Much",
+      "order": 42,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 57,
+      "story_id": 8,
+      "name": "Pry the Eye Open",
+      "order": 43,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 58,
+      "story_id": 8,
+      "name": "Rakt and Ruin",
+      "order": 44,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 154,
+      "story_id": 2,
+      "name": "The Great Hunt",
+      "order": 1,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 155,
+      "story_id": 2,
+      "name": "A Weapon of Legend",
+      "order": 2,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 156,
+      "story_id": 2,
+      "name": "The Last of the Giant-Kings",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 157,
+      "story_id": 2,
+      "name": "Disciples of the Dragon",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 158,
+      "story_id": 2,
+      "name": "Echoes of Ages Past",
+      "order": 5,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 159,
+      "story_id": 2,
+      "name": "Wild Spirits",
+      "order": 6,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 160,
+      "story_id": 2,
+      "name": "Out of the Skies",
+      "order": 7,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 161,
+      "story_id": 2,
+      "name": "Twilight of the Wolf",
+      "order": 8,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 162,
+      "story_id": 2,
+      "name": "A Pup's Illness",
+      "order": 9,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 163,
+      "story_id": 2,
+      "name": "Rage of the Minotaurs",
+      "order": 10,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 164,
+      "story_id": 2,
+      "name": "Through the Veil",
+      "order": 11,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 165,
+      "story_id": 2,
+      "name": "A Trap Foiled",
+      "order": 12,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 166,
+      "story_id": 2,
+      "name": "One Good Drink Deserves Another",
+      "order": 13,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 167,
+      "story_id": 2,
+      "name": "Shape of the Spirit",
+      "order": 14,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 168,
+      "story_id": 2,
+      "name": "Raven's Revered",
+      "order": 15,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 169,
+      "story_id": 2,
+      "name": "Blessed of Bear",
+      "order": 16,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 170,
+      "story_id": 2,
+      "name": "Into the Mists",
+      "order": 17,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 171,
+      "story_id": 2,
+      "name": "The Wolf Havroun",
+      "order": 18,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 172,
+      "story_id": 2,
+      "name": "Minotaur Rampant",
+      "order": 19,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 173,
+      "story_id": 2,
+      "name": "Unexpected Visitors",
+      "order": 20,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 174,
+      "story_id": 2,
+      "name": "Don't Leave Your Toys Out",
+      "order": 21,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 175,
+      "story_id": 2,
+      "name": "A New Challenger",
+      "order": 22,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 176,
+      "story_id": 2,
+      "name": "Assault on Moledavia",
+      "order": 23,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 177,
+      "story_id": 2,
+      "name": "First Attack",
+      "order": 24,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 178,
+      "story_id": 2,
+      "name": "The Finishing Blow",
+      "order": 25,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 179,
+      "story_id": 2,
+      "name": "The Semifinals",
+      "order": 26,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 180,
+      "story_id": 2,
+      "name": "The Championship Fight",
+      "order": 27,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 181,
+      "story_id": 2,
+      "name": "The Machine in Action",
+      "order": 28,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 182,
+      "story_id": 2,
+      "name": "Roadblock",
+      "order": 29,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 183,
+      "story_id": 2,
+      "name": "Among the Kodan",
+      "order": 30,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 184,
+      "story_id": 2,
+      "name": "Rumors of Trouble",
+      "order": 31,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 185,
+      "story_id": 2,
+      "name": "Darkness at Drakentelt",
+      "order": 32,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 186,
+      "story_id": 2,
+      "name": "Preserving the Balance",
+      "order": 33,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 187,
+      "story_id": 2,
+      "name": "Means to an End",
+      "order": 34,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 188,
+      "story_id": 2,
+      "name": "Dredge Technology",
+      "order": 35,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 189,
+      "story_id": 2,
+      "name": "Underground Scholar",
+      "order": 36,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 191,
+      "story_id": 2,
+      "name": "Dredge Assault",
+      "order": 37,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 192,
+      "story_id": 2,
+      "name": "Sabotage",
+      "order": 38,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 194,
+      "story_id": 2,
+      "name": "The Dredge Hideout",
+      "order": 39,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 195,
+      "story_id": 2,
+      "name": "Code Breaker",
+      "order": 40,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 197,
+      "story_id": 2,
+      "name": "Armaments",
+      "order": 41,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 198,
+      "story_id": 2,
+      "name": "Assault the Hill",
+      "order": 42,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 199,
+      "story_id": 2,
+      "name": "Sever the Head",
+      "order": 43,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 200,
+      "story_id": 2,
+      "name": "Silent Warfare",
+      "order": 44,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 201,
+      "story_id": 7,
+      "name": "Fighting the Nightmare",
+      "order": 1,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 202,
+      "story_id": 7,
+      "name": "Called to Service",
+      "order": 2,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 203,
+      "story_id": 7,
+      "name": "Mockery of Death",
+      "order": 3,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 204,
+      "story_id": 7,
+      "name": "Discovering Darkness",
+      "order": 4,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 205,
+      "story_id": 7,
+      "name": "Loved and Lost",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 206,
+      "story_id": 7,
+      "name": "Hounds and the Hunted",
+      "order": 6,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 207,
+      "story_id": 7,
+      "name": "Saving the Stag",
+      "order": 7,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 208,
+      "story_id": 7,
+      "name": "A Good Work Spoiled",
+      "order": 8,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 209,
+      "story_id": 7,
+      "name": "Black Night, White Stag",
+      "order": 9,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 210,
+      "story_id": 7,
+      "name": "Hidden in Darkness",
+      "order": 10,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 211,
+      "story_id": 7,
+      "name": "Weakness of the Heart",
+      "order": 11,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 212,
+      "story_id": 7,
+      "name": "Awakening",
+      "order": 12,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 213,
+      "story_id": 7,
+      "name": "Holding Back the Darkness",
+      "order": 13,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 214,
+      "story_id": 7,
+      "name": "A Sly Trick",
+      "order": 14,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 215,
+      "story_id": 7,
+      "name": "Deeply Tangled Roots",
+      "order": 15,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 216,
+      "story_id": 7,
+      "name": "The Heart of Nightmare",
+      "order": 16,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 217,
+      "story_id": 7,
+      "name": "Beneath a Cold Moon",
+      "order": 17,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 218,
+      "story_id": 7,
+      "name": "Hammer and Steel",
+      "order": 18,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 219,
+      "story_id": 7,
+      "name": "The Knight's Duel",
+      "order": 19,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 220,
+      "story_id": 7,
+      "name": "Wild Growth",
+      "order": 20,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 221,
+      "story_id": 7,
+      "name": "Seeking the Zalisco",
+      "order": 21,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 222,
+      "story_id": 7,
+      "name": "The Direct Approach",
+      "order": 22,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 223,
+      "story_id": 7,
+      "name": "Trading Trickery",
+      "order": 23,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 224,
+      "story_id": 7,
+      "name": "Eye of the Sun",
+      "order": 24,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 225,
+      "story_id": 7,
+      "name": "Where Life Goes",
+      "order": 25,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 226,
+      "story_id": 7,
+      "name": "An Unknown Soul",
+      "order": 26,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 227,
+      "story_id": 7,
+      "name": "Source of the Issue",
+      "order": 27,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 228,
+      "story_id": 7,
+      "name": "A Different Dream",
+      "order": 28,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 229,
+      "story_id": 7,
+      "name": "Snuffing Out Embers",
+      "order": 29,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 230,
+      "story_id": 7,
+      "name": "After the Storm",
+      "order": 30,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 231,
+      "story_id": 7,
+      "name": "Beneath the Waves",
+      "order": 31,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 232,
+      "story_id": 7,
+      "name": "Mirror, Mirror",
+      "order": 32,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 233,
+      "story_id": 7,
+      "name": "A Vision of Darkness",
+      "order": 33,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 234,
+      "story_id": 7,
+      "name": "Shattered Light",
+      "order": 34,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 235,
+      "story_id": 7,
+      "name": "The Bad Apple",
+      "order": 35,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 236,
+      "story_id": 7,
+      "name": "A Splinter in the Flesh",
+      "order": 36,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 237,
+      "story_id": 7,
+      "name": "Sharpened Thorns",
+      "order": 37,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 238,
+      "story_id": 7,
+      "name": "Secrets in the Earth",
+      "order": 38,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 239,
+      "story_id": 7,
+      "name": "Bramble Walls",
+      "order": 39,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 241,
+      "story_id": 7,
+      "name": "Trouble at the Roots",
+      "order": 40,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 243,
+      "story_id": 7,
+      "name": "A Tangle of Weeds",
+      "order": 41,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 244,
+      "story_id": 7,
+      "name": "The Blossom of Youth",
+      "order": 42,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 246,
+      "story_id": 7,
+      "name": "Flower of Death",
+      "order": 43,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 247,
+      "story_id": 7,
+      "name": "Dead of Winter",
+      "order": 44,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 59,
+      "story_id": 1,
+      "name": "Best Laid Plans",
+      "order": 1,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 60,
+      "story_id": 1,
+      "name": "The Tribune's Call",
+      "order": 2,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 61,
+      "story_id": 1,
+      "name": "A Spy for a Spy",
+      "order": 3,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 62,
+      "story_id": 1,
+      "name": "Scrapyard Dogs",
+      "order": 4,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 63,
+      "story_id": 1,
+      "name": "Spilled Blood",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 64,
+      "story_id": 1,
+      "name": "Ghostbore Musket",
+      "order": 6,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 65,
+      "story_id": 1,
+      "name": "Iron Grip of the Legion",
+      "order": 7,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 66,
+      "story_id": 1,
+      "name": "The Flame Advances",
+      "order": 8,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 67,
+      "story_id": 1,
+      "name": "Test Your Metal",
+      "order": 9,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 68,
+      "story_id": 1,
+      "name": "Quick and Quiet",
+      "order": 10,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 69,
+      "story_id": 1,
+      "name": "Deadly Force",
+      "order": 11,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 70,
+      "story_id": 1,
+      "name": "Ghostbore Artillery",
+      "order": 12,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 71,
+      "story_id": 1,
+      "name": "Chain of Command",
+      "order": 13,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 72,
+      "story_id": 1,
+      "name": "Time for a Promotion",
+      "order": 14,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 73,
+      "story_id": 1,
+      "name": "The End of the Line",
+      "order": 15,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 74,
+      "story_id": 1,
+      "name": "Magic Users",
+      "order": 16,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 75,
+      "story_id": 1,
+      "name": "Rage Suppression",
+      "order": 17,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 76,
+      "story_id": 1,
+      "name": "Operation: Bulwark",
+      "order": 18,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 77,
+      "story_id": 1,
+      "name": "Fury of the Dead",
+      "order": 19,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 78,
+      "story_id": 1,
+      "name": "An Unusual Inheritance",
+      "order": 20,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 79,
+      "story_id": 1,
+      "name": "Mired Deep",
+      "order": 21,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 80,
+      "story_id": 1,
+      "name": "No Negotiations",
+      "order": 22,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 81,
+      "story_id": 1,
+      "name": "Salvaging Scrap",
+      "order": 23,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 82,
+      "story_id": 1,
+      "name": "In the Ruins",
+      "order": 24,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 83,
+      "story_id": 1,
+      "name": "AWOL",
+      "order": 25,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 84,
+      "story_id": 1,
+      "name": "Follow the Trail",
+      "order": 26,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 85,
+      "story_id": 1,
+      "name": "Misplaced Faith",
+      "order": 27,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 86,
+      "story_id": 1,
+      "name": "Thicker Than Water",
+      "order": 28,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 87,
+      "story_id": 1,
+      "name": "Dishonorable Discharge",
+      "order": 29,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 88,
+      "story_id": 1,
+      "name": "Searching for the Truth",
+      "order": 30,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 89,
+      "story_id": 1,
+      "name": "Stoking the Flame",
+      "order": 31,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 90,
+      "story_id": 1,
+      "name": "A Fork in the Road",
+      "order": 32,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 91,
+      "story_id": 1,
+      "name": "Sins of the Father",
+      "order": 33,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 92,
+      "story_id": 1,
+      "name": "Tribunes in Effigy",
+      "order": 34,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 93,
+      "story_id": 1,
+      "name": "Graveyard Ornaments",
+      "order": 35,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 94,
+      "story_id": 1,
+      "name": "Undead Infestation",
+      "order": 36,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 95,
+      "story_id": 1,
+      "name": "Whispers in the Dark",
+      "order": 37,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 97,
+      "story_id": 1,
+      "name": "Dangerous Research",
+      "order": 38,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 98,
+      "story_id": 1,
+      "name": "Digging Up Answers",
+      "order": 39,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 100,
+      "story_id": 1,
+      "name": "Defending the Keep",
+      "order": 40,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 101,
+      "story_id": 1,
+      "name": "Undead Detection",
+      "order": 41,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 102,
+      "story_id": 1,
+      "name": "Ever Vigilant",
+      "order": 42,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 104,
+      "story_id": 1,
+      "name": "Research and Destroy",
+      "order": 43,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 105,
+      "story_id": 1,
+      "name": "Whispers of Vengeance",
+      "order": 44,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 106,
+      "story_id": 3,
+      "name": "The Informant",
+      "order": 1,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 107,
+      "story_id": 3,
+      "name": "Search the Premises",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 108,
+      "story_id": 3,
+      "name": "A Society Function",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 109,
+      "story_id": 3,
+      "name": "Chasing the Culprits",
+      "order": 4,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 110,
+      "story_id": 3,
+      "name": "The Trial of Julius Zamon",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 111,
+      "story_id": 3,
+      "name": "Arson at the Orphanage",
+      "order": 6,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 112,
+      "story_id": 3,
+      "name": "The Hospital in Jeopardy",
+      "order": 7,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 113,
+      "story_id": 3,
+      "name": "Infiltration",
+      "order": 8,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 114,
+      "story_id": 3,
+      "name": "The Commander",
+      "order": 9,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 115,
+      "story_id": 3,
+      "name": "The Perils of Friendship",
+      "order": 10,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 116,
+      "story_id": 3,
+      "name": "Desperate Medicine",
+      "order": 11,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 117,
+      "story_id": 3,
+      "name": "Defending Shaemoor",
+      "order": 12,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 118,
+      "story_id": 3,
+      "name": "The Apothecary",
+      "order": 13,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 119,
+      "story_id": 3,
+      "name": "Going Undercover",
+      "order": 14,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 120,
+      "story_id": 3,
+      "name": "The Greater Good",
+      "order": 15,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 121,
+      "story_id": 3,
+      "name": "The Rescue",
+      "order": 16,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 122,
+      "story_id": 3,
+      "name": "Breaking the Blade",
+      "order": 17,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 123,
+      "story_id": 3,
+      "name": "Welcome Home",
+      "order": 18,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 124,
+      "story_id": 3,
+      "name": "On the Mend",
+      "order": 19,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 125,
+      "story_id": 3,
+      "name": "The Fall of Falcon Company",
+      "order": 20,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 126,
+      "story_id": 3,
+      "name": "Confronting Captain Tervelan",
+      "order": 21,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 127,
+      "story_id": 3,
+      "name": "Seek Logan's Aid",
+      "order": 22,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 128,
+      "story_id": 3,
+      "name": "Accusation",
+      "order": 23,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 129,
+      "story_id": 3,
+      "name": "Voices From the Past",
+      "order": 24,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 130,
+      "story_id": 3,
+      "name": "Rending the Mantle",
+      "order": 25,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 131,
+      "story_id": 3,
+      "name": "The Sting",
+      "order": 26,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 132,
+      "story_id": 3,
+      "name": "Drawing Out the Cult",
+      "order": 27,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 133,
+      "story_id": 3,
+      "name": "Ashes of the Past",
+      "order": 28,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 134,
+      "story_id": 3,
+      "name": "The Floating Grizwhirl",
+      "order": 29,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 135,
+      "story_id": 3,
+      "name": "Clown College",
+      "order": 30,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 136,
+      "story_id": 3,
+      "name": "The Artist's Workshop",
+      "order": 31,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 137,
+      "story_id": 3,
+      "name": "Into the Woods",
+      "order": 32,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 138,
+      "story_id": 3,
+      "name": "The Ringmaster",
+      "order": 33,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 139,
+      "story_id": 3,
+      "name": "Liberation",
+      "order": 34,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 140,
+      "story_id": 3,
+      "name": "The Orders of Tyria",
+      "order": 35,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 141,
+      "story_id": 3,
+      "name": "Brute Force",
+      "order": 36,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 142,
+      "story_id": 3,
+      "name": "Mortus Virge",
+      "order": 37,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 144,
+      "story_id": 3,
+      "name": "Triskell Quay",
+      "order": 38,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 145,
+      "story_id": 3,
+      "name": "Track the Seraph",
+      "order": 39,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 147,
+      "story_id": 3,
+      "name": "Speaker of the Dead",
+      "order": 40,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 148,
+      "story_id": 3,
+      "name": "The Sad Tale of the \"Ravenous\"",
+      "order": 41,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 150,
+      "story_id": 3,
+      "name": "Kellach's Attack",
+      "order": 42,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 151,
+      "story_id": 3,
+      "name": "The Queen's Justice",
+      "order": 43,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 152,
+      "story_id": 3,
+      "name": "The Trap",
+      "order": 44,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 248,
+      "story_id": 9,
+      "name": "A Fragile Peace",
+      "order": 1,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 249,
+      "story_id": 9,
+      "name": "Killer Instinct",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 250,
+      "story_id": 9,
+      "name": "Don't Shoot the Messenger",
+      "order": 3,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 251,
+      "story_id": 9,
+      "name": "Dredging up the Past",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 252,
+      "story_id": 9,
+      "name": "Quaestor's Siege",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 253,
+      "story_id": 9,
+      "name": "Stealing Secrets",
+      "order": 6,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 254,
+      "story_id": 9,
+      "name": "Containment",
+      "order": 7,
+      "seed_full_mins": 17,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 255,
+      "story_id": 9,
+      "name": "Down the Hatch",
+      "order": 8,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 256,
+      "story_id": 9,
+      "name": "Bad Blood",
+      "order": 9,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 257,
+      "story_id": 9,
+      "name": "Mightier than the Sword",
+      "order": 10,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 258,
+      "story_id": 9,
+      "name": "They Went Thataway",
+      "order": 11,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 259,
+      "story_id": 9,
+      "name": "Thrown Off Guard",
+      "order": 12,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 260,
+      "story_id": 9,
+      "name": "An Apple a Day",
+      "order": 13,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 261,
+      "story_id": 9,
+      "name": "The Stone Sheath",
+      "order": 14,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 262,
+      "story_id": 9,
+      "name": "Minister's Defense",
+      "order": 15,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 263,
+      "story_id": 9,
+      "name": "Doubt",
+      "order": 16,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 264,
+      "story_id": 9,
+      "name": "The False God's Lair",
+      "order": 17,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 265,
+      "story_id": 9,
+      "name": "Attempted Deicide",
+      "order": 18,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 266,
+      "story_id": 9,
+      "name": "Salvation Through Heresy",
+      "order": 19,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 267,
+      "story_id": 9,
+      "name": "Champion's Sacrifice",
+      "order": 20,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 268,
+      "story_id": 9,
+      "name": "Convincing the Faithful",
+      "order": 21,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 269,
+      "story_id": 9,
+      "name": "Unholy Grounds",
+      "order": 22,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 270,
+      "story_id": 9,
+      "name": "Chosen of the Sun",
+      "order": 23,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 271,
+      "story_id": 9,
+      "name": "Untamed Wilds",
+      "order": 24,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 272,
+      "story_id": 9,
+      "name": "Pets and Walls Make Stronger Kraals",
+      "order": 25,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 273,
+      "story_id": 9,
+      "name": "The Lost Chieftain's Return",
+      "order": 26,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 274,
+      "story_id": 9,
+      "name": "Bad Ice",
+      "order": 27,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 275,
+      "story_id": 9,
+      "name": "Enraged and Unashamed",
+      "order": 28,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 276,
+      "story_id": 9,
+      "name": "Pastkeeper",
+      "order": 29,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 277,
+      "story_id": 9,
+      "name": "Evacuation",
+      "order": 30,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 278,
+      "story_id": 9,
+      "name": "Rat-Tastrophe",
+      "order": 31,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 279,
+      "story_id": 9,
+      "name": "The Hatchery",
+      "order": 32,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 280,
+      "story_id": 9,
+      "name": "Thieving from Thieves",
+      "order": 33,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 281,
+      "story_id": 9,
+      "name": "Set to Blow",
+      "order": 34,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 282,
+      "story_id": 9,
+      "name": "The Battle of Claw Island",
+      "order": 35,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 283,
+      "story_id": 9,
+      "name": "A Light in the Darkness",
+      "order": 36,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 284,
+      "story_id": 9,
+      "name": "Retribution",
+      "order": 37,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 285,
+      "story_id": 9,
+      "name": "On Red Alert",
+      "order": 38,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 286,
+      "story_id": 9,
+      "name": "The Ghost Rite",
+      "order": 39,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 287,
+      "story_id": 9,
+      "name": "Shards of Orr",
+      "order": 40,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 288,
+      "story_id": 9,
+      "name": "The Sound of Psi-Lance",
+      "order": 41,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 289,
+      "story_id": 9,
+      "name": "The Priory Assailed",
+      "order": 42,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 290,
+      "story_id": 9,
+      "name": "Suspicious Activity",
+      "order": 43,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 291,
+      "story_id": 9,
+      "name": "Reconnaissance",
+      "order": 44,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 292,
+      "story_id": 9,
+      "name": "Early Parole",
+      "order": 45,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 293,
+      "story_id": 9,
+      "name": "Magic Sucks",
+      "order": 46,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 294,
+      "story_id": 9,
+      "name": "Critical Blowback",
+      "order": 47,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 295,
+      "story_id": 9,
+      "name": "Forearmed Is Forewarned",
+      "order": 48,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 296,
+      "story_id": 9,
+      "name": "Killing Fields",
+      "order": 49,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 297,
+      "story_id": 9,
+      "name": "The Good Fight",
+      "order": 50,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 298,
+      "story_id": 9,
+      "name": "Defense Contract",
+      "order": 51,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 299,
+      "story_id": 9,
+      "name": "Under Siege",
+      "order": 52,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 358,
+      "story_id": 9,
+      "name": "Setting the Stage",
+      "order": 53,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 300,
+      "story_id": 10,
+      "name": "The Battle of Fort Trinity",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 301,
+      "story_id": 10,
+      "name": "Forging the Pact",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 302,
+      "story_id": 10,
+      "name": "Fixing the Blame",
+      "order": 3,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 303,
+      "story_id": 10,
+      "name": "Volcanic Extraction",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 304,
+      "story_id": 10,
+      "name": "Shell Shock",
+      "order": 5,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 305,
+      "story_id": 10,
+      "name": "Marshaling the Truth",
+      "order": 6,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 306,
+      "story_id": 10,
+      "name": "Delivering Justice",
+      "order": 7,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 307,
+      "story_id": 10,
+      "name": "Munition Acquisition",
+      "order": 8,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 308,
+      "story_id": 10,
+      "name": "To The Core",
+      "order": 9,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 309,
+      "story_id": 10,
+      "name": "Tower Down",
+      "order": 10,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 310,
+      "story_id": 10,
+      "name": "Breaking the Bone Ship",
+      "order": 11,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 311,
+      "story_id": 10,
+      "name": "A Sad Duty",
+      "order": 12,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 312,
+      "story_id": 10,
+      "name": "Striking Off the Chains",
+      "order": 13,
+      "seed_full_mins": 16,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 313,
+      "story_id": 10,
+      "name": "Wet Work",
+      "order": 14,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 314,
+      "story_id": 10,
+      "name": "Willing Captives",
+      "order": 15,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 315,
+      "story_id": 10,
+      "name": "Intercepting the Orb",
+      "order": 16,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 316,
+      "story_id": 10,
+      "name": "Liberating Apatia",
+      "order": 17,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 317,
+      "story_id": 10,
+      "name": "Cathedral of Silence",
+      "order": 18,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 318,
+      "story_id": 10,
+      "name": "Further into Orr",
+      "order": 19,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 319,
+      "story_id": 10,
+      "name": "Romke's Final Voyage",
+      "order": 20,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 320,
+      "story_id": 10,
+      "name": "What the Eye Beholds",
+      "order": 21,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 321,
+      "story_id": 10,
+      "name": "Temple of the Forgotten God",
+      "order": 22,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 322,
+      "story_id": 10,
+      "name": "Against the Corruption",
+      "order": 23,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 323,
+      "story_id": 10,
+      "name": "The Source of Orr",
+      "order": 24,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 324,
+      "story_id": 10,
+      "name": "Victory or Death",
+      "order": 25,
+      "seed_full_mins": 60,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 325,
+      "story_id": 10,
+      "name": "Hunters and Prey",
+      "order": 26,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 326,
+      "story_id": 10,
+      "name": "Air Drop",
+      "order": 27,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 327,
+      "story_id": 10,
+      "name": "Blast from the Past",
+      "order": 28,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 328,
+      "story_id": 10,
+      "name": "Marching Orders",
+      "order": 29,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 329,
+      "story_id": 10,
+      "name": "Armor Guard",
+      "order": 30,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 330,
+      "story_id": 10,
+      "name": "The Steel Tide",
+      "order": 31,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 331,
+      "story_id": 10,
+      "name": "Stealing Light",
+      "order": 32,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 332,
+      "story_id": 10,
+      "name": "Conscript the Dead Ships",
+      "order": 33,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 333,
+      "story_id": 10,
+      "name": "Ships of the Line",
+      "order": 34,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 334,
+      "story_id": 10,
+      "name": "Close the Eye",
+      "order": 35,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 335,
+      "story_id": 10,
+      "name": "Through the Looking Glass",
+      "order": 36,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 336,
+      "story_id": 10,
+      "name": "Starving the Beast",
+      "order": 37,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 337,
+      "story_id": 10,
+      "name": "Estate of Decay",
+      "order": 38,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 338,
+      "story_id": 10,
+      "name": "Ossuary of Unquiet Dead",
+      "order": 39,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 339,
+      "story_id": 10,
+      "name": "A Grisly Shipment",
+      "order": 40,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 635,
+      "story_id": 115,
+      "name": "New Friends, New Enemies",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 636,
+      "story_id": 115,
+      "name": "A Quiet Celebration",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 638,
+      "story_id": 115,
+      "name": "The Battle for Cragstead",
+      "order": 3,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 640,
+      "story_id": 115,
+      "name": "Alliance Investigation",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 641,
+      "story_id": 115,
+      "name": "Molten Furnace",
+      "order": 5,
+      "seed_full_mins": 60,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 642,
+      "story_id": 116,
+      "name": "No More Secrets",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 643,
+      "story_id": 116,
+      "name": "Ceremony and Acrimony",
+      "order": 2,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 644,
+      "story_id": 116,
+      "name": "Hard Boiled",
+      "order": 3,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 645,
+      "story_id": 116,
+      "name": "Case Closed",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 646,
+      "story_id": 116,
+      "name": "The Aetherblade Retreat",
+      "order": 5,
+      "seed_full_mins": 50,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 647,
+      "story_id": 116,
+      "name": "Aether Investigation",
+      "order": 6,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 648,
+      "story_id": 117,
+      "name": "Clockwork Invasion",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 649,
+      "story_id": 117,
+      "name": "Scarlet's Playhouse",
+      "order": 2,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 650,
+      "story_id": 117,
+      "name": "Picking Up the Pieces",
+      "order": 3,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 651,
+      "story_id": 117,
+      "name": "The Queen's Address",
+      "order": 4,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 652,
+      "story_id": 117,
+      "name": "The Opening Ceremony",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 653,
+      "story_id": 118,
+      "name": "The Tower of Nightmares",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 654,
+      "story_id": 118,
+      "name": "The Nightmare Unveiled",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 656,
+      "story_id": 118,
+      "name": "Awake and Allied",
+      "order": 3,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 657,
+      "story_id": 118,
+      "name": "The Nightmare Incarnate",
+      "order": 4,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 658,
+      "story_id": 118,
+      "name": "Making the Antitoxin",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 659,
+      "story_id": 118,
+      "name": "The Nightmare Ends",
+      "order": 6,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 660,
+      "story_id": 119,
+      "name": "Battle on the Breachmaker",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 661,
+      "story_id": 119,
+      "name": "The Battle For Lion's Arch",
+      "order": 2,
+      "seed_full_mins": 50,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 662,
+      "story_id": 119,
+      "name": "Scarlet's End",
+      "order": 3,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 663,
+      "story_id": 119,
+      "name": "Connecting the Pieces",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 664,
+      "story_id": 119,
+      "name": "The Twisted Marionette",
+      "order": 5,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 665,
+      "story_id": 119,
+      "name": "Dawn of the Next Journey",
+      "order": 6,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 666,
+      "story_id": 119,
+      "name": "Escape from Lion's Arch",
+      "order": 7,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 667,
+      "story_id": 119,
+      "name": "After the Battle",
+      "order": 8,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 359,
+      "story_id": 11,
+      "name": "Cornered",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 360,
+      "story_id": 11,
+      "name": "Tracking the Master of Peace",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 361,
+      "story_id": 11,
+      "name": "Prosperity's Mystery",
+      "order": 3,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 362,
+      "story_id": 11,
+      "name": "Fallen Hopes",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 363,
+      "story_id": 11,
+      "name": "Disturbance in Brisban Wildlands",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 364,
+      "story_id": 12,
+      "name": "Scarlet's Secret Room",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 365,
+      "story_id": 12,
+      "name": "Discovering Scarlet's Breakthrough",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 366,
+      "story_id": 12,
+      "name": "The Concordia Incident",
+      "order": 3,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 367,
+      "story_id": 12,
+      "name": "The Machine",
+      "order": 4,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 368,
+      "story_id": 12,
+      "name": "Trouble at Fort Salma",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 369,
+      "story_id": 13,
+      "name": "The Waypoint Conundrum",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 371,
+      "story_id": 13,
+      "name": "Rallying Call",
+      "order": 2,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 372,
+      "story_id": 13,
+      "name": "Uprooting the Iron Marches",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 373,
+      "story_id": 13,
+      "name": "Plan of Attack",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 374,
+      "story_id": 13,
+      "name": "Summit Invitations",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 375,
+      "story_id": 14,
+      "name": "The World Summit",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 377,
+      "story_id": 14,
+      "name": "Recalibrating the Waypoints",
+      "order": 2,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 378,
+      "story_id": 14,
+      "name": "Party Politics",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 379,
+      "story_id": 14,
+      "name": "Taimi and the Asura",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 380,
+      "story_id": 15,
+      "name": "Hidden Arcana",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 381,
+      "story_id": 15,
+      "name": "Reunion with the Pact",
+      "order": 2,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 383,
+      "story_id": 15,
+      "name": "Caithe's Reconnaissance Squad",
+      "order": 3,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 384,
+      "story_id": 15,
+      "name": "The Ghosts of Fort Salma",
+      "order": 4,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 385,
+      "story_id": 16,
+      "name": "Into the Labyrinth",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 386,
+      "story_id": 16,
+      "name": "Return to Camp Resolve",
+      "order": 2,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 387,
+      "story_id": 16,
+      "name": "Tracking the Aspect Masters",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 388,
+      "story_id": 17,
+      "name": "The Newly Awakened",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 389,
+      "story_id": 17,
+      "name": "Meeting the Asura",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 390,
+      "story_id": 17,
+      "name": "No Refuge",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 391,
+      "story_id": 18,
+      "name": "Arcana Obscura",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 392,
+      "story_id": 18,
+      "name": "Pact Assaulted",
+      "order": 2,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 393,
+      "story_id": 18,
+      "name": "The Mystery Cave",
+      "order": 3,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 411,
+      "story_id": 19,
+      "name": "Prologue: Rally to Maguuma",
+      "order": 1,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 409,
+      "story_id": 32,
+      "name": "Torn from the Sky",
+      "order": 1,
+      "seed_full_mins": 90,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 419,
+      "story_id": 41,
+      "name": "Establishing a Foothold",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 405,
+      "story_id": 34,
+      "name": "The Jungle Provides",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 421,
+      "story_id": 26,
+      "name": "In Their Footsteps",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 410,
+      "story_id": 33,
+      "name": "Prisoners of the Dragon",
+      "order": 1,
+      "seed_full_mins": 32,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 407,
+      "story_id": 21,
+      "name": "Prized Possessions",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 402,
+      "story_id": 20,
+      "name": "City of Hope",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 423,
+      "story_id": 35,
+      "name": "The Predator's Path",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 413,
+      "story_id": 31,
+      "name": "Strange Observations",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 408,
+      "story_id": 36,
+      "name": "Roots of Terror",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 417,
+      "story_id": 23,
+      "name": "The Way In",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 401,
+      "story_id": 22,
+      "name": "Buried Insight",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 418,
+      "story_id": 42,
+      "name": "Sign Cutting",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 398,
+      "story_id": 27,
+      "name": "Bitter Harvest",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 404,
+      "story_id": 25,
+      "name": "Hearts and Minds",
+      "order": 1,
+      "seed_full_mins": 75,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 425,
+      "story_id": 46,
+      "name": "Confessor's Stronghold",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 426,
+      "story_id": 46,
+      "name": "Reaper of Magic",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 429,
+      "story_id": 46,
+      "name": "A Shadow's Deeds",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 431,
+      "story_id": 46,
+      "name": "Eir's Memorial in Hoelbrak",
+      "order": 4,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 432,
+      "story_id": 46,
+      "name": "Blood and Stone",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 435,
+      "story_id": 46,
+      "name": "Research in Rata Novus",
+      "order": 6,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 436,
+      "story_id": 56,
+      "name": "Trip to the Circus",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 437,
+      "story_id": 56,
+      "name": "Old Foes, Old Ghosts",
+      "order": 2,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 440,
+      "story_id": 56,
+      "name": "Igneous Breach",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 441,
+      "story_id": 56,
+      "name": "Taimi's Game",
+      "order": 4,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 442,
+      "story_id": 56,
+      "name": "Machine in the Flame",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 443,
+      "story_id": 56,
+      "name": "Destroying Destroyers",
+      "order": 6,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 444,
+      "story_id": 56,
+      "name": "Dragon Vigil",
+      "order": 7,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 446,
+      "story_id": 63,
+      "name": "Frozen Out",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 447,
+      "story_id": 63,
+      "name": "Journey to Bitterfrost Frontier",
+      "order": 2,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 448,
+      "story_id": 63,
+      "name": "Elixir Recipe",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 449,
+      "story_id": 63,
+      "name": "Elixir Cookin'",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 451,
+      "story_id": 63,
+      "name": "The Bitter Cold",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 452,
+      "story_id": 63,
+      "name": "Frozen in Ice",
+      "order": 6,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 453,
+      "story_id": 63,
+      "name": "Precocious Aurene",
+      "order": 7,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 454,
+      "story_id": 64,
+      "name": "Confessor's End",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 455,
+      "story_id": 64,
+      "name": "Regrouping with the Queen",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 456,
+      "story_id": 64,
+      "name": "A Meeting of Ministers",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 457,
+      "story_id": 64,
+      "name": "Sabotage Fort Evennia",
+      "order": 4,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 458,
+      "story_id": 64,
+      "name": "Eyes on Lake Doric",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 459,
+      "story_id": 64,
+      "name": "Breaking the Siege",
+      "order": 6,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 460,
+      "story_id": 65,
+      "name": "In Pursuit of a God",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 461,
+      "story_id": 65,
+      "name": "Arrival and Survival",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 462,
+      "story_id": 65,
+      "name": "Elder Druid Protection",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 464,
+      "story_id": 65,
+      "name": "Heart of the Volcano",
+      "order": 4,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 466,
+      "story_id": 65,
+      "name": "Taimi's Pet Project",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 468,
+      "story_id": 66,
+      "name": "The Last Chance",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 469,
+      "story_id": 66,
+      "name": "\"Where's Balthazar?\"",
+      "order": 2,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 472,
+      "story_id": 66,
+      "name": "The Flow of Magic",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 473,
+      "story_id": 66,
+      "name": "Shining Blade Secrets",
+      "order": 4,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 475,
+      "story_id": 66,
+      "name": "On Orrian Shores",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 488,
+      "story_id": 83,
+      "name": "Sparking the Flame (Prologue)",
+      "order": 1,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 503,
+      "story_id": 83,
+      "name": "Sparking the Flame",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 480,
+      "story_id": 67,
+      "name": "Blazing a Trail",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 486,
+      "story_id": 82,
+      "name": "Night of Fires",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 482,
+      "story_id": 72,
+      "name": "The Sacrifice",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 491,
+      "story_id": 72,
+      "name": "The Sacrifice",
+      "order": 2,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 484,
+      "story_id": 79,
+      "name": "Crystalline Memories",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 500,
+      "story_id": 69,
+      "name": "Hallowed Ground",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 493,
+      "story_id": 80,
+      "name": "Facing the Truth",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 477,
+      "story_id": 68,
+      "name": "The Way Forward",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 496,
+      "story_id": 71,
+      "name": "The Departing",
+      "order": 1,
+      "seed_full_mins": 50,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 479,
+      "story_id": 75,
+      "name": "Bringing Out the Archon",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 501,
+      "story_id": 75,
+      "name": "Enemy of My Enemy",
+      "order": 2,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 483,
+      "story_id": 76,
+      "name": "Beast of War",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 481,
+      "story_id": 81,
+      "name": "To Kill a God",
+      "order": 1,
+      "seed_full_mins": 55,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 499,
+      "story_id": 78,
+      "name": "Small Victory (Epilogue)",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 504,
+      "story_id": 85,
+      "name": "The Hero of Istan",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 505,
+      "story_id": 85,
+      "name": "Eye of the Brandstorm",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 506,
+      "story_id": 85,
+      "name": "Under the Stars",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 508,
+      "story_id": 85,
+      "name": "The First City",
+      "order": 4,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 509,
+      "story_id": 85,
+      "name": "Champion's Dawn",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 511,
+      "story_id": 85,
+      "name": "Convincing the Corsair",
+      "order": 6,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 513,
+      "story_id": 86,
+      "name": "The Charge",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 519,
+      "story_id": 86,
+      "name": "The Road to Rata Primus",
+      "order": 2,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 521,
+      "story_id": 86,
+      "name": "A Kindness Repaid",
+      "order": 3,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 525,
+      "story_id": 86,
+      "name": "The Test Subject",
+      "order": 4,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 526,
+      "story_id": 86,
+      "name": "Tracking the Scientist",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 527,
+      "story_id": 87,
+      "name": "Forearmed Is Forewarned",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 529,
+      "story_id": 87,
+      "name": "Seized",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 532,
+      "story_id": 87,
+      "name": "Be My Guest",
+      "order": 3,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 533,
+      "story_id": 87,
+      "name": "Tactical Triage",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 535,
+      "story_id": 87,
+      "name": "I'm Brave, You Know",
+      "order": 5,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 536,
+      "story_id": 88,
+      "name": "Chaos Theory",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 537,
+      "story_id": 88,
+      "name": "A Shattered Nation",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 538,
+      "story_id": 88,
+      "name": "Legacy",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 539,
+      "story_id": 88,
+      "name": "Storm Tracking",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 540,
+      "story_id": 88,
+      "name": "From the Ashes",
+      "order": 5,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 542,
+      "story_id": 89,
+      "name": "The Crystal Dragon",
+      "order": 1,
+      "seed_full_mins": 50,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 543,
+      "story_id": 89,
+      "name": "Scion & Champion",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 544,
+      "story_id": 89,
+      "name": "Dragonsblood",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 545,
+      "story_id": 89,
+      "name": "The Crystal Blooms",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 546,
+      "story_id": 89,
+      "name": "Resonance",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 547,
+      "story_id": 90,
+      "name": "Descent",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 548,
+      "story_id": 90,
+      "name": "Glory of Dragons",
+      "order": 2,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 549,
+      "story_id": 90,
+      "name": "The End",
+      "order": 3,
+      "seed_full_mins": 55,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 551,
+      "story_id": 90,
+      "name": "Bleed",
+      "order": 4,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 552,
+      "story_id": 90,
+      "name": "Landfall",
+      "order": 5,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 553,
+      "story_id": 91,
+      "name": "Coming Home",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 554,
+      "story_id": 91,
+      "name": "Revels & Rivals",
+      "order": 2,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 555,
+      "story_id": 91,
+      "name": "A Race to Arms",
+      "order": 3,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 556,
+      "story_id": 91,
+      "name": "Deeper and Deeper",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 557,
+      "story_id": 91,
+      "name": "Bad Blood",
+      "order": 5,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 559,
+      "story_id": 93,
+      "name": "What's Left Behind",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 561,
+      "story_id": 93,
+      "name": "The Invitation",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 562,
+      "story_id": 93,
+      "name": "Silence",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 563,
+      "story_id": 93,
+      "name": "The Wind and Nothing More",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 564,
+      "story_id": 94,
+      "name": "Chasing Ghosts",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 565,
+      "story_id": 94,
+      "name": "Voice in the Deep",
+      "order": 2,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 566,
+      "story_id": 94,
+      "name": "The Hunt Begins",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 567,
+      "story_id": 94,
+      "name": "Lost Spirits Found",
+      "order": 4,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 568,
+      "story_id": 94,
+      "name": "Still Waters Speaking",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 569,
+      "story_id": 95,
+      "name": "Darkrime Delves",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 570,
+      "story_id": 95,
+      "name": "Forging Steel",
+      "order": 2,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 571,
+      "story_id": 96,
+      "name": "Pointed Parley",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 572,
+      "story_id": 96,
+      "name": "Distract, Destroy, Distrust",
+      "order": 2,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 573,
+      "story_id": 96,
+      "name": "Snapping Steel",
+      "order": 3,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 574,
+      "story_id": 96,
+      "name": "Shoulder to Shoulder",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 575,
+      "story_id": 96,
+      "name": "Turnabout",
+      "order": 5,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 576,
+      "story_id": 97,
+      "name": "Behind Enemy Lines",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 577,
+      "story_id": 97,
+      "name": "Wrench in the Works",
+      "order": 2,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 578,
+      "story_id": 97,
+      "name": "Pantheon of the Wild",
+      "order": 3,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 579,
+      "story_id": 97,
+      "name": "A Simple Negotiation",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 580,
+      "story_id": 97,
+      "name": "One Charr, One Dragon, One Champion",
+      "order": 5,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 581,
+      "story_id": 98,
+      "name": "Roaring Flames",
+      "order": 1,
+      "seed_full_mins": 12,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 583,
+      "story_id": 98,
+      "name": "Defending Tyria",
+      "order": 2,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 587,
+      "story_id": 98,
+      "name": "Calm in the Storm",
+      "order": 3,
+      "seed_full_mins": 10,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 590,
+      "story_id": 98,
+      "name": "Flame vs. Frost",
+      "order": 4,
+      "seed_full_mins": 13,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 593,
+      "story_id": 98,
+      "name": "Frozen Tide",
+      "order": 5,
+      "seed_full_mins": 14,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 595,
+      "story_id": 98,
+      "name": "Primordus Rising",
+      "order": 6,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 596,
+      "story_id": 98,
+      "name": "Tidings and Misgivings",
+      "order": 7,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 598,
+      "story_id": 98,
+      "name": "Champion's End",
+      "order": 8,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 599,
+      "story_id": 98,
+      "name": "Wildfire",
+      "order": 9,
+      "seed_full_mins": 13,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 600,
+      "story_id": 98,
+      "name": "Calm in the Storm",
+      "order": 10,
+      "seed_full_mins": 10,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 602,
+      "story_id": 98,
+      "name": "Calm in the Storm",
+      "order": 11,
+      "seed_full_mins": 10,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 605,
+      "story_id": 98,
+      "name": "Jormag's World",
+      "order": 12,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 606,
+      "story_id": 98,
+      "name": "Calm in the Storm",
+      "order": 13,
+      "seed_full_mins": 10,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 608,
+      "story_id": 98,
+      "name": "Jormag's Madness",
+      "order": 14,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 611,
+      "story_id": 98,
+      "name": "Dragonstorm",
+      "order": 15,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 618,
+      "story_id": 112,
+      "name": "Convergence",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 629,
+      "story_id": 101,
+      "name": "Old Friends",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 622,
+      "story_id": 104,
+      "name": "Outreach",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 614,
+      "story_id": 114,
+      "name": "Your Kind of People",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 620,
+      "story_id": 113,
+      "name": "Can't Trust a Pirate",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 626,
+      "story_id": 110,
+      "name": "The Scenic Route",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 616,
+      "story_id": 111,
+      "name": "The Future in Jade",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 632,
+      "story_id": 103,
+      "name": "Deepest Secrets",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 630,
+      "story_id": 106,
+      "name": "Fallout",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 633,
+      "story_id": 102,
+      "name": "To Catch a Spider",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 623,
+      "story_id": 99,
+      "name": "Empty",
+      "order": 1,
+      "seed_full_mins": 18,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 634,
+      "story_id": 109,
+      "name": "In the Name of the Law",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 621,
+      "story_id": 107,
+      "name": "Weight of the World",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 613,
+      "story_id": 105,
+      "name": "Extraction Point",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 627,
+      "story_id": 100,
+      "name": "The Only One",
+      "order": 1,
+      "seed_full_mins": 55,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 617,
+      "story_id": 108,
+      "name": "The Cycle, Reborn",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 668,
+      "story_id": 121,
+      "name": "On the Case",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 669,
+      "story_id": 121,
+      "name": "Deep Trouble",
+      "order": 2,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 673,
+      "story_id": 121,
+      "name": "An Air of Mystery",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 674,
+      "story_id": 121,
+      "name": "A Raw Deal",
+      "order": 4,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 672,
+      "story_id": 120,
+      "name": "Sleuthing a Solution",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 677,
+      "story_id": 122,
+      "name": "A Plan Emerges",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 678,
+      "story_id": 122,
+      "name": "Full Circle",
+      "order": 2,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 680,
+      "story_id": 122,
+      "name": "Entrapment",
+      "order": 3,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 681,
+      "story_id": 122,
+      "name": "Emotional Release",
+      "order": 4,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 683,
+      "story_id": 122,
+      "name": "Bottle Your Emotions",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 684,
+      "story_id": 123,
+      "name": "Interlude: Forward",
+      "order": 1,
+      "seed_full_mins": 15,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 687,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 1,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 689,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 2,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 690,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 3,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 693,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 4,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 695,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 5,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 698,
+      "story_id": 130,
+      "name": "Prologue: Uncertain Times",
+      "order": 6,
+      "seed_full_mins": 20,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 697,
+      "story_id": 131,
+      "name": "1. Commander without a Cause",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 694,
+      "story_id": 134,
+      "name": "2. Hell Breaks Loose",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 688,
+      "story_id": 129,
+      "name": "3. Mother of Stars",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 686,
+      "story_id": 132,
+      "name": "4. Voices beyond the Veil",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 699,
+      "story_id": 127,
+      "name": "5. The Missing Facet",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 692,
+      "story_id": 126,
+      "name": "6. Tower of Secrets",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 691,
+      "story_id": 125,
+      "name": "7. Mabon's Fate",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 696,
+      "story_id": 128,
+      "name": "8. Into the Obscure",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 700,
+      "story_id": 133,
+      "name": "9. The World Spire",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 685,
+      "story_id": 124,
+      "name": "10. Treachery",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 702,
+      "story_id": 138,
+      "name": "11. Duress",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 703,
+      "story_id": 135,
+      "name": "12. The Survivors",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 701,
+      "story_id": 136,
+      "name": "13. Heitor's Gate",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 706,
+      "story_id": 139,
+      "name": "14. The War Council",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 704,
+      "story_id": 141,
+      "name": "15. Forced Hand",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 705,
+      "story_id": 140,
+      "name": "16. Eventide's March",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 709,
+      "story_id": 143,
+      "name": "17. Desperate Measures",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 707,
+      "story_id": 144,
+      "name": "18. The Eleventh Hour",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 708,
+      "story_id": 142,
+      "name": "19. Sovereign of Nayos",
+      "order": 1,
+      "seed_full_mins": 45,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 710,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 1,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 712,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 2,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 716,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 3,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 717,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 4,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 719,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 5,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 720,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 6,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 722,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 7,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 723,
+      "story_id": 151,
+      "name": "Prologue: The Tyrian Alliance",
+      "order": 8,
+      "seed_full_mins": 22,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 718,
+      "story_id": 155,
+      "name": "1. Unknown Territory",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 713,
+      "story_id": 147,
+      "name": "2. Diplomacy and Discovery",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 721,
+      "story_id": 152,
+      "name": "3. Home Sweet Home",
+      "order": 1,
+      "seed_full_mins": 25,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 714,
+      "story_id": 146,
+      "name": "4. Missing in Action",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 715,
+      "story_id": 154,
+      "name": "5. Strangers among Lands",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 711,
+      "story_id": 149,
+      "name": "6. Storm Clouds over Janthir",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 727,
+      "story_id": 150,
+      "name": "7. Twice Stricken",
+      "order": 1,
+      "seed_full_mins": 35,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 725,
+      "story_id": 148,
+      "name": "8. Finding Balance",
+      "order": 1,
+      "seed_full_mins": 28,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 726,
+      "story_id": 145,
+      "name": "9. Against the Wall",
+      "order": 1,
+      "seed_full_mins": 30,
+      "seed_speed_mins": null
+    },
+    {
+      "id": 724,
+      "story_id": 153,
+      "name": "10. Sorrow in These Halls",
+      "order": 1,
+      "seed_full_mins": 40,
+      "seed_speed_mins": null
+    }
+  ]
+}

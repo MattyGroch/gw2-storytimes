@@ -1,0 +1,29 @@
+services:
+  gw2-storytimes-api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: gw2-storytimes-api
+    restart: unless-stopped
+    environment:
+      - DB_PATH=/data/storytimes.db
+      - IP_HASH_SALT=${IP_HASH_SALT}
+    volumes:
+      - storytimes-data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.gw2-st-api.rule=Host(`api.gw2storytimes.com`)"
+      - "traefik.http.routers.gw2-st-api.entrypoints=websecure"
+      - "traefik.http.routers.gw2-st.rule=Host(`gw2storytimes.com`)"
+      - "traefik.http.routers.gw2-st.entrypoints=websecure"
+      - "traefik.http.services.gw2-st-api.loadbalancer.server.port=3000"
+    networks:
+      - proxy
+
+volumes:
+  storytimes-data:
+
+networks:
+  proxy:
+    external: true

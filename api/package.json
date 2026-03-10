@@ -1,0 +1,27 @@
+{
+  "name": "gw2-storytimes-api",
+  "version": "1.0.0",
+  "description": "Community-driven database of Guild Wars 2 story mission completion times",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "fetch-missions": "node scripts/fetch-missions.js",
+    "import-seed": "node scripts/import-seed.js",
+    "csv:template": "node scripts/csv-template.js",
+    "csv:import": "node scripts/csv-import.js"
+  },
+  "keywords": [
+    "gw2",
+    "guild-wars-2",
+    "story",
+    "times"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
+    "express-validator": "^7.3.1"
+  }
+}

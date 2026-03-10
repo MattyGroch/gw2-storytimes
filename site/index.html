@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GW2 Story Times</title>
+    <meta name="description" content="Community-driven completion times for every Guild Wars 2 story mission">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #13110f; color: #e8e0d6; }
+        .gw2-gradient { background: linear-gradient(135deg, #c8a84e 0%, #8a6b2d 100%); }
+        .card-bg { background-color: #1e1b17; }
+        .progress-bar-bg { background-color: #3a352e; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #13110f; }
+        ::-webkit-scrollbar-thumb { background: #4a443a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b6355; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gw2: { gold: '#c8a84e', 'gold-light': '#dcc075', 'gold-dark': '#8a6b2d' }
+                    },
+                    fontFamily: { display: ['Cinzel', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    const { useState, useEffect, useMemo, useCallback } = React;
+
+    const API_BASE = window.location.hostname === 'localhost'
+        ? `http://localhost:3456/v1`
+        : '/v1';
+
+    const STORY_COLORS = {
+        'My Story': '#961208',
+        'Living World Season 1': '#882010',
+        'Living World Season 2': '#882010',
+        'Heart of Thorns': '#4d7a1e',
+        'Living World Season 3': '#5a7a28',
+        'Path of Fire': '#922050',
+        'Living World Season 4': '#7a2040',
+        'The Icebrood Saga': '#3a6888',
+        'End of Dragons': '#1a8880',
+        'Secrets of the Obscure': '#907828',
+        'Janthir Wilds': '#2e70a0',
+        'Visions of Eternity': '#c85018',
+    };
+
+    const MY_STORY_SEASON_ID = '215AAA0F-CDAC-4F93-86DA-C155A99B5784';
+    const SOTO_SEASON_ID = 'AEE99452-D323-4ABB-8F49-D7C0A752CBD1';
+    const JW_SEASON_ID = '5EFFBB71-7C6D-4594-A87D-88B8CF38FDA3';
+    const DEDUP_SEASON_IDS = [SOTO_SEASON_ID, JW_SEASON_ID];
+    const GW2_RACES = ['Asura', 'Charr', 'Human', 'Norn', 'Sylvari'];
+
+    // Biography path data sourced from https://wiki.guildwars2.com/wiki/Personal_story
+    // Nested arrays = alternatives at one step (pick one), strings = sequential quests
+    const BIOGRAPHY_PATHS = {
+      8: { // My Story (Asura)
+        parts: [
+          { name: 'Experiments Gone Wrong',
+            shared: ['Explosive Intellect'],
+            paths: {
+              'Statics': ['Snaff Would Be Proud','Piece Negotiations','Readings on the Rise',['Unscheduled Delay','Unwelcome Visitors'],"Gadd's Last Gizmo"],
+              'Dynamics': ["In Snaff's Footsteps",'Golem Positioning System','High Maintenance','Monkey Wrench',['Defusing the Problem','The Things We Do For Love']],
+              'Synergetics': ['The Snaff Prize','Taking Credit Back','A Sparkling Rescue',['Political Homicide','Stand By Your Krewe'],'Here, There, Everywhere'],
+            }},
+          { name: 'Interested Parties', shared: [],
+            paths: {
+              'VAL-A Golem': ['Serving up Trouble','Short Fuse',['I Smell a Rat','Bad Business'],'Magnum Opus'],
+              'Trans. Converter': ['Where Credit Is Due','Salt in the Wound',['Free Rein','Bad Forecast'],'Flash Flood'],
+              'Infinity Ball': ['Any Sufficiently Advanced Science','Beta Test',['Industrial Espionage','Carry A Big Stick'],'Split Second'],
+            }},
+          { name: 'Rescue Researcher',
+            shared: ['A Bold New Theory',['Forging Permission','Hazardous Environment'],['Protest Too Much','Pry the Eye Open'],['Test Subject','Field Test']],
+            paths: {
+              'Durmand Priory': ['A Meeting of the Minds'],
+              'Order of Whispers': ['Lines of Communication'],
+              'Vigil': ['Rakt and Ruin'],
+            }},
+        ]},
+      1: { // My Story (Charr)
+        parts: [
+          { name: 'Getting the Band Back Together',
+            shared: ['Fury of the Dead'],
+            paths: {
+              'Blood Legion': ['Chain of Command','Time for a Promotion',['Magic Users','The End of the Line'],'Rage Suppression','Operation: Bulwark'],
+              'Ash Legion': ["The Tribune's Call",'A Spy for a Spy',['Spilled Blood','Iron Grip of the Legion'],'The Flame Advances','Quick and Quiet'],
+              'Iron Legion': ['Best Laid Plans','Scrapyard Dogs','Ghostbore Musket','Test Your Metal',['Ghostbore Artillery','Deadly Force']],
+            }},
+          { name: 'Sins of the Father', shared: [],
+            paths: {
+              'Loyal Soldier': ['An Unusual Inheritance','Mired Deep',['Salvaging Scrap','No Negotiations'],'In the Ruins'],
+              'Sorcerous Shaman': ['Searching for the Truth','Stoking the Flame','A Fork in the Road',['Sins of the Father','Tribunes in Effigy']],
+              'Honorless Gladium': ['AWOL','Follow the Trail','Misplaced Faith',['Thicker Than Water','Dishonorable Discharge']],
+            }},
+          { name: 'Crystal Corruption',
+            shared: ['Graveyard Ornaments',['Undead Infestation','Whispers in the Dark'],['Dangerous Research','Digging Up Answers'],['Defending the Keep','Undead Detection']],
+            paths: {
+              'Durmand Priory': ['Research and Destroy'],
+              'Order of Whispers': ['Whispers of Vengeance'],
+              'Vigil': ['Ever Vigilant'],
+            }},
+        ]},
+      3: { // My Story (Human)
+        parts: [
+          { name: 'Krytan Politics',
+            shared: ['Defending Shaemoor'],
+            paths: {
+              'Street Rat': ['The Perils of Friendship','The Apothecary','Going Undercover',['The Rescue','The Greater Good'],'Breaking the Blade'],
+              'Commoner': ['On the Mend','Desperate Medicine','Infiltration',['Arson at the Orphanage','The Hospital in Jeopardy'],'The Commander'],
+              'Nobility': ['Welcome Home','Chasing the Culprits','The Informant',['Search the Premises','A Society Function'],'The Trial of Julius Zamon'],
+            }},
+          { name: 'Shadows of the Past', shared: [],
+            paths: {
+              'Unknown Parents': ['Voices From the Past','Rending the Mantle',['The Sting','Drawing Out the Cult'],'Ashes of the Past'],
+              'Dead Sister': ['The Fall of Falcon Company',["Seek Logan's Aid",'Confronting Captain Tervelan'],'Accusation','Liberation'],
+              'Missed Opportunity': ['The Floating Grizwhirl','Clown College',['Into the Woods',"The Artist's Workshop"],'The Ringmaster'],
+            }},
+          { name: 'Traitor to the Queen',
+            shared: ['The Orders of Tyria',['Brute Force','Mortus Virge'],['Track the Seraph','Triskell Quay'],['Speaker of the Dead','The Sad Tale of the "Ravenous"']],
+            paths: {
+              'Durmand Priory': ["The Queen's Justice"],
+              'Order of Whispers': ['The Trap'],
+              'Vigil': ["Kellach's Attack"],
+            }},
+        ]},
+      2: { // My Story (Norn)
+        parts: [
+          { name: 'Forging a Legend',
+            shared: ['The Great Hunt'],
+            paths: {
+              'Defeat Ancient Foes': ['A Weapon of Legend','Disciples of the Dragon','Echoes of Ages Past',['Out of the Skies','Twilight of the Wolf'],'The Last of the Giant-Kings'],
+              'Protect the Spirits': ['Wild Spirits','Rage of the Minotaurs','A Trap Foiled',['Shape of the Spirit','One Good Drink Deserves Another'],'Minotaur Rampant'],
+              'Guard the Mists': ["A Pup's Illness",'Through the Veil',['Blessed of Bear',"Raven's Revered"],'Into the Mists','The Wolf Havroun'],
+            }},
+          { name: 'Everyone Makes Mistakes', shared: [],
+            paths: {
+              'Blacked Out': ['Unexpected Visitors',"Don't Leave Your Toys Out",['Roadblock','Assault on Moledavia'],'The Machine in Action'],
+              'Revenge': ['A New Challenger',['First Attack','The Finishing Blow'],'The Semifinals','The Championship Fight'],
+              'Lost an Heirloom': ['Rumors of Trouble','Among the Kodan','Darkness at Drakentelt',['Preserving the Balance','Means to an End']],
+            }},
+          { name: 'Death from Below',
+            shared: ['Dredge Technology',['Underground Scholar','Armaments'],['The Dredge Hideout','Dredge Assault'],['Sabotage','Code Breaker']],
+            paths: {
+              'Durmand Priory': ['Silent Warfare'],
+              'Order of Whispers': ['Sever the Head'],
+              'Vigil': ['Assault the Hill'],
+            }},
+        ]},
+      7: { // My Story (Sylvari)
+        parts: [
+          { name: 'Following the Dream',
+            shared: ['Fighting the Nightmare'],
+            paths: {
+              'White Stag': ['Called to Service','Hounds and the Hunted','Discovering Darkness',['Hidden in Darkness','Saving the Stag'],'Black Night, White Stag'],
+              'Green Knight': ['Mockery of Death','Loved and Lost','A Good Work Spoiled',['Hammer and Steel','Weakness of the Heart'],"The Knight's Duel"],
+              'Shield of the Moon': ['Awakening','Holding Back the Darkness','A Sly Trick','Deeply Tangled Roots',['Beneath a Cold Moon','The Heart of Nightmare']],
+            }},
+          { name: 'The Teachings of Ventari', shared: [],
+            paths: {
+              'Act With Wisdom': ['After the Storm','Beneath the Waves','Mirror, Mirror',['A Vision of Darkness','Shattered Light']],
+              'Right to Grow': ['Wild Growth','Seeking the Zalisco',['The Direct Approach','Trading Trickery'],'Eye of the Sun'],
+              'Where Life Goes': ['Where Life Goes','An Unknown Soul',['Source of the Issue','A Different Dream'],'Snuffing Out Embers'],
+            }},
+          { name: 'Justice for Riannoc',
+            shared: ['A Splinter in the Flesh',['Sharpened Thorns','Bramble Walls'],['The Blossom of Youth','Secrets in the Earth'],['The Bad Apple','Trouble at the Roots']],
+            paths: {
+              'Durmand Priory': ['Dead of Winter'],
+              'Order of Whispers': ['A Tangle of Weeds'],
+              'Vigil': ['Flower of Death'],
+            }},
+        ]},
+      9: { // The Orders of Tyria (Ch. 4-6)
+        parts: [
+          { name: 'Order Neophyte',
+            shared: ['Setting the Stage'],
+            paths: {
+              'Durmand Priory': ['Dredging up the Past','Bad Blood',['The Stone Sheath','Containment'],'Mightier than the Sword'],
+              'Order of Whispers': ['Stealing Secrets','Down the Hatch',['They Went Thataway','Thrown Off Guard'],'An Apple a Day'],
+              'Vigil': ['A Fragile Peace','Killer Instinct',"Don't Shoot the Messenger",["Minister's Defense","Quaestor's Siege"]],
+            }},
+          { name: 'Helping Hands', shared: [],
+            paths: {
+              'Grawl': ['Doubt',["The False God's Lair",'Salvation Through Heresy'],'Attempted Deicide'],
+              'Hylek': ["Champion's Sacrifice",['Convincing the Faithful','Chosen of the Sun'],'Unholy Grounds'],
+              'Ogre': ['Untamed Wilds','Pets and Walls Make Stronger Kraals',"The Lost Chieftain's Return"],
+              'Quaggan': ['Bad Ice',['Enraged and Unashamed','Pastkeeper'],'Evacuation'],
+              'Skritt': ['Rat-Tastrophe',['The Hatchery','Thieving from Thieves'],'Set to Blow'],
+            }},
+          { name: 'The Battle of Claw Island',
+            shared: ['The Battle of Claw Island','A Light in the Darkness'],
+            paths: {
+              'Durmand Priory': ['On Red Alert','The Ghost Rite',['The Sound of Psi-Lance','Shards of Orr'],'The Priory Assailed','Retribution'],
+              'Order of Whispers': ['Suspicious Activity','Reconnaissance',['Early Parole','Magic Sucks'],'Critical Blowback','Retribution'],
+              'Vigil': ['Forearmed Is Forewarned','Killing Fields',['Defense Contract','The Good Fight'],'Under Siege','Retribution'],
+            }},
+        ]},
+      10: { // The Elder Dragon Zhaitan (Ch. 7-8)
+        parts: [
+          { name: 'Forming the Pact',
+            shared: ['Forging the Pact'],
+            paths: {
+              'Let an innocent die': ['Tower Down',['Munition Acquisition','To The Core'],'Breaking the Bone Ship','The Battle of Fort Trinity','A Sad Duty'],
+              'Dishonor my allies': ['Shell Shock',['Volcanic Extraction','Fixing the Blame'],'Marshaling the Truth','The Battle of Fort Trinity','Delivering Justice'],
+              'Make another suffer': ['Striking Off the Chains','Wet Work',['Willing Captives','Intercepting the Orb'],'The Battle of Fort Trinity','Liberating Apatia'],
+            }},
+          { name: 'Victory or Death',
+            shared: ['Temple of the Forgotten God',['Through the Looking Glass','Close the Eye'],'What the Eye Beholds',['Estate of Decay','Starving the Beast'],['A Grisly Shipment','Ossuary of Unquiet Dead'],'Further into Orr'],
+            paths: {
+              "Priory's plan": ['Hunters and Prey','Air Drop','Blast from the Past'],
+              "Whispers' plan": ['Stealing Light','Conscript the Dead Ships','Ships of the Line'],
+              "Vigil's plan": ['Marching Orders','Armor Guard','The Steel Tide'],
+            },
+            sharedTail: ['Against the Corruption',['Cathedral of Silence',"Romke's Final Voyage"],'The Source of Orr','Victory or Death'],
+          },
+        ]},
+    };
+
+    // --- Icons (inline SVG, Lucide-style) ---
+
+    function IconBase({ children, size = 24, className = '' }) {
+        return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            className={className}>{children}</svg>;
+    }
+    function ChevronDown(p) { return <IconBase {...p}><polyline points="6 9 12 15 18 9"/></IconBase>; }
+    function ChevronUp(p) { return <IconBase {...p}><polyline points="18 15 12 9 6 15"/></IconBase>; }
+    function Clock(p) { return <IconBase {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></IconBase>; }
+    function Send(p) { return <IconBase {...p}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></IconBase>; }
+    function BookOpen(p) { return <IconBase {...p}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></IconBase>; }
+    function Zap(p) { return <IconBase {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconBase>; }
+    function Info(p) { return <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></IconBase>; }
+    function CheckCircle(p) { return <IconBase {...p}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></IconBase>; }
+    function AlertCircle(p) { return <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></IconBase>; }
+    function ArrowLeft(p) { return <IconBase {...p}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconBase>; }
+
+    // --- Utility ---
+
+    function formatTime(mins) {
+        if (mins == null) return '—';
+        if (mins < 60) return `${Math.round(mins)}m`;
+        const h = Math.floor(mins / 60);
+        const m = Math.round(mins % 60);
+        return m > 0 ? `${h}h ${m}m` : `${h}h`;
+    }
+
+    function formatTimeVerbose(mins) {
+        if (mins == null) return 'No data';
+        if (mins < 60) return `${Math.round(mins)} minutes`;
+        const h = Math.floor(mins / 60);
+        const m = Math.round(mins % 60);
+        return m > 0 ? `${h} hr ${m} min` : `${h} hr`;
+    }
+
+    async function apiFetch(path) {
+        const res = await fetch(`${API_BASE}${path}`);
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return res.json();
+    }
+
+    // --- Components ---
+
+    function Navbar({ onNavigate, view }) {
+        return (
+            <nav className="card-bg border-b border-stone-800 sticky top-0 z-50">
+                <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+                    <button onClick={() => onNavigate('home')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <div className="w-8 h-8 rounded gw2-gradient flex items-center justify-center">
+                            <Clock size={18} className="text-stone-900" />
+                        </div>
+                        <span className="font-bold text-xl hidden sm:inline font-display text-gw2-gold-light">GW2 Story Times</span>
+                        <span className="font-bold text-lg sm:hidden font-display text-gw2-gold-light">Story Times</span>
+                    </button>
+                    <div className="flex items-center gap-3 sm:gap-4">
+                        <button onClick={() => onNavigate('about')}
+                            className={`text-gray-400 hover:text-gw2-gold-light transition-colors ${view === 'about' ? 'text-gw2-gold-light' : ''}`}
+                            title="About">
+                            <Info size={20} />
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        );
+    }
+
+    function SeasonCard({ season, onSelectSeason }) {
+        const color = STORY_COLORS[season.name] || '#c8a84e';
+        const fullHrs = season.total_full_mins > 0 ? formatTime(season.total_full_mins) : null;
+        const speedHrs = season.total_speed_mins > 0 ? formatTime(season.total_speed_mins) : null;
+
+        return (
+            <button
+                onClick={() => onSelectSeason(season.id)}
+                className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg hover:border-stone-600 transition-all duration-300 w-full text-left group"
+                style={{ borderLeft: `4px solid ${color}` }}
+            >
+                <div className="p-3 sm:p-4" style={{ background: `linear-gradient(to right, ${color}20, transparent)` }}>
+                    <div className="flex items-center justify-between">
+                        <div className="min-w-0">
+                            <h3 className="text-base sm:text-lg font-bold font-display text-gray-100 truncate group-hover:text-gw2-gold-light transition-colors">
+                                {season.name}
+                            </h3>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                                {season.mission_count} quest{season.mission_count !== 1 ? 's' : ''}
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-3 sm:gap-4 shrink-0 ml-3">
+                            {fullHrs && (
+                                <div className="text-right">
+                                    <div className="flex items-center gap-1 text-gw2-gold-light">
+                                        <BookOpen size={14} />
+                                        <span className="text-sm font-bold">{fullHrs}</span>
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 hidden sm:block">Full Experience</p>
+                                </div>
+                            )}
+                            {speedHrs && (
+                                <div className="text-right">
+                                    <div className="flex items-center gap-1 text-yellow-400">
+                                        <Zap size={14} />
+                                        <span className="text-sm font-bold">{speedHrs}</span>
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 hidden sm:block">Speedrun</p>
+                                </div>
+                            )}
+                            {!fullHrs && !speedHrs && (
+                                <span className="text-xs text-gray-600">No time data</span>
+                            )}
+                            <ChevronDown size={16} className="text-gray-500 group-hover:text-gray-300 transition-colors" />
+                        </div>
+                    </div>
+                </div>
+            </button>
+        );
+    }
+
+    function TotalSummary({ seasons }) {
+        const totalFull = seasons.reduce((s, se) => s + (se.total_full_mins || 0), 0);
+        const totalSpeed = seasons.reduce((s, se) => s + (se.total_speed_mins || 0), 0);
+        const totalMissions = seasons.reduce((s, se) => s + (se.mission_count || 0), 0);
+
+        return (
+            <div className="card-bg rounded-lg border border-gw2-gold-dark/40 p-4 sm:p-6 mb-6 bg-gradient-to-r from-gw2-gold-dark/10 to-transparent">
+                <h2 className="text-lg sm:text-xl font-bold font-display text-gw2-gold-light mb-3">Total Story Playtime</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Full Experience</p>
+                        <p className="text-2xl font-bold text-gw2-gold-light">{formatTime(totalFull)}</p>
+                    </div>
+                    {totalSpeed > 0 && (
+                        <div>
+                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Speedrun</p>
+                            <p className="text-2xl font-bold text-yellow-400">{formatTime(totalSpeed)}</p>
+                        </div>
+                    )}
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Total Quests</p>
+                        <p className="text-2xl font-bold text-gray-200">{totalMissions}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    function MissionRow({ mission, onSelect }) {
+        const fullAvg = mission.times?.full?.avg_mins;
+        const speedAvg = mission.times?.speed?.avg_mins;
+
+        return (
+            <button
+                onClick={() => onSelect(mission.id)}
+                className="flex items-center justify-between p-2 rounded hover:bg-white/5 w-full text-left transition-colors group"
+            >
+                <div className="min-w-0 flex-1">
+                    <span className="text-sm text-gray-200 group-hover:text-gw2-gold-light transition-colors truncate block">
+                        {mission.name}
+                    </span>
+                </div>
+                <div className="flex items-center gap-3 sm:gap-4 shrink-0 ml-2">
+                    {fullAvg != null ? (
+                        <span className="text-xs text-gw2-gold-light font-medium w-12 text-right">{formatTime(fullAvg)}</span>
+                    ) : (
+                        <span className="text-xs text-gray-600 w-12 text-right">—</span>
+                    )}
+                    {speedAvg != null && (
+                        <span className="text-xs text-yellow-400 font-medium w-12 text-right">{formatTime(speedAvg)}</span>
+                    )}
+                </div>
+            </button>
+        );
+    }
+
+    function StoryGroup({ story, onSelectMission }) {
+        const [expanded, setExpanded] = useState(true);
+        const races = story.races;
+        const raceLabel = races?.length === 1 ? races[0] : null;
+        const missions = useMemo(() => deduplicateMissions(story.missions), [story.missions]);
+
+        return (
+            <div className="mb-3">
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="flex items-center justify-between w-full p-2 rounded hover:bg-white/5 transition-colors"
+                >
+                    <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-sm font-bold text-gray-300 truncate">{story.name}</span>
+                        {raceLabel && <span className="text-[10px] bg-stone-700 text-gray-400 px-1.5 py-0.5 rounded">{raceLabel}</span>}
+                        <span className="text-xs text-gray-600">{missions.length} quest{missions.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    {expanded ? <ChevronUp size={14} className="text-gray-500" /> : <ChevronDown size={14} className="text-gray-500" />}
+                </button>
+                {expanded && (
+                    <div className="ml-2 border-l border-stone-800 pl-2">
+                        {missions.map(m => (
+                            <MissionRow key={m.id} mission={m} onSelect={onSelectMission} />
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    function QuestEntry({ entry, findMission, onSelectMission }) {
+        if (Array.isArray(entry)) {
+            const alts = entry.map(n => findMission(n)).filter(Boolean);
+            if (alts.length === 0) return null;
+            return (
+                <div className="flex items-center gap-1 py-0.5">
+                    {alts.map((m, i) => (
+                        <React.Fragment key={m.id}>
+                            {i > 0 && <span className="text-[9px] text-gray-600 px-0.5">/</span>}
+                            <button
+                                onClick={() => onSelectMission(m.id)}
+                                className="flex items-center gap-1 px-1 py-0.5 rounded hover:bg-white/5 transition-colors group text-left min-w-0"
+                            >
+                                <span className="text-[11px] text-amber-200/70 group-hover:text-gw2-gold-light transition-colors truncate">{m.name}</span>
+                                <span className="text-[10px] text-gw2-gold-light shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
+                            </button>
+                        </React.Fragment>
+                    ))}
+                </div>
+            );
+        }
+        const m = findMission(entry);
+        if (!m) return null;
+        return <MissionRow mission={m} onSelect={onSelectMission} />;
+    }
+
+    function QuestEntryCompact({ entry, findMission, onSelectMission }) {
+        if (Array.isArray(entry)) {
+            const alts = entry.map(n => findMission(n)).filter(Boolean);
+            if (alts.length === 0) return null;
+            return (
+                <div className="py-0.5">
+                    {alts.map((m, i) => (
+                        <React.Fragment key={m.id}>
+                            {i > 0 && <div className="text-[8px] text-gray-600 text-center">or</div>}
+                            <button
+                                onClick={() => onSelectMission(m.id)}
+                                className="flex items-center justify-between w-full px-1 py-0.5 rounded hover:bg-white/5 transition-colors group text-left"
+                            >
+                                <span className="text-[11px] text-amber-200/70 group-hover:text-gw2-gold-light transition-colors truncate block">{m.name}</span>
+                                <span className="text-[10px] text-gw2-gold-light ml-1 shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
+                            </button>
+                        </React.Fragment>
+                    ))}
+                </div>
+            );
+        }
+        const m = findMission(entry);
+        if (!m) return null;
+        return (
+            <button
+                onClick={() => onSelectMission(m.id)}
+                className="flex items-center justify-between w-full px-1 py-1 rounded hover:bg-white/5 transition-colors group text-left"
+            >
+                <span className="text-[11px] text-gray-300 group-hover:text-gw2-gold-light transition-colors truncate block">{m.name}</span>
+                <span className="text-[10px] text-gw2-gold-light ml-1 shrink-0">{m.times?.full?.avg_mins ? formatTime(m.times.full.avg_mins) : '—'}</span>
+            </button>
+        );
+    }
+
+    function questListTime(list, findMission) {
+        let total = 0;
+        for (const entry of list) {
+            if (Array.isArray(entry)) {
+                let s = 0, n = 0;
+                for (const alt of entry) {
+                    const m = findMission(alt);
+                    if (m?.times?.full?.avg_mins) { s += m.times.full.avg_mins; n++; }
+                }
+                if (n > 0) total += s / n;
+            } else {
+                const m = findMission(entry);
+                if (m?.times?.full?.avg_mins) total += m.times.full.avg_mins;
+            }
+        }
+        return total;
+    }
+
+    function SharedQuestBlock({ quests, findMission, onSelectMission, label }) {
+        if (!quests || quests.length === 0) return null;
+        return (
+            <div className="mb-2 border-l-2 border-stone-700 pl-2">
+                {label && <div className="text-[9px] text-gray-600 uppercase tracking-wider mb-1 pl-1">{label}</div>}
+                {quests.map((entry, i) => (
+                    <QuestEntry key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} />
+                ))}
+            </div>
+        );
+    }
+
+    function BranchingStoryView({ story, pathData, onSelectMission }) {
+        const missionsByName = useMemo(() => {
+            const map = {};
+            for (const m of story.missions) map[m.name] = m;
+            return map;
+        }, [story.missions]);
+
+        function findMission(name) { return missionsByName[name]; }
+
+        return (
+            <div className="mb-4">
+                {pathData.parts.map((part, pi) => {
+                    const pathKeys = Object.keys(part.paths);
+                    const hasMultiplePaths = pathKeys.length >= 2;
+                    const sharedTime = questListTime(part.shared, findMission);
+                    const tailTime = part.sharedTail ? questListTime(part.sharedTail, findMission) : 0;
+
+                    const pathTimes = {};
+                    for (const k of pathKeys) {
+                        pathTimes[k] = questListTime(part.paths[k], findMission);
+                    }
+
+                    const hasAnyTime = sharedTime > 0 || tailTime > 0 || Object.values(pathTimes).some(t => t > 0);
+
+                    return (
+                        <div key={pi} className="mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <h4 className="text-xs text-gw2-gold uppercase tracking-wider font-bold">
+                                    {part.name}
+                                </h4>
+                                {hasAnyTime && (
+                                    <span className="text-[10px] text-gray-500">
+                                        {(sharedTime + tailTime) > 0 && `shared ${formatTime(sharedTime + tailTime)}`}
+                                        {hasMultiplePaths && ` + ~${formatTime(pathTimes[pathKeys[0]])} per path`}
+                                    </span>
+                                )}
+                            </div>
+
+                            <SharedQuestBlock quests={part.shared} findMission={findMission} onSelectMission={onSelectMission} />
+
+                            {hasMultiplePaths && (
+                                <div className={`grid gap-2 ${pathKeys.length <= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-5'} grid-cols-1`}>
+                                    {pathKeys.map(pathLabel => {
+                                        const pathTime = pathTimes[pathLabel];
+                                        return (
+                                            <div key={pathLabel} className="bg-stone-800/40 rounded-lg p-2">
+                                                <div className="flex items-center justify-between mb-1.5 px-1">
+                                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider truncate">{pathLabel}</span>
+                                                    {pathTime > 0 && (
+                                                        <span className="text-[10px] text-gw2-gold-light ml-1 shrink-0">{formatTime(pathTime)}</span>
+                                                    )}
+                                                </div>
+                                                {part.paths[pathLabel].map((entry, i) => (
+                                                    <QuestEntryCompact key={i} entry={entry} findMission={findMission} onSelectMission={onSelectMission} />
+                                                ))}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            <SharedQuestBlock quests={part.sharedTail} findMission={findMission} onSelectMission={onSelectMission} label="continues..." />
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    function RaceSelector({ selected, onSelect, themeColor }) {
+        return (
+            <div className="card-bg rounded-lg border border-stone-800 p-3 sm:p-4 mb-6">
+                <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2">Select Your Race</p>
+                <div className="flex flex-wrap gap-1.5">
+                    <button
+                        onClick={() => onSelect(null)}
+                        className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
+                            !selected ? 'font-bold text-stone-900' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                        }`}
+                        style={!selected ? { background: themeColor } : {}}
+                    >All Paths</button>
+                    {GW2_RACES.map(race => (
+                        <button key={race}
+                            onClick={() => onSelect(race)}
+                            className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
+                                selected === race ? 'font-bold text-stone-900' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
+                            }`}
+                            style={selected === race ? { background: themeColor } : {}}
+                        >{race}</button>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    function SubmitForm({ missionId, missionName, onSubmitted }) {
+        const [category, setCategory] = useState('full');
+        const [duration, setDuration] = useState('');
+        const [status, setStatus] = useState(null);
+        const [submitting, setSubmitting] = useState(false);
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const mins = parseFloat(duration);
+            if (isNaN(mins) || mins < 1 || mins > 480) {
+                setStatus({ type: 'error', message: 'Enter a time between 1 and 480 minutes' });
+                return;
+            }
+            setSubmitting(true);
+            setStatus(null);
+            try {
+                const res = await fetch(`${API_BASE}/missions/${missionId}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ category, duration_mins: mins }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    setStatus({ type: 'error', message: data.error || 'Submission failed' });
+                } else {
+                    setStatus({ type: 'success', message: 'Time submitted!' });
+                    setDuration('');
+                    if (onSubmitted) onSubmitted();
+                }
+            } catch (err) {
+                setStatus({ type: 'error', message: 'Network error' });
+            }
+            setSubmitting(false);
+        }
+
+        return (
+            <form onSubmit={handleSubmit} className="card-bg rounded-lg border border-stone-800 p-4 mt-4">
+                <h4 className="text-sm font-bold text-gray-300 mb-3 font-display">Submit Your Time</h4>
+                <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="flex bg-stone-800 rounded-lg p-0.5">
+                        <button type="button"
+                            onClick={() => setCategory('full')}
+                            className={`px-3 py-1.5 text-xs rounded-md transition-colors ${category === 'full' ? 'bg-gw2-gold text-stone-900 font-bold' : 'text-gray-400 hover:text-gray-200'}`}>
+                            Full Experience
+                        </button>
+                        <button type="button"
+                            onClick={() => setCategory('speed')}
+                            className={`px-3 py-1.5 text-xs rounded-md transition-colors ${category === 'speed' ? 'bg-yellow-500 text-stone-900 font-bold' : 'text-gray-400 hover:text-gray-200'}`}>
+                            Speedrun
+                        </button>
+                    </div>
+                    <div className="flex gap-2 flex-1">
+                        <input
+                            type="number" min="1" max="480" step="1"
+                            value={duration} onChange={e => setDuration(e.target.value)}
+                            placeholder="Minutes"
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 w-24 focus:outline-none focus:border-gw2-gold-dark"
+                        />
+                        <button type="submit" disabled={submitting}
+                            className="gw2-gradient text-stone-900 font-bold text-sm px-4 py-1.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-1.5">
+                            <Send size={14} />
+                            Submit
+                        </button>
+                    </div>
+                </div>
+                {status && (
+                    <div className={`mt-2 text-xs flex items-center gap-1 ${status.type === 'error' ? 'text-red-400' : 'text-green-400'}`}>
+                        {status.type === 'error' ? <AlertCircle size={12} /> : <CheckCircle size={12} />}
+                        {status.message}
+                    </div>
+                )}
+            </form>
+        );
+    }
+
+    function TimeStat({ label, value, icon, colorClass }) {
+        return (
+            <div className="text-center">
+                <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">{label}</p>
+                <p className={`text-lg font-bold ${colorClass || 'text-gray-200'}`}>
+                    {value != null ? formatTime(value) : '—'}
+                </p>
+            </div>
+        );
+    }
+
+    // Collapse race-variant duplicates (e.g. SotO/JW prologues) into one mission
+    function deduplicateMissions(missions) {
+        const seen = new Map();
+        for (const m of missions) {
+            if (!seen.has(m.name)) { seen.set(m.name, { ...m, _count: 1 }); continue; }
+            const existing = seen.get(m.name);
+            existing._count++;
+            const ef = existing.times?.full?.avg_mins || 0;
+            const mf = m.times?.full?.avg_mins || 0;
+            const es = existing.times?.speed?.avg_mins || 0;
+            const ms = m.times?.speed?.avg_mins || 0;
+            if (mf && ef) {
+                existing.times = { ...existing.times, full: { ...existing.times.full, avg_mins: (ef * (existing._count - 1) + mf) / existing._count } };
+            }
+            if (ms && es) {
+                existing.times = { ...existing.times, speed: { ...existing.times.speed, avg_mins: (es * (existing._count - 1) + ms) / existing._count } };
+            }
+        }
+        return [...seen.values()];
+    }
+
+    // --- Playthrough stats (single-playthrough quest count & average path time) ---
+
+    function countQuestList(list, byName) {
+        let quests = 0, fullMins = 0, speedMins = 0;
+        for (const entry of list) {
+            quests += 1;
+            if (Array.isArray(entry)) {
+                let af = 0, as = 0, n = 0;
+                for (const alt of entry) {
+                    const mi = byName[alt];
+                    if (mi) { af += mi.times?.full?.avg_mins || 0; as += mi.times?.speed?.avg_mins || 0; n++; }
+                }
+                if (n > 0) { fullMins += af / n; speedMins += as / n; }
+            } else {
+                const mi = byName[entry];
+                if (mi) { fullMins += mi.times?.full?.avg_mins || 0; speedMins += mi.times?.speed?.avg_mins || 0; }
+            }
+        }
+        return { quests, fullMins, speedMins };
+    }
+
+    function storyPlaythroughStats(story) {
+        const pd = BIOGRAPHY_PATHS[story.id];
+        if (!pd) {
+            return {
+                quests: story.missions.length,
+                fullMins: story.missions.reduce((acc, m) => acc + (m.times?.full?.avg_mins || 0), 0),
+                speedMins: story.missions.reduce((acc, m) => acc + (m.times?.speed?.avg_mins || 0), 0),
+            };
+        }
+        const byName = {};
+        for (const mi of story.missions) byName[mi.name] = mi;
+        let quests = 0, fullMins = 0, speedMins = 0;
+        for (const part of pd.parts) {
+            const sh = countQuestList(part.shared, byName);
+            quests += sh.quests; fullMins += sh.fullMins; speedMins += sh.speedMins;
+
+            const pKeys = Object.keys(part.paths);
+            if (pKeys.length > 0) {
+                const firstPath = countQuestList(part.paths[pKeys[0]], byName);
+                quests += firstPath.quests;
+                let pf = 0, ps = 0;
+                for (const pk of pKeys) {
+                    const s = countQuestList(part.paths[pk], byName);
+                    pf += s.fullMins; ps += s.speedMins;
+                }
+                fullMins += pf / pKeys.length;
+                speedMins += ps / pKeys.length;
+            }
+
+            if (part.sharedTail) {
+                const tail = countQuestList(part.sharedTail, byName);
+                quests += tail.quests; fullMins += tail.fullMins; speedMins += tail.speedMins;
+            }
+        }
+        return { quests: quests, fullMins: fullMins, speedMins: speedMins };
+    }
+
+    function computePlaythroughStats(storyList) {
+        const raceGroups = {};
+        const sharedList = [];
+        for (const story of storyList) {
+            if (story.races && story.races.length > 0) {
+                for (const race of story.races) {
+                    if (!raceGroups[race]) raceGroups[race] = [];
+                    raceGroups[race].push(story);
+                }
+            } else {
+                sharedList.push(story);
+            }
+        }
+        let tq = 0, tf = 0, ts = 0;
+        for (const story of sharedList) {
+            const stats = storyPlaythroughStats(story);
+            tq += stats.quests;
+            tf += stats.fullMins;
+            ts += stats.speedMins;
+        }
+        const raceKeys = Object.keys(raceGroups);
+        if (raceKeys.length > 0) {
+            let rq = 0, rf = 0, rs = 0;
+            for (const race of raceKeys) {
+                for (const story of raceGroups[race]) {
+                    const stats = storyPlaythroughStats(story);
+                    rq += stats.quests;
+                    rf += stats.fullMins;
+                    rs += stats.speedMins;
+                }
+            }
+            tq += rq / raceKeys.length;
+            tf += rf / raceKeys.length;
+            ts += rs / raceKeys.length;
+        }
+        return { quests: Math.round(tq), fullMins: tf, speedMins: ts };
+    }
+
+    // --- Views ---
+
+    function HomeView({ onSelectSeason }) {
+        const [seasons, setSeasons] = useState(null);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            Promise.all([
+                apiFetch('/seasons'),
+                apiFetch('/seasons/' + MY_STORY_SEASON_ID),
+                ...DEDUP_SEASON_IDS.map(id => apiFetch('/seasons/' + id))
+            ]).then(function(results) {
+                var allSeasons = results[0];
+                var myStory = results[1];
+                var adjusted = computePlaythroughStats(myStory.stories);
+                var dedupMap = {};
+                for (var i = 0; i < DEDUP_SEASON_IDS.length; i++) {
+                    var sd = results[2 + i];
+                    var mc = 0, tf = 0, ts = 0;
+                    for (var j = 0; j < sd.stories.length; j++) {
+                        var dm = deduplicateMissions(sd.stories[j].missions);
+                        mc += dm.length;
+                        for (var k = 0; k < dm.length; k++) {
+                            tf += dm[k].times?.full?.avg_mins || 0;
+                            ts += dm[k].times?.speed?.avg_mins || 0;
+                        }
+                    }
+                    dedupMap[DEDUP_SEASON_IDS[i]] = { mission_count: mc, total_full_mins: tf, total_speed_mins: ts };
+                }
+                setSeasons(allSeasons.map(function(se) {
+                    if (se.id === MY_STORY_SEASON_ID) {
+                        return Object.assign({}, se, {
+                            mission_count: adjusted.quests,
+                            total_full_mins: adjusted.fullMins,
+                            total_speed_mins: adjusted.speedMins
+                        });
+                    }
+                    if (dedupMap[se.id]) {
+                        return Object.assign({}, se, dedupMap[se.id]);
+                    }
+                    return se;
+                }));
+            }).catch(function(err) { setError(err.message || String(err)); });
+        }, []);
+
+        if (error) return <ErrorBox message={error} />;
+        if (!seasons) return <Loading />;
+
+        return (
+            <div>
+                <TotalSummary seasons={seasons} />
+                <div className="space-y-3">
+                    {seasons.map(s => (
+                        <SeasonCard key={s.id} season={s} onSelectSeason={onSelectSeason} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    function SeasonView({ seasonId, onSelectMission, onBack }) {
+        const [season, setSeason] = useState(null);
+        const [error, setError] = useState(null);
+        const [selectedRace, setSelectedRace] = useState(null);
+
+        useEffect(() => {
+            setSeason(null);
+            setSelectedRace(null);
+            apiFetch(`/seasons/${seasonId}`).then(setSeason).catch(e => setError(e.message));
+        }, [seasonId]);
+
+        if (error) return <ErrorBox message={error} />;
+        if (!season) return <Loading />;
+
+        const color = STORY_COLORS[season.name] || '#c8a84e';
+        const isMyStory = seasonId === MY_STORY_SEASON_ID;
+
+        const filteredStories = isMyStory && selectedRace
+            ? season.stories.filter(st => !st.races || st.races.includes(selectedRace))
+            : season.stories;
+
+        const groups = {};
+        for (const story of filteredStories) {
+            const g = story.group_name || 'Missions';
+            if (!groups[g]) groups[g] = [];
+            groups[g].push(story);
+        }
+
+        const ptStats = isMyStory
+            ? computePlaythroughStats(filteredStories)
+            : null;
+        const totalQuests = ptStats
+            ? ptStats.quests
+            : filteredStories.reduce((s, st) => s + deduplicateMissions(st.missions).length, 0);
+        const totalFull = ptStats
+            ? ptStats.fullMins
+            : filteredStories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.full?.avg_mins || 0), 0), 0);
+
+        return (
+            <div>
+                <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4">
+                    <ArrowLeft size={16} /> All Seasons
+                </button>
+                <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg mb-6"
+                    style={{ borderLeft: `4px solid ${color}` }}>
+                    <div className="p-4 sm:p-6" style={{ background: `linear-gradient(to right, ${color}20, transparent)` }}>
+                        <h2 className="text-xl sm:text-2xl font-bold font-display text-gray-100">{season.name}</h2>
+                        <div className="flex items-center gap-4 mt-2">
+                            <span className="text-sm text-gray-400">
+                                {totalQuests} quests
+                            </span>
+                            {totalFull > 0 && (
+                                <span className="flex items-center gap-1 text-sm text-gw2-gold-light">
+                                    <BookOpen size={14} /> {formatTimeVerbose(totalFull)}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {isMyStory && (
+                    <RaceSelector selected={selectedRace} onSelect={setSelectedRace} themeColor={color} />
+                )}
+
+                {Object.entries(groups).map(([groupName, stories]) => {
+                    const gStats = isMyStory ? computePlaythroughStats(stories) : null;
+                    const groupFull = gStats
+                        ? gStats.fullMins
+                        : stories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.full?.avg_mins || 0), 0), 0);
+                    const groupSpeed = gStats
+                        ? gStats.speedMins
+                        : stories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.speed?.avg_mins || 0), 0), 0);
+                    return (
+                        <div key={groupName} className="mb-6">
+                            <div className="flex items-center justify-between mb-2 px-1">
+                                <h3 className="text-xs text-gw2-gold uppercase tracking-wider font-bold">{groupName}</h3>
+                                <div className="flex items-center gap-3">
+                                    {groupFull > 0 && (
+                                        <span className="flex items-center gap-1 text-xs text-gw2-gold-light">
+                                            <BookOpen size={12} /> {formatTime(groupFull)}
+                                        </span>
+                                    )}
+                                    {groupSpeed > 0 && (
+                                        <span className="flex items-center gap-1 text-xs text-yellow-400">
+                                            <Zap size={12} /> {formatTime(groupSpeed)}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="card-bg rounded-lg border border-stone-800 p-3">
+                                {stories.map(st => {
+                                    const pathData = BIOGRAPHY_PATHS[st.id];
+                                    if (pathData) {
+                                        return <BranchingStoryView key={st.id} story={st} pathData={pathData} onSelectMission={onSelectMission} />;
+                                    }
+                                    return <StoryGroup key={st.id} story={st} onSelectMission={onSelectMission} />;
+                                })}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    function MissionView({ missionId, onBack }) {
+        const [mission, setMission] = useState(null);
+        const [error, setError] = useState(null);
+
+        function reload() {
+            apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
+        }
+
+        useEffect(() => { setMission(null); reload(); }, [missionId]);
+
+        if (error) return <ErrorBox message={error} />;
+        if (!mission) return <Loading />;
+
+        const color = STORY_COLORS[mission.season_name] || '#c8a84e';
+        const full = mission.times.full;
+        const speed = mission.times.speed;
+
+        return (
+            <div>
+                <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4">
+                    <ArrowLeft size={16} /> {mission.season_name}
+                </button>
+                <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg"
+                    style={{ borderLeft: `4px solid ${color}` }}>
+                    <div className="p-4 sm:p-6" style={{ background: `linear-gradient(to right, ${color}20, transparent)` }}>
+                        <p className="text-xs text-gray-500 mb-1">{mission.story_name} · {mission.group_name}</p>
+                        <h2 className="text-xl sm:text-2xl font-bold font-display text-gray-100">{mission.name}</h2>
+                        {mission.races && (
+                            <span className="inline-block text-[10px] bg-stone-700 text-gray-400 px-1.5 py-0.5 rounded mt-2">
+                                {mission.races.join(', ')} only
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="border-t border-stone-800 p-4 sm:p-6">
+                        <div className="grid grid-cols-2 gap-6">
+                            <div>
+                                <div className="flex items-center gap-1.5 mb-3">
+                                    <BookOpen size={16} className="text-gw2-gold-light" />
+                                    <h4 className="text-sm font-bold text-gw2-gold-light font-display">Full Experience</h4>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <TimeStat label="Seed" value={full.seed_mins} colorClass="text-gray-300" />
+                                    <TimeStat label="Average" value={full.avg_mins} colorClass="text-gw2-gold-light" />
+                                    <TimeStat label="Fastest" value={full.min_mins} colorClass="text-green-400" />
+                                    <TimeStat label="Slowest" value={full.max_mins} colorClass="text-red-400" />
+                                </div>
+                                <p className="text-[10px] text-gray-600 mt-2 text-center">
+                                    {full.submissions} submission{full.submissions !== 1 ? 's' : ''}
+                                </p>
+                            </div>
+
+                            <div>
+                                <div className="flex items-center gap-1.5 mb-3">
+                                    <Zap size={16} className="text-yellow-400" />
+                                    <h4 className="text-sm font-bold text-yellow-400 font-display">Speedrun</h4>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <TimeStat label="Seed" value={speed.seed_mins} colorClass="text-gray-300" />
+                                    <TimeStat label="Average" value={speed.avg_mins} colorClass="text-yellow-400" />
+                                    <TimeStat label="Fastest" value={speed.min_mins} colorClass="text-green-400" />
+                                    <TimeStat label="Slowest" value={speed.max_mins} colorClass="text-red-400" />
+                                </div>
+                                <p className="text-[10px] text-gray-600 mt-2 text-center">
+                                    {speed.submissions} submission{speed.submissions !== 1 ? 's' : ''}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <SubmitForm missionId={mission.id} missionName={mission.name} onSubmitted={reload} />
+            </div>
+        );
+    }
+
+    function AboutView() {
+        return (
+            <div>
+                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">About GW2 Story Times</h2>
+                    <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
+                        <p>
+                            A community-driven database of Guild Wars 2 story mission completion times.
+                            Browse estimated playtimes for every story quest, from the Personal Story through the latest expansion.
+                        </p>
+                        <div>
+                            <h3 className="text-gw2-gold font-bold font-display mb-1">Two Categories</h3>
+                            <p>
+                                <span className="text-gw2-gold-light font-medium">Full Experience</span> — watching all cutscenes, reading all dialogue, exploring at a relaxed pace.
+                            </p>
+                            <p className="mt-1">
+                                <span className="text-yellow-400 font-medium">Speedrun</span> — skipping everything, optimal pathing, getting through as fast as possible.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-gw2-gold font-bold font-display mb-1">Methodology</h3>
+                            <p>
+                                Initial seed times are sourced from YouTube walkthroughs — averaging 1–3 recordings per mission.
+                                Community submissions refine these estimates over time.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 className="text-gw2-gold font-bold font-display mb-1">Open API</h3>
+                            <p>
+                                All data is available via a free REST API with open CORS.
+                                Any community tool can consume it.
+                            </p>
+                            <div className="mt-2 bg-stone-800 rounded-lg p-3 text-xs font-mono text-gray-400">
+                                <p>GET /v1/seasons</p>
+                                <p>GET /v1/seasons/:id</p>
+                                <p>GET /v1/missions</p>
+                                <p>GET /v1/missions/:id</p>
+                                <p>POST /v1/missions/:id/submit</p>
+                                <p>GET /v1/estimate?missions=id1,id2,...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    function Loading() {
+        return (
+            <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-2 border-gw2-gold-dark border-t-gw2-gold rounded-full animate-spin" />
+            </div>
+        );
+    }
+
+    function ErrorBox({ message }) {
+        return (
+            <div className="card-bg rounded-lg border border-red-900/50 bg-red-900/20 p-4 text-red-200 text-sm flex items-center gap-2">
+                <AlertCircle size={16} />
+                {message}
+            </div>
+        );
+    }
+
+    // --- App ---
+
+    function App() {
+        const [view, setView] = useState('home');
+        const [viewId, setViewId] = useState(null);
+        const [history, setHistory] = useState([]);
+
+        function navigate(v, id = null) {
+            setHistory(prev => [...prev, { view, viewId }]);
+            setView(v);
+            setViewId(id);
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            const prev = history[history.length - 1];
+            if (prev) {
+                setHistory(h => h.slice(0, -1));
+                setView(prev.view);
+                setViewId(prev.viewId);
+                window.scrollTo(0, 0);
+            } else {
+                setView('home');
+                setViewId(null);
+            }
+        }
+
+        return (
+            <div className="min-h-screen pb-12">
+                <Navbar onNavigate={(v) => navigate(v)} view={view} />
+                <div className="max-w-4xl mx-auto px-4 py-8">
+                    {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onSelectMission={(id) => navigate('mission', id)} onBack={goBack} />}
+                    {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} />}
+                    {view === 'about' && <AboutView />}
+                </div>
+                <footer className="text-center text-xs text-gray-600 py-8">
+                    <a href="https://github.com" className="hover:text-gray-400">GitHub</a>
+                    {' · '}
+                    <span>Data sourced from the <a href="https://wiki.guildwars2.com" className="hover:text-gray-400">GW2 Wiki</a> and community submissions</span>
+                </footer>
+            </div>
+        );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
