@@ -15,8 +15,8 @@ services:
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.gw2-st-api.rule=Host(`api.gw2storytimes.com`)"
       - "traefik.http.routers.gw2-st-api.entrypoints=websecure"
-      - "traefik.http.routers.gw2-st.rule=Host(`gw2storytimes.com`)"
-      - "traefik.http.routers.gw2-st.entrypoints=websecure"
+      - "traefik.http.routers.gw2-storytimes.rule=Host(`gw2storytimes.com`)"
+      - "traefik.http.routers.gw2-storytimes.entrypoints=websecure"
       - "traefik.http.services.gw2-st-api.loadbalancer.server.port=3000"
     networks:
       - proxy
