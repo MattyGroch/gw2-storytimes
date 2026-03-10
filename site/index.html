@@ -344,6 +344,7 @@
                                 season_id: m.season_id,
                                 season_name: m.season_name,
                                 group_name: m.group_name,
+                                races: m.races || null,
                                 mission_count: 0,
                             });
                         }
@@ -364,10 +365,11 @@
         }
 
         function selectResult(r) {
+            const race = r.races?.length === 1 ? r.races[0] : null;
             if (r.type === 'story') {
-                onNavigate('season', r.season_id, null, { type: 'story', name: r.name });
+                onNavigate('season', r.season_id, null, { type: 'story', name: r.name, race });
             } else {
-                onNavigate('season', r.season_id, null, { type: 'mission', missionId: r.id });
+                onNavigate('season', r.season_id, null, { type: 'mission', missionId: r.id, race });
             }
             setDropdownOpen(false);
             setQuery('');
@@ -1342,6 +1344,7 @@
 
         useEffect(() => {
             if (!season || !highlight) return;
+            if (highlight.race) setSelectedRace(highlight.race);
             if (highlight.type === 'mission' && highlight.missionId) {
                 openMission(highlight.missionId);
                 onHighlightDone?.();
@@ -1888,6 +1891,8 @@
                     <a href="/tos.html" className="hover:text-gray-400 transition-colors">Terms of Service</a>
                     <span className="mx-1.5">·</span>
                     <a href="https://github.com/MattyGroch/gw2-storytimes" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-colors">GitHub</a>
+                    <span className="mx-1.5">·</span>
+                    <a href="/admin.html" className="hover:text-gray-400 transition-colors">Admin</a>
                 </footer>
             </div>
         );
