@@ -132,4 +132,44 @@ router.post('/missions', (req, res) => {
   res.status(201).json({ message: 'Mission created', id, manual_id: id });
 });
 
+router.patch('/missions/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid mission ID' });
+  }
+
+  const fields = {};
+  if (req.body.name !== undefined) fields.name = String(req.body.name).trim();
+  if (req.body.seed_full_mins !== undefined) fields.seed_full_mins = req.body.seed_full_mins === null ? null : parseFloat(req.body.seed_full_mins);
+  if (req.body.seed_speed_mins !== undefined) fields.seed_speed_mins = req.body.seed_speed_mins === null ? null : parseFloat(req.body.seed_speed_mins);
+
+  if (!Object.keys(fields).length) {
+    return res.status(400).json({ error: 'No fields to update' });
+  }
+
+  const updated = db.updateMission(id, fields);
+  if (!updated) {
+    return res.status(404).json({ error: 'Mission not found' });
+  }
+
+  res.json({ message: 'Mission updated' });
+});
+
+router.delete('/missions/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid mission ID' });
+  }
+
+  const result = db.deleteManualMission(id);
+  if (!result.deleted) {
+    if (result.reason === 'not_manual') {
+      return res.status(403).json({ error: 'Only manual missions can be deleted' });
+    }
+    return res.status(404).json({ error: 'Mission not found' });
+  }
+
+  res.json({ message: 'Mission deleted' });
+});
+
 module.exports = router;

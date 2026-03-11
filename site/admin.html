@@ -400,6 +400,8 @@
         const [error, setError] = useState(null);
         const [submitting, setSubmitting] = useState(false);
         const [form, setForm] = useState({ name: '', order: '', seed_full_mins: '', seed_speed_mins: '' });
+        const [editing, setEditing] = useState({ id: null, field: null, value: '' });
+        const [deleting, setDeleting] = useState(null);
 
         useEffect(() => {
             (async () => {
@@ -468,6 +470,52 @@
                 alert('Network error');
             }
             setSubmitting(false);
+        }
+
+        function startEdit(m, field) {
+            const val = field === 'name' ? m.name : (m[field] != null ? String(m[field]) : '');
+            setEditing({ id: m.id, field, value: val });
+        }
+
+        async function saveEdit() {
+            if (editing.id == null) return;
+            const body = {};
+            if (editing.field === 'name') {
+                if (!editing.value.trim()) { setEditing({ id: null, field: null, value: '' }); return; }
+                body.name = editing.value.trim();
+            } else {
+                body[editing.field] = editing.value === '' ? null : parseFloat(editing.value);
+            }
+            try {
+                const res = await adminFetch(`/missions/${editing.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(body),
+                });
+                if (res.ok) loadMissions(selectedStory);
+                else alert((await res.json()).error || 'Update failed');
+            } catch { alert('Network error'); }
+            setEditing({ id: null, field: null, value: '' });
+        }
+
+        function handleEditKeyDown(e) {
+            if (e.key === 'Enter') saveEdit();
+            else if (e.key === 'Escape') setEditing({ id: null, field: null, value: '' });
+        }
+
+        async function handleDeleteMission(m) {
+            if (!confirm(`Delete manual mission #${m.id} "${m.name}"?\nAny submissions for this mission will also be deleted.`)) return;
+            setDeleting(m.id);
+            try {
+                const res = await adminFetch(`/missions/${m.id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    loadMissions(selectedStory);
+                    const updated = await adminFetch('/stories');
+                    if (updated.ok) setSeasons(await updated.json());
+                } else {
+                    alert((await res.json()).error || 'Delete failed');
+                }
+            } catch { alert('Network error'); }
+            setDeleting(null);
         }
 
         if (loading) return <div className="max-w-6xl mx-auto px-4 py-6 text-gray-500 text-sm">Loading...</div>;
@@ -548,26 +596,59 @@
                                             <th className="px-3 py-2.5 font-medium">Seed Full</th>
                                             <th className="px-3 py-2.5 font-medium">Seed Speed</th>
                                             <th className="px-3 py-2.5 font-medium">Type</th>
+                                            <th className="px-3 py-2.5 font-medium w-16"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {missionsLoading ? (
-                                            <tr><td colSpan={6} className="px-3 py-8 text-center text-gray-500">Loading...</td></tr>
+                                            <tr><td colSpan={7} className="px-3 py-8 text-center text-gray-500">Loading...</td></tr>
                                         ) : missions.length === 0 ? (
-                                            <tr><td colSpan={6} className="px-3 py-8 text-center text-gray-500">No missions — add one below</td></tr>
+                                            <tr><td colSpan={7} className="px-3 py-8 text-center text-gray-500">No missions — add one below</td></tr>
                                         ) : missions.map(m => (
                                             <tr key={m.id} className="border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors">
                                                 <td className="px-3 py-2 text-gray-500 font-mono">{m.id}</td>
                                                 <td className="px-3 py-2 text-gray-500 font-mono">{m.order}</td>
-                                                <td className="px-3 py-2 text-gray-200">{m.name}</td>
-                                                <td className="px-3 py-2 text-gray-500 font-mono">{m.seed_full_mins != null ? m.seed_full_mins + 'm' : '—'}</td>
-                                                <td className="px-3 py-2 text-gray-500 font-mono">{m.seed_speed_mins != null ? m.seed_speed_mins + 'm' : '—'}</td>
+                                                <td className="px-3 py-2 text-gray-200 cursor-pointer" onClick={() => startEdit(m, 'name')}>
+                                                    {editing.id === m.id && editing.field === 'name' ? (
+                                                        <input type="text" value={editing.value} autoFocus
+                                                            onChange={e => setEditing(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEdit} onKeyDown={handleEditKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-full focus:outline-none"
+                                                        />
+                                                    ) : m.name}
+                                                </td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono cursor-pointer" onClick={() => startEdit(m, 'seed_full_mins')}>
+                                                    {editing.id === m.id && editing.field === 'seed_full_mins' ? (
+                                                        <input type="number" step="0.1" value={editing.value} autoFocus
+                                                            onChange={e => setEditing(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEdit} onKeyDown={handleEditKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-16 focus:outline-none"
+                                                        />
+                                                    ) : (m.seed_full_mins != null ? m.seed_full_mins + 'm' : '—')}
+                                                </td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono cursor-pointer" onClick={() => startEdit(m, 'seed_speed_mins')}>
+                                                    {editing.id === m.id && editing.field === 'seed_speed_mins' ? (
+                                                        <input type="number" step="0.1" value={editing.value} autoFocus
+                                                            onChange={e => setEditing(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEdit} onKeyDown={handleEditKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-16 focus:outline-none"
+                                                        />
+                                                    ) : (m.seed_speed_mins != null ? m.seed_speed_mins + 'm' : '—')}
+                                                </td>
                                                 <td className="px-3 py-2">
                                                     {m.manual_id ? (
                                                         <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-emerald-900/60 text-emerald-300">Manual</span>
                                                     ) : (
                                                         <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-stone-700 text-gray-400">API</span>
                                                     )}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {m.manual_id ? (
+                                                        <button onClick={() => handleDeleteMission(m)} disabled={deleting === m.id}
+                                                            className="text-red-500/60 hover:text-red-400 transition-colors disabled:opacity-30 text-xs font-medium">
+                                                            {deleting === m.id ? '...' : 'Delete'}
+                                                        </button>
+                                                    ) : null}
                                                 </td>
                                             </tr>
                                         ))}

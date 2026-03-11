@@ -393,6 +393,30 @@ function getManualMissionsByStoryId(storyId) {
   `).all(storyId);
 }
 
+function updateMission(id, fields) {
+  const sets = [];
+  const params = [];
+  if (fields.name !== undefined) { sets.push('name = ?'); params.push(fields.name); }
+  if (fields.seed_full_mins !== undefined) { sets.push('seed_full_mins = ?'); params.push(fields.seed_full_mins); }
+  if (fields.seed_speed_mins !== undefined) { sets.push('seed_speed_mins = ?'); params.push(fields.seed_speed_mins); }
+  if (!sets.length) return false;
+  params.push(id);
+  const result = getDb().prepare(`UPDATE missions SET ${sets.join(', ')} WHERE id = ?`).run(...params);
+  return result.changes > 0;
+}
+
+function deleteManualMission(id) {
+  const mission = getDb().prepare('SELECT manual_id FROM missions WHERE id = ?').get(id);
+  if (!mission || mission.manual_id == null) return { deleted: false, reason: 'not_manual' };
+  const d = getDb();
+  const run = d.transaction(() => {
+    d.prepare('DELETE FROM submissions WHERE mission_id = ?').run(id);
+    d.prepare('DELETE FROM missions WHERE id = ?').run(id);
+  });
+  run();
+  return { deleted: true };
+}
+
 function deleteSubmission(id) {
   const result = getDb().prepare('DELETE FROM submissions WHERE id = ?').run(id);
   return result.changes > 0;
@@ -426,4 +450,6 @@ module.exports = {
   getNextManualId,
   createManualMission,
   getManualMissionsByStoryId,
+  updateMission,
+  deleteManualMission,
 };
