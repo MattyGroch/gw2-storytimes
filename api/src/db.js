@@ -66,6 +66,10 @@ function initSchema() {
   if (!cols.includes('description')) {
     db.exec("ALTER TABLE missions ADD COLUMN description TEXT");
   }
+  if (!cols.includes('manual_id')) {
+    db.exec("ALTER TABLE missions ADD COLUMN manual_id INTEGER");
+    db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_missions_manual_id ON missions(manual_id) WHERE manual_id IS NOT NULL");
+  }
 }
 
 // ---- Season queries ----
@@ -141,7 +145,8 @@ const MISSION_SELECT = `
     m."order",
     m.seed_full_mins,
     m.seed_speed_mins,
-    m.description
+    m.description,
+    m.manual_id
   FROM missions m
   JOIN stories st ON st.id = m.story_id
   JOIN seasons s ON s.id = st.season_id
@@ -166,6 +171,10 @@ function getMissionById(id) {
   const mission = getDb().prepare(`
     ${MISSION_SELECT}
     WHERE m.id = ?
+  `).get(id)
+    || getDb().prepare(`
+    ${MISSION_SELECT}
+    WHERE m.manual_id = ?
   `).get(id);
   if (!mission) return null;
   return formatMission(mission);
@@ -208,6 +217,7 @@ function formatMission(row) {
     order: row.order,
     races: row.races ? JSON.parse(row.races) : null,
     description: row.description || null,
+    manual_id: row.manual_id || null,
     times: {
       full: {
         seed_mins: row.seed_full_mins,
@@ -251,7 +261,7 @@ function hasRecentSubmission(ipHash, missionId, category) {
 }
 
 function missionExists(id) {
-  return !!getDb().prepare('SELECT 1 FROM missions WHERE id = ?').get(id);
+  return !!getDb().prepare('SELECT 1 FROM missions WHERE id = ? OR manual_id = ?').get(id, id);
 }
 
 // ---- Seed import ----
@@ -336,6 +346,41 @@ function getSubmissionCount({ mission_id, category, source, ip_hash } = {}) {
   return getDb().prepare(`SELECT COUNT(*) AS total FROM submissions ${where}`).get(...params).total;
 }
 
+function getStoriesWithMissionCounts() {
+  return getDb().prepare(`
+    SELECT
+      s.id AS season_id, s.name AS season_name, s."order" AS season_order,
+      st.id AS story_id, st.name AS story_name, st.group_name, st."order" AS story_order,
+      COUNT(m.id) AS mission_count
+    FROM seasons s
+    JOIN stories st ON st.season_id = s.id
+    LEFT JOIN missions m ON m.story_id = st.id
+    GROUP BY st.id
+    ORDER BY s."order", st."order"
+  `).all();
+}
+
+function getNextManualId() {
+  const row = getDb().prepare('SELECT MAX(id) AS max_id FROM missions WHERE id >= 10000').get();
+  return (row.max_id || 9999) + 1;
+}
+
+function createManualMission(storyId, name, order, seedFullMins, seedSpeedMins, description) {
+  const id = getNextManualId();
+  getDb().prepare(`
+    INSERT INTO missions (id, story_id, name, "order", seed_full_mins, seed_speed_mins, description, manual_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(id, storyId, name, order, seedFullMins || null, seedSpeedMins || null, description || null, id);
+  return id;
+}
+
+function getManualMissionsByStoryId(storyId) {
+  return getDb().prepare(`
+    SELECT id, name, "order", seed_full_mins, seed_speed_mins, description, manual_id
+    FROM missions WHERE story_id = ? ORDER BY "order"
+  `).all(storyId);
+}
+
 function deleteSubmission(id) {
   const result = getDb().prepare('DELETE FROM submissions WHERE id = ?').run(id);
   return result.changes > 0;
@@ -365,4 +410,8 @@ module.exports = {
   getSubmissionCount,
   deleteSubmissions,
   deleteSubmission,
+  getStoriesWithMissionCounts,
+  getNextManualId,
+  createManualMission,
+  getManualMissionsByStoryId,
 };

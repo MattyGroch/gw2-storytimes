@@ -46,6 +46,35 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
+function reconcileManualMissions(d, seedMissions) {
+  const manualMissions = d.prepare(
+    'SELECT id, story_id, "order", manual_id FROM missions WHERE manual_id IS NOT NULL'
+  ).all();
+  if (!manualMissions.length) return;
+
+  let reconciled = 0;
+  for (const manual of manualMissions) {
+    const match = seedMissions.find(
+      m => m.story_id === manual.story_id && m.order === manual.order
+    );
+    if (!match) continue;
+
+    const realExists = d.prepare('SELECT 1 FROM missions WHERE id = ?').get(match.id);
+    if (!realExists) continue;
+
+    d.prepare('UPDATE submissions SET mission_id = ? WHERE mission_id = ?')
+      .run(match.id, manual.id);
+    d.prepare('UPDATE missions SET manual_id = ? WHERE id = ?')
+      .run(manual.manual_id, match.id);
+    d.prepare('DELETE FROM missions WHERE id = ?').run(manual.id);
+    reconciled++;
+  }
+
+  if (reconciled) {
+    console.log(`Reconciled ${reconciled} manual mission(s) with API data`);
+  }
+}
+
 function importSeedData() {
   const seedPath = path.join(__dirname, '..', 'seed-data.json');
   if (!fs.existsSync(seedPath)) {
@@ -67,6 +96,8 @@ function importSeedData() {
     for (const m of data.missions || []) {
       db.upsertMission(m.id, m.story_id, m.name, m.order, m.seed_full_mins, m.seed_speed_mins);
     }
+
+    reconcileManualMissions(d, data.missions || []);
   });
 
   importAll();
