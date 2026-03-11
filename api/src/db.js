@@ -339,6 +339,13 @@ function deleteSubmission(id) {
   return result.changes > 0;
 }
 
+function deleteSubmissions(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return 0;
+  const placeholders = ids.map(() => '?').join(',');
+  const result = getDb().prepare(`DELETE FROM submissions WHERE id IN (${placeholders})`).run(...ids);
+  return result.changes;
+}
+
 module.exports = {
   getDb,
   getAllSeasons,
@@ -354,5 +361,6 @@ module.exports = {
   upsertMission,
   getSubmissions,
   getSubmissionCount,
+  deleteSubmissions,
   deleteSubmission,
 };

@@ -127,6 +127,8 @@
         const [page, setPage] = useState(1);
         const [filters, setFilters] = useState({ category: '', source: '', mission_id: '' });
         const [deleting, setDeleting] = useState(null);
+        const [selected, setSelected] = useState(new Set());
+        const [bulkDeleting, setBulkDeleting] = useState(false);
 
         const load = useCallback(async () => {
             setLoading(true);
@@ -152,7 +154,7 @@
             setLoading(false);
         }, [page, filters]);
 
-        useEffect(() => { load(); }, [load]);
+        useEffect(() => { setSelected(new Set()); load(); }, [load]);
 
         async function handleDelete(id) {
             setDeleting(id);
@@ -173,6 +175,49 @@
         function updateFilter(key, value) {
             setFilters(prev => ({ ...prev, [key]: value }));
             setPage(1);
+            setSelected(new Set());
+        }
+
+        function toggleSelect(id) {
+            setSelected(prev => {
+                const next = new Set(prev);
+                if (next.has(id)) next.delete(id); else next.add(id);
+                return next;
+            });
+        }
+
+        function toggleSelectAll() {
+            if (!data?.submissions) return;
+            const pageIds = data.submissions.map(s => s.id);
+            const allSelected = pageIds.every(id => selected.has(id));
+            setSelected(prev => {
+                const next = new Set(prev);
+                pageIds.forEach(id => allSelected ? next.delete(id) : next.add(id));
+                return next;
+            });
+        }
+
+        async function handleBulkDelete() {
+            if (selected.size === 0) return;
+            if (!confirm(`Delete ${selected.size} submission${selected.size !== 1 ? 's' : ''}? This cannot be undone.`)) return;
+            setBulkDeleting(true);
+            try {
+                const res = await adminFetch('/submissions/bulk-delete', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids: [...selected] }),
+                });
+                if (res.ok) {
+                    const result = await res.json();
+                    setSelected(new Set());
+                    load();
+                } else {
+                    const d = await res.json();
+                    alert(d.error || 'Bulk delete failed');
+                }
+            } catch {
+                alert('Network error');
+            }
+            setBulkDeleting(false);
         }
 
         const pagination = data?.pagination;
@@ -231,11 +276,34 @@
 
                     {error && <div className="text-red-400 text-sm mb-4">{error}</div>}
 
+                    {selected.size > 0 && (
+                        <div className="flex items-center gap-3 mb-3 px-3 py-2 bg-red-900/20 border border-red-900/40 rounded-lg">
+                            <span className="text-xs text-red-300 font-medium">
+                                {selected.size} selected
+                            </span>
+                            <button onClick={handleBulkDelete} disabled={bulkDeleting}
+                                className="text-xs bg-red-700 hover:bg-red-600 text-white font-medium px-3 py-1 rounded transition-colors disabled:opacity-50">
+                                {bulkDeleting ? 'Deleting...' : `Delete ${selected.size}`}
+                            </button>
+                            <button onClick={() => setSelected(new Set())}
+                                className="text-xs text-gray-400 hover:text-gray-200 transition-colors ml-auto">
+                                Clear selection
+                            </button>
+                        </div>
+                    )}
+
                     <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full text-xs">
                                 <thead>
                                     <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                        <th className="px-3 py-2.5 w-8">
+                                            <input type="checkbox"
+                                                checked={data?.submissions?.length > 0 && data.submissions.every(s => selected.has(s.id))}
+                                                onChange={toggleSelectAll}
+                                                className="accent-gw2-gold rounded cursor-pointer"
+                                            />
+                                        </th>
                                         <th className="px-3 py-2.5 font-medium">ID</th>
                                         <th className="px-3 py-2.5 font-medium">Mission</th>
                                         <th className="px-3 py-2.5 font-medium">Category</th>
@@ -250,15 +318,22 @@
                                 </thead>
                                 <tbody>
                                     {loading && !data ? (
-                                        <tr><td colSpan={10} className="px-3 py-8 text-center text-gray-500">Loading...</td></tr>
+                                        <tr><td colSpan={11} className="px-3 py-8 text-center text-gray-500">Loading...</td></tr>
                                     ) : !data?.submissions?.length ? (
-                                        <tr><td colSpan={10} className="px-3 py-8 text-center text-gray-500">No submissions found</td></tr>
+                                        <tr><td colSpan={11} className="px-3 py-8 text-center text-gray-500">No submissions found</td></tr>
                                     ) : data.submissions.map(s => {
                                         const diff = s.avg_mins ? s.duration_mins - s.avg_mins : null;
                                         const diffPct = s.avg_mins ? ((diff / s.avg_mins) * 100) : null;
                                         const isOutlier = diffPct !== null && Math.abs(diffPct) > 50;
                                         return (
-                                            <tr key={s.id} className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors ${isOutlier ? 'bg-red-900/10' : ''}`}>
+                                            <tr key={s.id} className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors ${isOutlier ? 'bg-red-900/10' : ''} ${selected.has(s.id) ? 'bg-gw2-gold-dark/10' : ''}`}>
+                                                <td className="px-3 py-2">
+                                                    <input type="checkbox"
+                                                        checked={selected.has(s.id)}
+                                                        onChange={() => toggleSelect(s.id)}
+                                                        className="accent-gw2-gold rounded cursor-pointer"
+                                                    />
+                                                </td>
                                                 <td className="px-3 py-2 text-gray-500 font-mono">{s.id}</td>
                                                 <td className="px-3 py-2 text-gray-200 max-w-[200px] truncate" title={`ID: ${s.mission_id}`}>
                                                     {s.mission_name}

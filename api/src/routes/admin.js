@@ -39,6 +39,23 @@ router.get('/submissions', (req, res) => {
   });
 });
 
+router.post('/submissions/bulk-delete', (req, res) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ error: 'ids must be a non-empty array' });
+  }
+  if (ids.length > 500) {
+    return res.status(400).json({ error: 'Maximum 500 deletions per request' });
+  }
+  const parsed = ids.map(id => parseInt(id, 10));
+  if (parsed.some(isNaN)) {
+    return res.status(400).json({ error: 'All ids must be valid integers' });
+  }
+
+  const deleted = db.deleteSubmissions(parsed);
+  res.json({ deleted });
+});
+
 router.delete('/submissions/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
