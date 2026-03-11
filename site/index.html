@@ -12,7 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #13110f; color: #e8e0d6; }
+        body { background-color: #13110f; color: #e8e0d6; overflow-x: hidden; }
         .gw2-gradient { background: linear-gradient(135deg, #c8a84e 0%, #8a6b2d 100%); }
         .card-bg { background-color: #1e1b17; }
         .progress-bar-bg { background-color: #3a352e; }
@@ -48,6 +48,18 @@
 <div id="root"></div>
 <script type="text/babel">
     const { useState, useEffect, useMemo, useCallback, useRef } = React;
+
+    const SM_BREAKPOINT = 640;
+    function useIsMobile() {
+        const [mobile, setMobile] = useState(() => window.innerWidth < SM_BREAKPOINT);
+        useEffect(() => {
+            const mql = window.matchMedia(`(max-width: ${SM_BREAKPOINT - 1}px)`);
+            const handler = (e) => setMobile(e.matches);
+            mql.addEventListener('change', handler);
+            return () => mql.removeEventListener('change', handler);
+        }, []);
+        return mobile;
+    }
 
     const API_BASE = window.location.hostname === 'localhost'
         ? `http://localhost:3456/v1`
@@ -393,8 +405,8 @@
 
         return (
             <nav className="card-bg border-b border-stone-800 sticky top-0 z-50">
-                <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 shrink-0">
+                <div className="max-w-4xl mx-auto px-3 sm:px-4 h-16 flex items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                         <div className="relative" ref={siteMenuRef}>
                             <button onClick={() => setShowSiteMenu(p => !p)}
                                 className={`p-1 rounded transition-colors ${showSiteMenu ? 'text-gw2-gold' : 'text-gray-400 hover:text-gw2-gold-light'}`}
@@ -416,14 +428,13 @@
                                 </div>
                             )}
                         </div>
-                        <button onClick={() => onNavigate('home')} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                            <img src="/logo.svg" alt="GW2 Story Times" className="w-8 h-8 rounded" />
+                        <button onClick={() => onNavigate('home')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                            <img src="/logo.svg" alt="GW2 Story Times" className="w-8 h-8 rounded shrink-0" />
                             <span className="font-bold text-xl hidden sm:inline font-display" style={{color:'#e8e0d6'}}>GW2 Story Times</span>
-                            <span className="font-bold text-lg sm:hidden font-display" style={{color:'#e8e0d6'}}>Story Times</span>
                         </button>
                     </div>
-                    <div className="flex items-center gap-3 sm:gap-4">
-                        <div className="relative" ref={searchRef}>
+                    <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+                        <div className="relative flex-1 min-w-0" ref={searchRef}>
                             <div className="relative">
                                 <SearchIcon size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
                                 <input
@@ -432,8 +443,8 @@
                                     onChange={e => { setQuery(e.target.value); setDropdownOpen(true); }}
                                     onFocus={handleSearchFocus}
                                     onKeyDown={handleKeyDown}
-                                    placeholder="Search missions & stories..."
-                                    className="bg-stone-800 border border-stone-700 rounded-lg pl-8 pr-7 py-1.5 text-xs text-gray-200 w-40 sm:w-56 focus:outline-none focus:border-gw2-gold-dark transition-colors"
+                                    placeholder="Search..."
+                                    className="bg-stone-800 border border-stone-700 rounded-lg pl-8 pr-7 py-1.5 text-xs text-gray-200 w-full focus:outline-none focus:border-gw2-gold-dark transition-colors"
                                 />
                                 {query && (
                                     <button onClick={() => { setQuery(''); setDropdownOpen(false); }} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
@@ -442,7 +453,7 @@
                                 )}
                             </div>
                             {showDropdown && (
-                                <div className="absolute right-0 top-full mt-2 z-50 w-72 sm:w-80 card-bg border border-stone-700 rounded-lg shadow-xl overflow-hidden">
+                                <div className="absolute right-0 top-full mt-2 z-50 w-full min-w-[16rem] sm:w-80 card-bg border border-stone-700 rounded-lg shadow-xl overflow-hidden">
                                     {loadingSearch ? (
                                         <div className="px-3 py-4 text-xs text-gray-500 text-center">Loading...</div>
                                     ) : results.length === 0 ? (
@@ -490,7 +501,7 @@
                                 </div>
                             )}
                         </div>
-                        <div className="relative" ref={settingsRef}>
+                        <div className="relative hidden sm:block" ref={settingsRef}>
                             <button onClick={() => setShowSettings(p => !p)}
                                 className={`p-1 rounded transition-colors ${showSettings ? 'text-gw2-gold' : 'text-gray-400 hover:text-gw2-gold-light'}`}
                                 title="Settings">
@@ -617,7 +628,7 @@
         return (
             <button
                 onClick={() => onSelect(mission.id)}
-                className={`flex items-center justify-between p-2 rounded w-full text-left transition-colors group ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                className={`flex items-center justify-between p-2 py-2.5 sm:py-2 rounded w-full text-left transition-colors group ${isActive ? 'bg-white/10' : 'hover:bg-white/5'}`}
             >
                 <div className="min-w-0 flex-1">
                     <span className="text-sm text-gray-200 group-hover:text-gw2-gold-light transition-colors truncate block">
@@ -1316,7 +1327,8 @@
         );
     }
 
-    function SeasonView({ seasonId, onBack, highlight, onHighlightDone, showSynopses }) {
+    function SeasonView({ seasonId, onBack, highlight, onHighlightDone, showSynopses, onNavigateToMission }) {
+        const isMobile = useIsMobile();
         const [season, setSeason] = useState(null);
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
@@ -1325,6 +1337,10 @@
         const highlightRefs = useRef({});
 
         function openMission(id) {
+            if (isMobile) {
+                onNavigateToMission?.(id);
+                return;
+            }
             if (drawerMissionId && drawerMissionId !== id) {
                 setClosingMissionId(drawerMissionId);
             }
@@ -1396,7 +1412,7 @@
 
         return (
             <div>
-                <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-300 hover:text-gw2-gold-light transition-colors mb-5 py-1.5">
+                <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-300 hover:text-gw2-gold-light transition-colors mb-5 py-2.5 -ml-1 pl-1 pr-3">
                     <ArrowLeft size={18} /> <span className="font-medium">All Stories</span>
                 </button>
                 <div className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg mb-6"
@@ -1462,17 +1478,19 @@
                     );
                 })}
 
-                {closingMissionId && (
+                {!isMobile && closingMissionId && (
                     <MissionDrawer key={`closing-${closingMissionId}`} missionId={closingMissionId} onClose={() => setClosingMissionId(null)} color={color} showSynopses={showSynopses} autoClose />
                 )}
-                {drawerMissionId && (
+                {!isMobile && drawerMissionId && (
                     <MissionDrawer key={drawerMissionId} missionId={drawerMissionId} onClose={closeDrawer} color={color} showSynopses={showSynopses} />
                 )}
             </div>
         );
     }
 
-    function MissionView({ missionId, onBack, highlight, onHighlightDone, showSynopses }) {
+    function MissionView({ missionId, onBack, highlight, onHighlightDone, showSynopses: showSynopsesProp }) {
+        const isMobile = useIsMobile();
+        const showSynopses = isMobile ? false : showSynopsesProp;
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
         const cardRef = useRef(null);
@@ -1503,8 +1521,8 @@
 
         return (
             <div>
-                <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4">
-                    <ArrowLeft size={16} /> {mission.season_name}
+                <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-400 hover:text-gw2-gold-light transition-colors mb-4 py-2.5 -ml-1 pl-1 pr-3">
+                    <ArrowLeft size={18} /> {mission.season_name}
                 </button>
                 <div ref={cardRef} className="card-bg rounded-lg border border-stone-800 overflow-hidden shadow-lg"
                     style={{ borderLeft: `4px solid ${color}` }}>
@@ -1648,9 +1666,12 @@
         );
     }
 
-    function AboutView() {
+    function AboutView({ onBack }) {
         return (
             <div className="space-y-4">
+                <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-300 hover:text-gw2-gold-light transition-colors mb-1 py-2.5 -ml-1 pl-1 pr-3">
+                    <ArrowLeft size={18} /> <span className="font-medium">All Stories</span>
+                </button>
                 <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
                     <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">About GW2 Story Times</h2>
                     <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
@@ -1894,11 +1915,11 @@
         return (
             <div className="min-h-screen pb-12">
                 <Navbar onNavigate={navigate} view={view} showSynopses={showSynopses} onToggleSynopses={toggleSynopses} />
-                <div className="max-w-4xl mx-auto px-4 py-8">
+                <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
-                    {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} />}
+                    {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} onNavigateToMission={(mId) => navigate('mission', mId, viewId)} />}
                     {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} />}
-                    {view === 'about' && <AboutView />}
+                    {view === 'about' && <AboutView onBack={() => navigate('home')} />}
                 </div>
                 <footer className="text-center text-xs text-gray-600 py-8">
                     <a href="/privacy.html" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
