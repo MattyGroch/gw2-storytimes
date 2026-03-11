@@ -323,9 +323,15 @@
                                                     />
                                                 </td>
                                                 <td className="px-3 py-2 text-gray-500 font-mono">{s.id}</td>
-                                                <td className="px-3 py-2 text-gray-200 max-w-[200px] truncate" title={`ID: ${s.mission_id}`}>
-                                                    {s.mission_name}
-                                                    <span className="text-gray-600 ml-1">#{s.mission_id}</span>
+                                                <td className="px-3 py-2 max-w-[200px] truncate">
+                                                    <button
+                                                        onClick={() => updateFilter('mission_id', String(s.mission_id))}
+                                                        className={`hover:text-gw2-gold-light transition-colors cursor-pointer ${filters.mission_id === String(s.mission_id) ? 'text-gw2-gold-light' : 'text-gray-200'}`}
+                                                        title={`Filter by ${s.mission_name}`}
+                                                    >
+                                                        {s.mission_name}
+                                                        <span className={`ml-1 ${filters.mission_id === String(s.mission_id) ? 'text-gw2-gold-dark' : 'text-gray-600'}`}>#{s.mission_id}</span>
+                                                    </button>
                                                 </td>
                                                 <td className="px-3 py-2">
                                                     <span className={s.category === 'full' ? 'text-gw2-gold-light' : 'text-yellow-400'}>
