@@ -293,13 +293,14 @@ function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins, de
 
 // ---- Admin queries ----
 
-function getSubmissions({ page = 1, limit = 50, mission_id, category, source } = {}) {
+function getSubmissions({ page = 1, limit = 50, mission_id, category, source, ip_hash } = {}) {
   const conditions = [];
   const params = [];
 
   if (mission_id) { conditions.push('s.mission_id = ?'); params.push(mission_id); }
   if (category) { conditions.push('s.category = ?'); params.push(category); }
   if (source) { conditions.push('s.source = ?'); params.push(source); }
+  if (ip_hash) { conditions.push('s.ip_hash = ?'); params.push(ip_hash); }
 
   const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
   const offset = (page - 1) * limit;
@@ -321,13 +322,14 @@ function getSubmissions({ page = 1, limit = 50, mission_id, category, source } =
   `).all(...params, limit, offset);
 }
 
-function getSubmissionCount({ mission_id, category, source } = {}) {
+function getSubmissionCount({ mission_id, category, source, ip_hash } = {}) {
   const conditions = [];
   const params = [];
 
   if (mission_id) { conditions.push('mission_id = ?'); params.push(mission_id); }
   if (category) { conditions.push('category = ?'); params.push(category); }
   if (source) { conditions.push('source = ?'); params.push(source); }
+  if (ip_hash) { conditions.push('ip_hash = ?'); params.push(ip_hash); }
 
   const where = conditions.length ? 'WHERE ' + conditions.join(' AND ') : '';
 

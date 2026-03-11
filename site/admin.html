@@ -125,7 +125,7 @@
         const [loading, setLoading] = useState(true);
         const [error, setError] = useState(null);
         const [page, setPage] = useState(1);
-        const [filters, setFilters] = useState({ category: '', source: '', mission_id: '' });
+        const [filters, setFilters] = useState({ category: '', source: '', mission_id: '', ip_hash: '' });
         const [deleting, setDeleting] = useState(null);
         const [selected, setSelected] = useState(new Set());
         const [bulkDeleting, setBulkDeleting] = useState(false);
@@ -137,6 +137,7 @@
             if (filters.category) params.set('category', filters.category);
             if (filters.source) params.set('source', filters.source);
             if (filters.mission_id) params.set('mission_id', filters.mission_id);
+            if (filters.ip_hash) params.set('ip_hash', filters.ip_hash);
             try {
                 const res = await adminFetch(`/submissions?${params}`);
                 if (!res.ok) {
@@ -261,8 +262,12 @@
                             placeholder="Mission ID"
                             className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 w-28 focus:outline-none focus:border-gw2-gold-dark"
                         />
-                        {(filters.category || filters.source || filters.mission_id) && (
-                            <button onClick={() => { setFilters({ category: '', source: '', mission_id: '' }); setPage(1); }}
+                        <input type="text" value={filters.ip_hash} onChange={e => updateFilter('ip_hash', e.target.value)}
+                            placeholder="IP Hash"
+                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 font-mono w-36 focus:outline-none focus:border-gw2-gold-dark"
+                        />
+                        {(filters.category || filters.source || filters.mission_id || filters.ip_hash) && (
+                            <button onClick={() => { setFilters({ category: '', source: '', mission_id: '', ip_hash: '' }); setPage(1); }}
                                 className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
                                 Clear filters
                             </button>
@@ -355,7 +360,17 @@
                                                 </td>
                                                 <td className="px-3 py-2"><SourceBadge source={s.source} /></td>
                                                 <td className="px-3 py-2 text-gray-500 whitespace-nowrap">{formatDate(s.created_at)}</td>
-                                                <td className="px-3 py-2 text-gray-600 font-mono" title={s.ip_hash}>{s.ip_hash ? s.ip_hash.slice(0, 8) + '...' : '—'}</td>
+                                                <td className="px-3 py-2 font-mono">
+                                                    {s.ip_hash ? (
+                                                        <button
+                                                            onClick={() => updateFilter('ip_hash', s.ip_hash)}
+                                                            className={`hover:text-gw2-gold-light transition-colors cursor-pointer ${filters.ip_hash === s.ip_hash ? 'text-gw2-gold-light' : 'text-gray-600'}`}
+                                                            title={`Filter by ${s.ip_hash}`}
+                                                        >
+                                                            {s.ip_hash.slice(0, 8)}&hellip;
+                                                        </button>
+                                                    ) : '—'}
+                                                </td>
                                                 <td className="px-3 py-2">
                                                     <button
                                                         onClick={() => { if (confirm(`Delete submission #${s.id}?\n${s.mission_name} — ${s.duration_mins}m (${s.category})`)) handleDelete(s.id); }}
