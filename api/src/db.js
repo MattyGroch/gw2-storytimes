@@ -82,21 +82,27 @@ function getAllSeasons() {
       s."order",
       COUNT(m.id) AS mission_count,
       COALESCE(SUM(
-        COALESCE(sub_full.avg_mins, m.seed_full_mins)
+        CASE WHEN sub_full.avg_mins IS NOT NULL AND m.seed_full_mins IS NOT NULL
+          THEN (sub_full.avg_mins * sub_full.cnt + m.seed_full_mins) / (sub_full.cnt + 1)
+          ELSE COALESCE(sub_full.avg_mins, m.seed_full_mins)
+        END
       ), 0) AS total_full_mins,
       COALESCE(SUM(
-        COALESCE(sub_speed.avg_mins, m.seed_speed_mins)
+        CASE WHEN sub_speed.avg_mins IS NOT NULL AND m.seed_speed_mins IS NOT NULL
+          THEN (sub_speed.avg_mins * sub_speed.cnt + m.seed_speed_mins) / (sub_speed.cnt + 1)
+          ELSE COALESCE(sub_speed.avg_mins, m.seed_speed_mins)
+        END
       ), 0) AS total_speed_mins
     FROM seasons s
     LEFT JOIN stories st ON st.season_id = s.id
     LEFT JOIN missions m ON m.story_id = st.id
     LEFT JOIN (
-      SELECT mission_id, AVG(duration_mins) AS avg_mins
+      SELECT mission_id, AVG(duration_mins) AS avg_mins, COUNT(*) AS cnt
       FROM submissions WHERE category = 'full'
       GROUP BY mission_id
     ) sub_full ON sub_full.mission_id = m.id
     LEFT JOIN (
-      SELECT mission_id, AVG(duration_mins) AS avg_mins
+      SELECT mission_id, AVG(duration_mins) AS avg_mins, COUNT(*) AS cnt
       FROM submissions WHERE category = 'speed'
       GROUP BY mission_id
     ) sub_speed ON sub_speed.mission_id = m.id
@@ -221,20 +227,26 @@ function formatMission(row) {
     times: {
       full: {
         seed_mins: row.seed_full_mins,
-        avg_mins: fullStats ? round2(fullStats.avg_mins) : row.seed_full_mins,
+        avg_mins: blendSeed(fullStats, row.seed_full_mins),
         submissions: fullStats ? fullStats.submissions : 0,
         min_mins: fullStats ? fullStats.min_mins : null,
         max_mins: fullStats ? fullStats.max_mins : null,
       },
       speed: {
         seed_mins: row.seed_speed_mins,
-        avg_mins: speedStats ? round2(speedStats.avg_mins) : row.seed_speed_mins,
+        avg_mins: blendSeed(speedStats, row.seed_speed_mins),
         submissions: speedStats ? speedStats.submissions : 0,
         min_mins: speedStats ? speedStats.min_mins : null,
         max_mins: speedStats ? speedStats.max_mins : null,
       },
     },
   };
+}
+
+function blendSeed(stats, seedMins) {
+  if (!stats) return seedMins;
+  if (seedMins == null) return round2(stats.avg_mins);
+  return round2((stats.avg_mins * stats.submissions + seedMins) / (stats.submissions + 1));
 }
 
 function round2(n) {
