@@ -3918,7 +3918,7 @@
       "id": 359,
       "story_id": 11,
       "name": "Cornered",
-      "order": 1,
+      "order": 4,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -3926,7 +3926,7 @@
       "id": 360,
       "story_id": 11,
       "name": "Tracking the Master of Peace",
-      "order": 2,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -3934,7 +3934,7 @@
       "id": 361,
       "story_id": 11,
       "name": "Prosperity's Mystery",
-      "order": 3,
+      "order": 5,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -3942,7 +3942,7 @@
       "id": 362,
       "story_id": 11,
       "name": "Fallen Hopes",
-      "order": 4,
+      "order": 2,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -3950,7 +3950,7 @@
       "id": 363,
       "story_id": 11,
       "name": "Disturbance in Brisban Wildlands",
-      "order": 5,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -3982,7 +3982,7 @@
       "id": 367,
       "story_id": 12,
       "name": "The Machine",
-      "order": 4,
+      "order": 5,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -3990,7 +3990,7 @@
       "id": 368,
       "story_id": 12,
       "name": "Trouble at Fort Salma",
-      "order": 5,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -3998,7 +3998,7 @@
       "id": 369,
       "story_id": 13,
       "name": "The Waypoint Conundrum",
-      "order": 1,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4006,7 +4006,7 @@
       "id": 371,
       "story_id": 13,
       "name": "Rallying Call",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4014,7 +4014,7 @@
       "id": 372,
       "story_id": 13,
       "name": "Uprooting the Iron Marches",
-      "order": 3,
+      "order": 2,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4022,7 +4022,7 @@
       "id": 373,
       "story_id": 13,
       "name": "Plan of Attack",
-      "order": 4,
+      "order": 5,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -4030,7 +4030,7 @@
       "id": 374,
       "story_id": 13,
       "name": "Summit Invitations",
-      "order": 5,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4038,7 +4038,7 @@
       "id": 375,
       "story_id": 14,
       "name": "The World Summit",
-      "order": 1,
+      "order": 4,
       "seed_full_mins": 45,
       "seed_speed_mins": null
     },
@@ -4054,7 +4054,7 @@
       "id": 378,
       "story_id": 14,
       "name": "Party Politics",
-      "order": 3,
+      "order": 1,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4062,7 +4062,7 @@
       "id": 379,
       "story_id": 14,
       "name": "Taimi and the Asura",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4070,7 +4070,7 @@
       "id": 380,
       "story_id": 15,
       "name": "Hidden Arcana",
-      "order": 1,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4094,7 +4094,7 @@
       "id": 384,
       "story_id": 15,
       "name": "The Ghosts of Fort Salma",
-      "order": 4,
+      "order": 1,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4102,7 +4102,7 @@
       "id": 385,
       "story_id": 16,
       "name": "Into the Labyrinth",
-      "order": 1,
+      "order": 3,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4110,7 +4110,7 @@
       "id": 386,
       "story_id": 16,
       "name": "Return to Camp Resolve",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -4118,7 +4118,7 @@
       "id": 387,
       "story_id": 16,
       "name": "Tracking the Aspect Masters",
-      "order": 3,
+      "order": 2,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4302,7 +4302,7 @@
       "id": 425,
       "story_id": 46,
       "name": "Confessor's Stronghold",
-      "order": 1,
+      "order": 6,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4310,7 +4310,7 @@
       "id": 426,
       "story_id": 46,
       "name": "Reaper of Magic",
-      "order": 2,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4318,7 +4318,7 @@
       "id": 429,
       "story_id": 46,
       "name": "A Shadow's Deeds",
-      "order": 3,
+      "order": 5,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4326,7 +4326,7 @@
       "id": 431,
       "story_id": 46,
       "name": "Eir's Memorial in Hoelbrak",
-      "order": 4,
+      "order": 1,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4334,7 +4334,7 @@
       "id": 432,
       "story_id": 46,
       "name": "Blood and Stone",
-      "order": 5,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4342,7 +4342,7 @@
       "id": 435,
       "story_id": 46,
       "name": "Research in Rata Novus",
-      "order": 6,
+      "order": 2,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -4350,7 +4350,7 @@
       "id": 436,
       "story_id": 56,
       "name": "Trip to the Circus",
-      "order": 1,
+      "order": 4,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4358,7 +4358,7 @@
       "id": 437,
       "story_id": 56,
       "name": "Old Foes, Old Ghosts",
-      "order": 2,
+      "order": 6,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4374,7 +4374,7 @@
       "id": 441,
       "story_id": 56,
       "name": "Taimi's Game",
-      "order": 4,
+      "order": 1,
       "seed_full_mins": 28,
       "seed_speed_mins": null
     },
@@ -4390,7 +4390,7 @@
       "id": 443,
       "story_id": 56,
       "name": "Destroying Destroyers",
-      "order": 6,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4406,7 +4406,7 @@
       "id": 446,
       "story_id": 63,
       "name": "Frozen Out",
-      "order": 1,
+      "order": 7,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4422,7 +4422,7 @@
       "id": 448,
       "story_id": 63,
       "name": "Elixir Recipe",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4430,7 +4430,7 @@
       "id": 449,
       "story_id": 63,
       "name": "Elixir Cookin'",
-      "order": 4,
+      "order": 5,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4438,7 +4438,7 @@
       "id": 451,
       "story_id": 63,
       "name": "The Bitter Cold",
-      "order": 5,
+      "order": 6,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4446,7 +4446,7 @@
       "id": 452,
       "story_id": 63,
       "name": "Frozen in Ice",
-      "order": 6,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4454,7 +4454,7 @@
       "id": 453,
       "story_id": 63,
       "name": "Precocious Aurene",
-      "order": 7,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4462,7 +4462,7 @@
       "id": 454,
       "story_id": 64,
       "name": "Confessor's End",
-      "order": 1,
+      "order": 6,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4470,7 +4470,7 @@
       "id": 455,
       "story_id": 64,
       "name": "Regrouping with the Queen",
-      "order": 2,
+      "order": 5,
       "seed_full_mins": 15,
       "seed_speed_mins": null
     },
@@ -4478,7 +4478,7 @@
       "id": 456,
       "story_id": 64,
       "name": "A Meeting of Ministers",
-      "order": 3,
+      "order": 1,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4486,7 +4486,7 @@
       "id": 457,
       "story_id": 64,
       "name": "Sabotage Fort Evennia",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4494,7 +4494,7 @@
       "id": 458,
       "story_id": 64,
       "name": "Eyes on Lake Doric",
-      "order": 5,
+      "order": 2,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -4502,7 +4502,7 @@
       "id": 459,
       "story_id": 64,
       "name": "Breaking the Siege",
-      "order": 6,
+      "order": 4,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4510,7 +4510,7 @@
       "id": 460,
       "story_id": 65,
       "name": "In Pursuit of a God",
-      "order": 1,
+      "order": 3,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4526,7 +4526,7 @@
       "id": 462,
       "story_id": 65,
       "name": "Elder Druid Protection",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4534,7 +4534,7 @@
       "id": 464,
       "story_id": 65,
       "name": "Heart of the Volcano",
-      "order": 4,
+      "order": 5,
       "seed_full_mins": 40,
       "seed_speed_mins": null
     },
@@ -4542,7 +4542,7 @@
       "id": 466,
       "story_id": 65,
       "name": "Taimi's Pet Project",
-      "order": 5,
+      "order": 1,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -4550,7 +4550,7 @@
       "id": 468,
       "story_id": 66,
       "name": "The Last Chance",
-      "order": 1,
+      "order": 5,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4558,7 +4558,7 @@
       "id": 469,
       "story_id": 66,
       "name": "\"Where's Balthazar?\"",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 18,
       "seed_speed_mins": null
     },
@@ -4566,7 +4566,7 @@
       "id": 472,
       "story_id": 66,
       "name": "The Flow of Magic",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4574,7 +4574,7 @@
       "id": 473,
       "story_id": 66,
       "name": "Shining Blade Secrets",
-      "order": 4,
+      "order": 2,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4582,7 +4582,7 @@
       "id": 475,
       "story_id": 66,
       "name": "On Orrian Shores",
-      "order": 5,
+      "order": 3,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4718,7 +4718,7 @@
       "id": 504,
       "story_id": 85,
       "name": "The Hero of Istan",
-      "order": 1,
+      "order": 5,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4726,7 +4726,7 @@
       "id": 505,
       "story_id": 85,
       "name": "Eye of the Brandstorm",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4734,7 +4734,7 @@
       "id": 506,
       "story_id": 85,
       "name": "Under the Stars",
-      "order": 3,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4742,7 +4742,7 @@
       "id": 508,
       "story_id": 85,
       "name": "The First City",
-      "order": 4,
+      "order": 6,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4750,7 +4750,7 @@
       "id": 509,
       "story_id": 85,
       "name": "Champion's Dawn",
-      "order": 5,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4758,7 +4758,7 @@
       "id": 511,
       "story_id": 85,
       "name": "Convincing the Corsair",
-      "order": 6,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4766,7 +4766,7 @@
       "id": 513,
       "story_id": 86,
       "name": "The Charge",
-      "order": 1,
+      "order": 5,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4774,7 +4774,7 @@
       "id": 519,
       "story_id": 86,
       "name": "The Road to Rata Primus",
-      "order": 2,
+      "order": 4,
       "seed_full_mins": 28,
       "seed_speed_mins": null
     },
@@ -4790,7 +4790,7 @@
       "id": 525,
       "story_id": 86,
       "name": "The Test Subject",
-      "order": 4,
+      "order": 2,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4798,7 +4798,7 @@
       "id": 526,
       "story_id": 86,
       "name": "Tracking the Scientist",
-      "order": 5,
+      "order": 1,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4806,7 +4806,7 @@
       "id": 527,
       "story_id": 87,
       "name": "Forearmed Is Forewarned",
-      "order": 1,
+      "order": 2,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4814,7 +4814,7 @@
       "id": 529,
       "story_id": 87,
       "name": "Seized",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4822,7 +4822,7 @@
       "id": 532,
       "story_id": 87,
       "name": "Be My Guest",
-      "order": 3,
+      "order": 5,
       "seed_full_mins": 45,
       "seed_speed_mins": null
     },
@@ -4830,7 +4830,7 @@
       "id": 533,
       "story_id": 87,
       "name": "Tactical Triage",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4838,7 +4838,7 @@
       "id": 535,
       "story_id": 87,
       "name": "I'm Brave, You Know",
-      "order": 5,
+      "order": 4,
       "seed_full_mins": 28,
       "seed_speed_mins": null
     },
@@ -4846,7 +4846,7 @@
       "id": 536,
       "story_id": 88,
       "name": "Chaos Theory",
-      "order": 1,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4854,7 +4854,7 @@
       "id": 537,
       "story_id": 88,
       "name": "A Shattered Nation",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4870,7 +4870,7 @@
       "id": 539,
       "story_id": 88,
       "name": "Storm Tracking",
-      "order": 4,
+      "order": 5,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4878,7 +4878,7 @@
       "id": 540,
       "story_id": 88,
       "name": "From the Ashes",
-      "order": 5,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -4886,7 +4886,7 @@
       "id": 542,
       "story_id": 89,
       "name": "The Crystal Dragon",
-      "order": 1,
+      "order": 5,
       "seed_full_mins": 50,
       "seed_speed_mins": null
     },
@@ -4894,7 +4894,7 @@
       "id": 543,
       "story_id": 89,
       "name": "Scion & Champion",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4902,7 +4902,7 @@
       "id": 544,
       "story_id": 89,
       "name": "Dragonsblood",
-      "order": 3,
+      "order": 2,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4910,7 +4910,7 @@
       "id": 545,
       "story_id": 89,
       "name": "The Crystal Blooms",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -4918,7 +4918,7 @@
       "id": 546,
       "story_id": 89,
       "name": "Resonance",
-      "order": 5,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4926,7 +4926,7 @@
       "id": 547,
       "story_id": 90,
       "name": "Descent",
-      "order": 1,
+      "order": 5,
       "seed_full_mins": 40,
       "seed_speed_mins": null
     },
@@ -4934,7 +4934,7 @@
       "id": 548,
       "story_id": 90,
       "name": "Glory of Dragons",
-      "order": 2,
+      "order": 3,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -4942,7 +4942,7 @@
       "id": 549,
       "story_id": 90,
       "name": "The End",
-      "order": 3,
+      "order": 1,
       "seed_full_mins": 55,
       "seed_speed_mins": null
     },
@@ -4958,7 +4958,7 @@
       "id": 552,
       "story_id": 90,
       "name": "Landfall",
-      "order": 5,
+      "order": 2,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -4982,7 +4982,7 @@
       "id": 555,
       "story_id": 91,
       "name": "A Race to Arms",
-      "order": 3,
+      "order": 5,
       "seed_full_mins": 28,
       "seed_speed_mins": null
     },
@@ -4998,7 +4998,7 @@
       "id": 557,
       "story_id": 91,
       "name": "Bad Blood",
-      "order": 5,
+      "order": 3,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5006,7 +5006,7 @@
       "id": 559,
       "story_id": 93,
       "name": "What's Left Behind",
-      "order": 1,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -5014,7 +5014,7 @@
       "id": 561,
       "story_id": 93,
       "name": "The Invitation",
-      "order": 2,
+      "order": 4,
       "seed_full_mins": 15,
       "seed_speed_mins": null
     },
@@ -5022,7 +5022,7 @@
       "id": 562,
       "story_id": 93,
       "name": "Silence",
-      "order": 3,
+      "order": 1,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5030,7 +5030,7 @@
       "id": 563,
       "story_id": 93,
       "name": "The Wind and Nothing More",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5046,7 +5046,7 @@
       "id": 565,
       "story_id": 94,
       "name": "Voice in the Deep",
-      "order": 2,
+      "order": 5,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5054,7 +5054,7 @@
       "id": 566,
       "story_id": 94,
       "name": "The Hunt Begins",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5062,7 +5062,7 @@
       "id": 567,
       "story_id": 94,
       "name": "Lost Spirits Found",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 28,
       "seed_speed_mins": null
     },
@@ -5070,7 +5070,7 @@
       "id": 568,
       "story_id": 94,
       "name": "Still Waters Speaking",
-      "order": 5,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -5078,7 +5078,7 @@
       "id": 569,
       "story_id": 95,
       "name": "Darkrime Delves",
-      "order": 1,
+      "order": 2,
       "seed_full_mins": 40,
       "seed_speed_mins": null
     },
@@ -5086,7 +5086,7 @@
       "id": 570,
       "story_id": 95,
       "name": "Forging Steel",
-      "order": 2,
+      "order": 1,
       "seed_full_mins": 45,
       "seed_speed_mins": null
     },
@@ -5102,7 +5102,7 @@
       "id": 572,
       "story_id": 96,
       "name": "Distract, Destroy, Distrust",
-      "order": 2,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5118,7 +5118,7 @@
       "id": 574,
       "story_id": 96,
       "name": "Shoulder to Shoulder",
-      "order": 4,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -5150,7 +5150,7 @@
       "id": 578,
       "story_id": 97,
       "name": "Pantheon of the Wild",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5158,7 +5158,7 @@
       "id": 579,
       "story_id": 97,
       "name": "A Simple Negotiation",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -5174,7 +5174,7 @@
       "id": 581,
       "story_id": 98,
       "name": "Roaring Flames",
-      "order": 1,
+      "order": 4,
       "seed_full_mins": 12,
       "seed_speed_mins": null
     },
@@ -5182,7 +5182,7 @@
       "id": 583,
       "story_id": 98,
       "name": "Defending Tyria",
-      "order": 2,
+      "order": 3,
       "seed_full_mins": 15,
       "seed_speed_mins": null
     },
@@ -5190,7 +5190,7 @@
       "id": 587,
       "story_id": 98,
       "name": "Calm in the Storm",
-      "order": 3,
+      "order": 12,
       "seed_full_mins": 10,
       "seed_speed_mins": null
     },
@@ -5198,7 +5198,7 @@
       "id": 590,
       "story_id": 98,
       "name": "Flame vs. Frost",
-      "order": 4,
+      "order": 9,
       "seed_full_mins": 13,
       "seed_speed_mins": null
     },
@@ -5206,7 +5206,7 @@
       "id": 593,
       "story_id": 98,
       "name": "Frozen Tide",
-      "order": 5,
+      "order": 8,
       "seed_full_mins": 14,
       "seed_speed_mins": null
     },
@@ -5214,7 +5214,7 @@
       "id": 595,
       "story_id": 98,
       "name": "Primordus Rising",
-      "order": 6,
+      "order": 1,
       "seed_full_mins": 20,
       "seed_speed_mins": null
     },
@@ -5222,7 +5222,7 @@
       "id": 596,
       "story_id": 98,
       "name": "Tidings and Misgivings",
-      "order": 7,
+      "order": 2,
       "seed_full_mins": 15,
       "seed_speed_mins": null
     },
@@ -5230,7 +5230,7 @@
       "id": 598,
       "story_id": 98,
       "name": "Champion's End",
-      "order": 8,
+      "order": 11,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5238,7 +5238,7 @@
       "id": 599,
       "story_id": 98,
       "name": "Wildfire",
-      "order": 9,
+      "order": 7,
       "seed_full_mins": 13,
       "seed_speed_mins": null
     },
@@ -5246,7 +5246,7 @@
       "id": 600,
       "story_id": 98,
       "name": "Calm in the Storm",
-      "order": 10,
+      "order": 13,
       "seed_full_mins": 10,
       "seed_speed_mins": null
     },
@@ -5254,7 +5254,7 @@
       "id": 602,
       "story_id": 98,
       "name": "Calm in the Storm",
-      "order": 11,
+      "order": 14,
       "seed_full_mins": 10,
       "seed_speed_mins": null
     },
@@ -5262,7 +5262,7 @@
       "id": 605,
       "story_id": 98,
       "name": "Jormag's World",
-      "order": 12,
+      "order": 5,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },
@@ -5270,7 +5270,7 @@
       "id": 606,
       "story_id": 98,
       "name": "Calm in the Storm",
-      "order": 13,
+      "order": 15,
       "seed_full_mins": 10,
       "seed_speed_mins": null
     },
@@ -5278,7 +5278,7 @@
       "id": 608,
       "story_id": 98,
       "name": "Jormag's Madness",
-      "order": 14,
+      "order": 6,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5286,7 +5286,7 @@
       "id": 611,
       "story_id": 98,
       "name": "Dragonstorm",
-      "order": 15,
+      "order": 10,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5422,7 +5422,7 @@
       "id": 668,
       "story_id": 121,
       "name": "On the Case",
-      "order": 1,
+      "order": 2,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5430,7 +5430,7 @@
       "id": 669,
       "story_id": 121,
       "name": "Deep Trouble",
-      "order": 2,
+      "order": 4,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -5446,7 +5446,7 @@
       "id": 674,
       "story_id": 121,
       "name": "A Raw Deal",
-      "order": 4,
+      "order": 1,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5470,7 +5470,7 @@
       "id": 678,
       "story_id": 122,
       "name": "Full Circle",
-      "order": 2,
+      "order": 5,
       "seed_full_mins": 35,
       "seed_speed_mins": null
     },
@@ -5478,7 +5478,7 @@
       "id": 680,
       "story_id": 122,
       "name": "Entrapment",
-      "order": 3,
+      "order": 4,
       "seed_full_mins": 25,
       "seed_speed_mins": null
     },
@@ -5486,7 +5486,7 @@
       "id": 681,
       "story_id": 122,
       "name": "Emotional Release",
-      "order": 4,
+      "order": 3,
       "seed_full_mins": 30,
       "seed_speed_mins": null
     },
@@ -5494,7 +5494,7 @@
       "id": 683,
       "story_id": 122,
       "name": "Bottle Your Emotions",
-      "order": 5,
+      "order": 2,
       "seed_full_mins": 22,
       "seed_speed_mins": null
     },

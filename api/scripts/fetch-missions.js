@@ -198,26 +198,27 @@ async function main() {
 
   seasons.sort((a, b) => a.order - b.order);
 
-  // Preserve existing time data
+  // Preserve existing seed data (manually-corrected orders and time estimates)
   const outputPath = path.join(__dirname, '..', 'seed-data.json');
-  let existingTimes = {};
+  let existingMissionData = {};
   if (fs.existsSync(outputPath)) {
     const existing = JSON.parse(fs.readFileSync(outputPath, 'utf-8'));
     for (const m of existing.missions || []) {
-      if (m.seed_full_mins != null || m.seed_speed_mins != null) {
-        existingTimes[m.id] = {
-          seed_full_mins: m.seed_full_mins,
-          seed_speed_mins: m.seed_speed_mins,
-        };
-      }
+      existingMissionData[m.id] = {
+        order: m.order,
+        seed_full_mins: m.seed_full_mins,
+        seed_speed_mins: m.seed_speed_mins,
+      };
     }
-    console.log(`Preserving ${Object.keys(existingTimes).length} existing time entries`);
+    console.log(`Preserving data for ${Object.keys(existingMissionData).length} existing missions (orders + times)`);
   }
 
   for (const m of missions) {
-    if (existingTimes[m.id]) {
-      m.seed_full_mins = existingTimes[m.id].seed_full_mins;
-      m.seed_speed_mins = existingTimes[m.id].seed_speed_mins;
+    const prev = existingMissionData[m.id];
+    if (prev) {
+      if (prev.order != null) m.order = prev.order;
+      if (prev.seed_full_mins != null) m.seed_full_mins = prev.seed_full_mins;
+      if (prev.seed_speed_mins != null) m.seed_speed_mins = prev.seed_speed_mins;
     }
   }
 
