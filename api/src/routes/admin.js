@@ -27,7 +27,7 @@ router.get('/submissions', (req, res) => {
     limit,
     mission_id: req.query.mission_id ? parseInt(req.query.mission_id, 10) : undefined,
     category: ['full', 'speed'].includes(req.query.category) ? req.query.category : undefined,
-    source: ['manual', 'sentiment', 'api'].includes(req.query.source) ? req.query.source : undefined,
+    source: ['manual', 'sentiment', 'api', 'blishhud'].includes(req.query.source) ? req.query.source : undefined,
     ip_hash: req.query.ip_hash && /^[a-f0-9]+$/i.test(req.query.ip_hash) ? req.query.ip_hash : undefined,
   };
 

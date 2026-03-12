@@ -13,7 +13,7 @@ router.post(
   (req, res) => {
     const missionId = parseInt(req.params.id, 10);
     const { category, duration_mins } = req.body;
-    const VALID_SOURCES = ['manual', 'sentiment', 'api'];
+    const VALID_SOURCES = ['manual', 'sentiment', 'api', 'blishhud'];
     const source = VALID_SOURCES.includes(req.body.source) ? req.body.source : 'api';
 
     if (!db.missionExists(missionId)) {
