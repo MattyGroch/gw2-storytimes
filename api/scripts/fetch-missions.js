@@ -203,32 +203,44 @@ async function main() {
   seasons.sort((a, b) => a.order - b.order);
 
   // Disambiguate duplicate mission names within the same story.
-  // Only rename pairs (count == 2) which are sequential parts.
-  // Larger groups (3+) are race variants or placeholders handled by webapp dedup.
+  // Pairs (count == 2) are sequential parts -- rename to (Part 1), (Part 2).
+  // Larger groups (3+) are race variants -- assign canonical_id (lowest ID) to all aliases.
   const byStory = {};
   for (const m of missions) {
     if (!byStory[m.story_id]) byStory[m.story_id] = [];
     byStory[m.story_id].push(m);
   }
   let dupeCount = 0;
+  let canonicalCount = 0;
   for (const storyMissions of Object.values(byStory)) {
     const nameCounts = {};
     for (const m of storyMissions) {
       nameCounts[m.name] = (nameCounts[m.name] || 0) + 1;
     }
     for (const [name, count] of Object.entries(nameCounts)) {
-      if (count !== 2) continue;
-      let part = 0;
-      for (const m of storyMissions) {
-        if (m.name === name) {
-          part++;
-          m.name = `${name} (Part ${part})`;
-          dupeCount++;
+      if (count === 2) {
+        let part = 0;
+        for (const m of storyMissions) {
+          if (m.name === name) {
+            part++;
+            m.name = `${name} (Part ${part})`;
+            dupeCount++;
+          }
+        }
+      } else if (count >= 3) {
+        const group = storyMissions.filter(m => m.name === name).sort((a, b) => a.id - b.id);
+        const canonicalId = group[0].id;
+        for (const m of group) {
+          if (m.id !== canonicalId) {
+            m.canonical_id = canonicalId;
+            canonicalCount++;
+          }
         }
       }
     }
   }
   if (dupeCount > 0) console.log(`  Disambiguated ${dupeCount} duplicate mission names`);
+  if (canonicalCount > 0) console.log(`  Assigned canonical_id to ${canonicalCount} race-variant missions`);
 
   // Preserve existing seed data (manually-corrected orders and time estimates)
   const outputPath = path.join(__dirname, '..', 'seed-data.json');
@@ -240,6 +252,7 @@ async function main() {
         order: m.order,
         seed_full_mins: m.seed_full_mins,
         seed_speed_mins: m.seed_speed_mins,
+        canonical_id: m.canonical_id,
       };
     }
     console.log(`Preserving data for ${Object.keys(existingMissionData).length} existing missions (orders + times)`);
@@ -251,6 +264,7 @@ async function main() {
       if (prev.order != null) m.order = prev.order;
       if (prev.seed_full_mins != null) m.seed_full_mins = prev.seed_full_mins;
       if (prev.seed_speed_mins != null) m.seed_speed_mins = prev.seed_speed_mins;
+      if (!m.canonical_id && prev.canonical_id != null) m.canonical_id = prev.canonical_id;
     }
   }
 

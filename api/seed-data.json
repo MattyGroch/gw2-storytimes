@@ -5488,7 +5488,8 @@
       "name": "Prologue: Uncertain Times",
       "order": 2,
       "seed_full_mins": 20,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 687
     },
     {
       "id": 690,
@@ -5496,7 +5497,8 @@
       "name": "Prologue: Uncertain Times",
       "order": 3,
       "seed_full_mins": 20,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 687
     },
     {
       "id": 693,
@@ -5504,7 +5506,8 @@
       "name": "Prologue: Uncertain Times",
       "order": 4,
       "seed_full_mins": 20,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 687
     },
     {
       "id": 695,
@@ -5512,7 +5515,8 @@
       "name": "Prologue: Uncertain Times",
       "order": 5,
       "seed_full_mins": 20,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 687
     },
     {
       "id": 698,
@@ -5520,7 +5524,8 @@
       "name": "Prologue: Uncertain Times",
       "order": 6,
       "seed_full_mins": 20,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 687
     },
     {
       "id": 697,
@@ -5688,7 +5693,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 2,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 716,
@@ -5696,7 +5702,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 3,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 717,
@@ -5704,7 +5711,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 4,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 719,
@@ -5712,7 +5720,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 5,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 720,
@@ -5720,7 +5729,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 6,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 722,
@@ -5728,7 +5738,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 7,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 723,
@@ -5736,7 +5747,8 @@
       "name": "Prologue: The Tyrian Alliance",
       "order": 8,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
+      "seed_speed_mins": null,
+      "canonical_id": 710
     },
     {
       "id": 718,

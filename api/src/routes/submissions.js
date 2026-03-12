@@ -20,9 +20,10 @@ router.post(
       return res.status(404).json({ error: 'Mission not found' });
     }
 
-    db.createSubmission(missionId, category, duration_mins, req.ipHash, source);
+    const resolvedId = db.getCanonicalMissionId(missionId);
+    db.createSubmission(resolvedId, category, duration_mins, req.ipHash, source);
 
-    res.status(201).json({ message: 'Submission recorded', mission_id: missionId, category, duration_mins });
+    res.status(201).json({ message: 'Submission recorded', mission_id: resolvedId, category, duration_mins });
   }
 );
 

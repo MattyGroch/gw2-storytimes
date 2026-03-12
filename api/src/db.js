@@ -70,6 +70,9 @@ function initSchema() {
     db.exec("ALTER TABLE missions ADD COLUMN manual_id INTEGER");
     db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_missions_manual_id ON missions(manual_id) WHERE manual_id IS NOT NULL");
   }
+  if (!cols.includes('canonical_id')) {
+    db.exec("ALTER TABLE missions ADD COLUMN canonical_id INTEGER REFERENCES missions(id)");
+  }
 }
 
 // ---- Season queries ----
@@ -97,15 +100,19 @@ function getAllSeasons() {
     LEFT JOIN stories st ON st.season_id = s.id
     LEFT JOIN missions m ON m.story_id = st.id
     LEFT JOIN (
-      SELECT mission_id, AVG(duration_mins) AS avg_mins, COUNT(*) AS cnt
-      FROM submissions WHERE category = 'full'
-      GROUP BY mission_id
-    ) sub_full ON sub_full.mission_id = m.id
+      SELECT COALESCE(mi.canonical_id, mi.id) AS resolved_id, AVG(sub.duration_mins) AS avg_mins, COUNT(*) AS cnt
+      FROM submissions sub
+      JOIN missions mi ON mi.id = sub.mission_id
+      WHERE sub.category = 'full'
+      GROUP BY resolved_id
+    ) sub_full ON sub_full.resolved_id = COALESCE(m.canonical_id, m.id)
     LEFT JOIN (
-      SELECT mission_id, AVG(duration_mins) AS avg_mins, COUNT(*) AS cnt
-      FROM submissions WHERE category = 'speed'
-      GROUP BY mission_id
-    ) sub_speed ON sub_speed.mission_id = m.id
+      SELECT COALESCE(mi.canonical_id, mi.id) AS resolved_id, AVG(sub.duration_mins) AS avg_mins, COUNT(*) AS cnt
+      FROM submissions sub
+      JOIN missions mi ON mi.id = sub.mission_id
+      WHERE sub.category = 'speed'
+      GROUP BY resolved_id
+    ) sub_speed ON sub_speed.resolved_id = COALESCE(m.canonical_id, m.id)
     GROUP BY s.id
     ORDER BY s."order"
   `).all();
@@ -152,7 +159,8 @@ const MISSION_SELECT = `
     m.seed_full_mins,
     m.seed_speed_mins,
     m.description,
-    m.manual_id
+    m.manual_id,
+    m.canonical_id
   FROM missions m
   JOIN stories st ON st.id = m.story_id
   JOIN seasons s ON s.id = st.season_id
@@ -196,7 +204,15 @@ function getMissionsByIds(ids) {
   `).all(...ids).map(formatMission);
 }
 
+function getCanonicalMissionId(id) {
+  const row = getDb().prepare(
+    'SELECT COALESCE(canonical_id, id) AS resolved_id FROM missions WHERE id = ? OR manual_id = ?'
+  ).get(id, id);
+  return row ? row.resolved_id : id;
+}
+
 function formatMission(row) {
+  const resolvedId = row.canonical_id || row.id;
   const stats = getDb().prepare(`
     SELECT
       category,
@@ -205,9 +221,11 @@ function formatMission(row) {
       MIN(duration_mins) AS min_mins,
       MAX(duration_mins) AS max_mins
     FROM submissions
-    WHERE mission_id = ?
+    WHERE mission_id IN (
+      SELECT id FROM missions WHERE id = ? OR canonical_id = ?
+    )
     GROUP BY category
-  `).all(row.id);
+  `).all(resolvedId, resolvedId);
 
   const fullStats = stats.find(s => s.category === 'full');
   const speedStats = stats.find(s => s.category === 'speed');
@@ -263,12 +281,14 @@ function createSubmission(missionId, category, durationMins, ipHash, source = 'm
 }
 
 function hasRecentSubmission(ipHash, missionId, category) {
+  const canonicalId = getCanonicalMissionId(missionId);
   const row = getDb().prepare(`
     SELECT 1 FROM submissions
-    WHERE ip_hash = ? AND mission_id = ? AND category = ?
+    WHERE ip_hash = ? AND category = ?
+      AND mission_id IN (SELECT id FROM missions WHERE id = ? OR canonical_id = ?)
       AND created_at > datetime('now', '-24 hours')
     LIMIT 1
-  `).get(ipHash, missionId, category);
+  `).get(ipHash, category, canonicalId, canonicalId);
   return !!row;
 }
 
@@ -299,18 +319,19 @@ function upsertStory(id, seasonId, name, groupName, order, races) {
   `).run(id, seasonId, name, groupName, order, racesJson);
 }
 
-function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins, description) {
+function upsertMission(id, storyId, name, order, seedFullMins, seedSpeedMins, description, canonicalId) {
   getDb().prepare(`
-    INSERT INTO missions (id, story_id, name, "order", seed_full_mins, seed_speed_mins, description)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO missions (id, story_id, name, "order", seed_full_mins, seed_speed_mins, description, canonical_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       story_id = excluded.story_id,
       name = excluded.name,
       "order" = excluded."order",
       seed_full_mins = COALESCE(excluded.seed_full_mins, missions.seed_full_mins),
       seed_speed_mins = COALESCE(excluded.seed_speed_mins, missions.seed_speed_mins),
-      description = COALESCE(excluded.description, missions.description)
-  `).run(id, storyId, name, order, seedFullMins, seedSpeedMins, description || null);
+      description = COALESCE(excluded.description, missions.description),
+      canonical_id = excluded.canonical_id
+  `).run(id, storyId, name, order, seedFullMins, seedSpeedMins, description || null, canonicalId || null);
 }
 
 // ---- Admin queries ----
@@ -436,6 +457,7 @@ module.exports = {
   getAllMissions,
   getMissionById,
   getMissionsByIds,
+  getCanonicalMissionId,
   createSubmission,
   hasRecentSubmission,
   missionExists,

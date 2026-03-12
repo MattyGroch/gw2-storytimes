@@ -94,7 +94,7 @@ function importSeedData() {
       db.upsertStory(st.id, st.season_id, st.name, st.group_name, st.order, st.races);
     }
     for (const m of data.missions || []) {
-      db.upsertMission(m.id, m.story_id, m.name, m.order, m.seed_full_mins, m.seed_speed_mins);
+      db.upsertMission(m.id, m.story_id, m.name, m.order, m.seed_full_mins, m.seed_speed_mins, m.description, m.canonical_id);
     }
 
     reconcileManualMissions(d, data.missions || []);
