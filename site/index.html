@@ -272,6 +272,7 @@
     function MenuIcon(p) { return <IconBase {...p}><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></IconBase>; }
     function SearchIcon(p) { return <IconBase {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></IconBase>; }
     function X(p) { return <IconBase {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IconBase>; }
+    function Maximize2(p) { return <IconBase {...p}><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></IconBase>; }
     function SettingsGear(p) { return <IconBase {...p}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></IconBase>; }
 
     // --- Utility ---
@@ -1482,7 +1483,7 @@
                     <MissionDrawer key={`closing-${closingMissionId}`} missionId={closingMissionId} onClose={() => setClosingMissionId(null)} color={color} showSynopses={showSynopses} autoClose />
                 )}
                 {!isMobile && drawerMissionId && (
-                    <MissionDrawer key={drawerMissionId} missionId={drawerMissionId} onClose={closeDrawer} color={color} showSynopses={showSynopses} />
+                    <MissionDrawer key={drawerMissionId} missionId={drawerMissionId} onClose={closeDrawer} color={color} showSynopses={showSynopses} onExpand={() => onNavigateToMission?.(drawerMissionId)} />
                 )}
             </div>
         );
@@ -1549,7 +1550,7 @@
         );
     }
 
-    function MissionDrawer({ missionId, onClose, color, showSynopses, autoClose }) {
+    function MissionDrawer({ missionId, onClose, color, showSynopses, autoClose, onExpand }) {
         const [mission, setMission] = useState(null);
         const [error, setError] = useState(null);
         const [open, setOpen] = useState(!!autoClose);
@@ -1604,9 +1605,16 @@
                         <h3 className="text-sm font-bold text-gray-300 font-display truncate pr-2">
                             {mission ? mission.name : 'Loading...'}
                         </h3>
-                        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors shrink-0">
-                            <X size={18} />
-                        </button>
+                        <div className="flex items-center gap-1 shrink-0">
+                            {onExpand && (
+                                <button onClick={onExpand} className="text-gray-500 hover:text-gray-300 transition-colors" title="Open full page">
+                                    <Maximize2 size={15} />
+                                </button>
+                            )}
+                            <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition-colors">
+                                <X size={18} />
+                            </button>
+                        </div>
                     </div>
                     <div className="p-4">
                         {error ? (
