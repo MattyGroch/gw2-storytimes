@@ -3,6 +3,9 @@ const path = require('path');
 
 const API_BASE = 'https://api.guildwars2.com/v2';
 
+// Placeholder quests that are no longer playable
+const EXCLUDED_QUEST_IDS = new Set([587, 600, 602, 606]); // "Calm in the Storm" chapter-gate placeholders
+
 const SEASON_ORDER = [
   'My Story', 'Living World Season 1', 'Living World Season 2',
   'Heart of Thorns', 'Living World Season 3', 'Path of Fire',
@@ -176,6 +179,7 @@ async function main() {
       });
 
       const storyQuests = (questsByStory[story.id] || [])
+        .filter(q => !EXCLUDED_QUEST_IDS.has(q.id))
         .sort((a, b) => a.id - b.id);
 
       if (storyQuests.length === 0) {

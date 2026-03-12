@@ -5187,14 +5187,6 @@
       "seed_speed_mins": null
     },
     {
-      "id": 587,
-      "story_id": 98,
-      "name": "Calm in the Storm",
-      "order": 12,
-      "seed_full_mins": 10,
-      "seed_speed_mins": null
-    },
-    {
       "id": 590,
       "story_id": 98,
       "name": "Flame vs. Frost",
@@ -5243,35 +5235,11 @@
       "seed_speed_mins": null
     },
     {
-      "id": 600,
-      "story_id": 98,
-      "name": "Calm in the Storm",
-      "order": 13,
-      "seed_full_mins": 10,
-      "seed_speed_mins": null
-    },
-    {
-      "id": 602,
-      "story_id": 98,
-      "name": "Calm in the Storm",
-      "order": 14,
-      "seed_full_mins": 10,
-      "seed_speed_mins": null
-    },
-    {
       "id": 605,
       "story_id": 98,
       "name": "Jormag's World",
       "order": 5,
       "seed_full_mins": 22,
-      "seed_speed_mins": null
-    },
-    {
-      "id": 606,
-      "story_id": 98,
-      "name": "Calm in the Storm",
-      "order": 15,
-      "seed_full_mins": 10,
       "seed_speed_mins": null
     },
     {
