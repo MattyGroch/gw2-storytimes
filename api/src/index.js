@@ -98,6 +98,19 @@ function importSeedData() {
     }
 
     reconcileManualMissions(d, data.missions || []);
+
+    // Remove API-sourced missions that are no longer in seed data (e.g. removed placeholders)
+    const seedMissionIds = new Set((data.missions || []).map(m => m.id));
+    const dbMissions = d.prepare('SELECT id, manual_id FROM missions').all();
+    let removed = 0;
+    for (const row of dbMissions) {
+      if (row.manual_id != null) continue; // keep manually-added missions
+      if (seedMissionIds.has(row.id)) continue;
+      d.prepare('DELETE FROM submissions WHERE mission_id = ?').run(row.id);
+      d.prepare('DELETE FROM missions WHERE id = ?').run(row.id);
+      removed++;
+    }
+    if (removed > 0) console.log(`Removed ${removed} mission(s) no longer in seed data`);
   });
 
   importAll();
