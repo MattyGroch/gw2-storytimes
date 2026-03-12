@@ -4621,7 +4621,7 @@
     {
       "id": 482,
       "story_id": 72,
-      "name": "The Sacrifice",
+      "name": "The Sacrifice (Part 1)",
       "order": 1,
       "seed_full_mins": 40,
       "seed_speed_mins": null
@@ -4629,7 +4629,7 @@
     {
       "id": 491,
       "story_id": 72,
-      "name": "The Sacrifice",
+      "name": "The Sacrifice (Part 2)",
       "order": 2,
       "seed_full_mins": 40,
       "seed_speed_mins": null

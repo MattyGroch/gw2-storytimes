@@ -198,6 +198,34 @@ async function main() {
 
   seasons.sort((a, b) => a.order - b.order);
 
+  // Disambiguate duplicate mission names within the same story.
+  // Only rename pairs (count == 2) which are sequential parts.
+  // Larger groups (3+) are race variants or placeholders handled by webapp dedup.
+  const byStory = {};
+  for (const m of missions) {
+    if (!byStory[m.story_id]) byStory[m.story_id] = [];
+    byStory[m.story_id].push(m);
+  }
+  let dupeCount = 0;
+  for (const storyMissions of Object.values(byStory)) {
+    const nameCounts = {};
+    for (const m of storyMissions) {
+      nameCounts[m.name] = (nameCounts[m.name] || 0) + 1;
+    }
+    for (const [name, count] of Object.entries(nameCounts)) {
+      if (count !== 2) continue;
+      let part = 0;
+      for (const m of storyMissions) {
+        if (m.name === name) {
+          part++;
+          m.name = `${name} (Part ${part})`;
+          dupeCount++;
+        }
+      }
+    }
+  }
+  if (dupeCount > 0) console.log(`  Disambiguated ${dupeCount} duplicate mission names`);
+
   // Preserve existing seed data (manually-corrected orders and time estimates)
   const outputPath = path.join(__dirname, '..', 'seed-data.json');
   let existingMissionData = {};
