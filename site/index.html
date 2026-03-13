@@ -593,15 +593,15 @@
         );
     }
 
-    function TotalSummary({ seasons }) {
+    function TotalSummary({ seasons, totalSubmissions }) {
         const totalFull = seasons.reduce((s, se) => s + (se.total_full_mins || 0), 0);
         const totalSpeed = seasons.reduce((s, se) => s + (se.total_speed_mins || 0), 0);
         const totalMissions = seasons.reduce((s, se) => s + (se.mission_count || 0), 0);
 
         return (
             <div className="card-bg rounded-lg border border-gw2-gold-dark/40 p-4 sm:p-6 mb-6 bg-gradient-to-r from-gw2-gold-dark/10 to-transparent">
-                <h2 className="text-lg sm:text-xl font-bold font-display text-gw2-gold-light mb-3">Total Story Playtime</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <h2 className="text-lg sm:text-xl font-bold font-display text-gw2-gold-light mb-3">Statistics</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Full Experience</p>
                         <p className="text-2xl font-bold text-gw2-gold-light">{formatTime(totalFull)}</p>
@@ -615,6 +615,10 @@
                     <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Total Quests</p>
                         <p className="text-2xl font-bold text-gray-200">{totalMissions}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Total Submissions</p>
+                        <p className="text-2xl font-bold text-gray-200">{totalSubmissions.toLocaleString()}</p>
                     </div>
                 </div>
             </div>
@@ -1272,9 +1276,11 @@
 
     function HomeView({ onSelectSeason }) {
         const [seasons, setSeasons] = useState(null);
+        const [totalSubmissions, setTotalSubmissions] = useState(0);
         const [error, setError] = useState(null);
 
         useEffect(() => {
+            apiFetch('/stats').then(s => setTotalSubmissions(s.total_submissions || 0)).catch(() => {});
             Promise.all([
                 apiFetch('/seasons'),
                 apiFetch('/seasons/' + MY_STORY_SEASON_ID),
@@ -1318,7 +1324,7 @@
 
         return (
             <div>
-                <TotalSummary seasons={seasons} />
+                <TotalSummary seasons={seasons} totalSubmissions={totalSubmissions} />
                 <div className="space-y-3">
                     {seasons.map(s => (
                         <SeasonCard key={s.id} season={s} onSelectSeason={onSelectSeason} />

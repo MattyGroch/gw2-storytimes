@@ -25,6 +25,10 @@ app.use('/v1/missions', submissionsRouter);
 app.use('/v1/estimate', estimateRouter);
 app.use('/v1/admin', adminRouter);
 
+app.get('/v1/stats', (_req, res) => {
+  res.json({ total_submissions: db.getSubmissionCount() });
+});
+
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
