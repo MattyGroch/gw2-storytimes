@@ -16,8 +16,18 @@ const app = express();
 
 app.set('trust proxy', 1);
 app.use(cors());
+
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
+const sitePath = path.join(__dirname, '..', 'site');
+if (fs.existsSync(sitePath)) {
+  app.use(express.static(sitePath));
+}
+
+app.use('/v1', globalLimiter);
 app.use(express.json());
-app.use(globalLimiter);
 
 app.use('/v1/seasons', seasonsRouter);
 app.use('/v1/missions', missionsRouter);
@@ -29,13 +39,7 @@ app.get('/v1/stats', (_req, res) => {
   res.json({ total_submissions: db.getSubmissionCount() });
 });
 
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
-});
-
-const sitePath = path.join(__dirname, '..', 'site');
 if (fs.existsSync(sitePath)) {
-  app.use(express.static(sitePath));
   app.get('/{*splat}', (_req, res) => {
     res.sendFile(path.join(sitePath, 'index.html'));
   });

@@ -29,7 +29,7 @@ CORS is open to all origins. Any browser app can consume it directly.
 
 | Scope | Limit |
 |-------|-------|
-| Global (all endpoints) | 100 requests / 15 minutes |
+| Global (API endpoints) | 300 requests / 15 minutes |
 | Submissions | 10 per minute |
 | Per-mission submission | 1 per mission per category per 24 hours (per IP) |
 

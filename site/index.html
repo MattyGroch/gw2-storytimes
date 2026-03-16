@@ -297,10 +297,25 @@
         return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
-    async function apiFetch(path) {
+    const _apiCache = new Map();
+    const API_CACHE_TTL = 5 * 60 * 1000;
+
+    async function apiFetch(path, { skipCache = false } = {}) {
+        if (!skipCache) {
+            const cached = _apiCache.get(path);
+            if (cached && Date.now() - cached.ts < API_CACHE_TTL) return cached.data;
+        }
         const res = await fetch(`${API_BASE}${path}`);
+        if (res.status === 429) {
+            const retryAfter = res.headers.get('Retry-After');
+            const secs = retryAfter ? parseInt(retryAfter, 10) : null;
+            const wait = secs ? ` Try again in ${secs > 60 ? Math.ceil(secs / 60) + ' minutes' : secs + ' seconds'}.` : ' Please wait a moment and try again.';
+            throw new Error(`Rate limit reached.${wait}`);
+        }
         if (!res.ok) throw new Error(`API error: ${res.status}`);
-        return res.json();
+        const data = await res.json();
+        _apiCache.set(path, { data, ts: Date.now() });
+        return data;
     }
 
     // --- Components ---
@@ -1503,7 +1518,7 @@
         const cardRef = useRef(null);
 
         function reload() {
-            apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
+            apiFetch(`/missions/${missionId}`, { skipCache: true }).then(setMission).catch(e => setError(e.message));
         }
 
         useEffect(() => { setMission(null); reload(); }, [missionId]);
@@ -1564,7 +1579,7 @@
         const panelRef = useRef(null);
 
         function reload() {
-            apiFetch(`/missions/${missionId}`).then(setMission).catch(e => setError(e.message));
+            apiFetch(`/missions/${missionId}`, { skipCache: true }).then(setMission).catch(e => setError(e.message));
         }
 
         useEffect(() => {
