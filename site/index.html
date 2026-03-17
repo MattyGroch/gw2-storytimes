@@ -274,6 +274,7 @@
     function X(p) { return <IconBase {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></IconBase>; }
     function Maximize2(p) { return <IconBase {...p}><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></IconBase>; }
     function SettingsGear(p) { return <IconBase {...p}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></IconBase>; }
+    function ExternalLink(p) { return <IconBase {...p}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></IconBase>; }
 
     // --- Utility ---
 
@@ -1737,6 +1738,31 @@
                 </div>
 
                 <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">Blish HUD Module</h2>
+                    <div className="space-y-3 text-sm text-gray-300 leading-relaxed">
+                        <p>
+                            Want story time estimates right inside Guild Wars 2?
+                            The <span className="text-gw2-gold-light font-medium">Story Times</span> module for{' '}
+                            <a href="https://blishhud.com/" target="_blank" rel="noopener noreferrer" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">Blish HUD</a>{' '}
+                            brings this entire database into the game as a compact overlay widget.
+                        </p>
+                        <ul className="list-disc list-inside space-y-1 text-gray-400">
+                            <li>Browse every story season and mission without alt-tabbing</li>
+                            <li>Built-in stopwatch with color-coded pacing feedback</li>
+                            <li>Submit your completion times directly from the overlay</li>
+                            <li>Automatic race-based filtering for My Story missions</li>
+                        </ul>
+                        <p>
+                            <a href="https://blishhud.com/modules/?module=mattygroch.storytimes" target="_blank" rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-gw2-gold-light font-medium text-xs px-3 py-2 rounded-lg transition-colors border border-stone-700">
+                                <ExternalLink size={14} />
+                                Get it on BlishHUD
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
                     <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-2">Open API</h2>
                     <p className="text-sm text-gray-400 mb-1">
                         All data is available via a free REST API. CORS is open to all origins — any browser app can consume it directly.
@@ -1747,7 +1773,7 @@
 
                     <div className="space-y-1 text-xs text-gray-400 mb-4">
                         <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Rate Limits</p>
-                        <p>100 requests per 15 minutes (global)</p>
+                        <p>300 requests per 15 minutes (API endpoints)</p>
                         <p>10 submissions per minute</p>
                         <p>1 submission per mission per category per 24 hours (per IP)</p>
                     </div>
