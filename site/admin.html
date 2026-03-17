@@ -56,6 +56,7 @@
         manual:    { label: 'Manual',    bg: 'bg-sky-900/60',    text: 'text-sky-300' },
         sentiment: { label: 'Sentiment', bg: 'bg-purple-900/60', text: 'text-purple-300' },
         api:       { label: 'API',       bg: 'bg-amber-900/60',  text: 'text-amber-300' },
+        nexus:     { label: 'Nexus',     bg: 'bg-emerald-900/60', text: 'text-emerald-300' },
     };
 
     function SourceBadge({ source }) {
@@ -241,6 +242,7 @@
                             <option value="sentiment">Sentiment</option>
                             <option value="api">API</option>
                             <option value="blishhud">BlishHUD</option>
+                            <option value="nexus">Nexus</option>
                         </select>
                         <input type="text" value={filters.mission_id} onChange={e => updateFilter('mission_id', e.target.value)}
                             placeholder="Mission ID"
