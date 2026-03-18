@@ -1696,136 +1696,195 @@
         );
     }
 
-    function AboutView({ onBack }) {
+    function AboutView({ onBack, initialTab = 'about' }) {
+        const [tab, setTab] = useState(initialTab);
+
         return (
             <div className="space-y-4">
                 <button onClick={onBack} className="flex items-center gap-2 text-sm text-gray-300 hover:text-gw2-gold-light transition-colors mb-1 py-2.5 -ml-1 pl-1 pr-3">
                     <ArrowLeft size={18} /> <span className="font-medium">All Stories</span>
                 </button>
-                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
-                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">About GW2 Story Times</h2>
-                    <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
-                        <p>
-                            A community-driven database of Guild Wars 2 story mission completion times.
-                            Browse estimated playtimes for every story quest, from the Personal Story through the latest expansion.
-                        </p>
-                        <div>
-                            <h3 className="text-gw2-gold font-bold font-display mb-1">Two Categories</h3>
-                            <p>
-                                <span className="text-gw2-gold-light font-medium">Full Experience</span> — watching all cutscenes, reading all dialogue, exploring at a relaxed pace.
-                            </p>
-                            <p className="mt-1">
-                                <span className="text-yellow-400 font-medium">Speedrun</span> — skipping everything, optimal pathing, getting through as fast as possible.
+
+                <div className="flex bg-stone-800 rounded-lg p-0.5 w-fit">
+                    <button onClick={() => setTab('about')}
+                        className={`px-4 py-1.5 text-sm rounded-md transition-colors font-display font-bold ${tab === 'about' ? 'bg-gw2-gold text-stone-900' : 'text-gray-400 hover:text-gray-200'}`}>
+                        About
+                    </button>
+                    <button onClick={() => setTab('api')}
+                        className={`px-4 py-1.5 text-sm rounded-md transition-colors font-display font-bold ${tab === 'api' ? 'bg-gw2-gold text-stone-900' : 'text-gray-400 hover:text-gray-200'}`}>
+                        API
+                    </button>
+                </div>
+
+                {tab === 'about' && (
+                    <React.Fragment>
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                            <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">About GW2 Story Times</h2>
+                            <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
+                                <p>
+                                    A community-driven database of Guild Wars 2 story mission completion times.
+                                    Browse estimated playtimes for every story quest, from the Personal Story through the latest expansion.
+                                </p>
+                                <div>
+                                    <h3 className="text-gw2-gold font-bold font-display mb-1">Two Categories</h3>
+                                    <p>
+                                        <span className="text-gw2-gold-light font-medium">Full Experience</span> — watching all cutscenes, reading all dialogue, exploring at a relaxed pace.
+                                    </p>
+                                    <p className="mt-1">
+                                        <span className="text-yellow-400 font-medium">Speedrun</span> — skipping everything, optimal pathing, getting through as fast as possible.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h3 className="text-gw2-gold font-bold font-display mb-1">Methodology</h3>
+                                    <p>
+                                        Initial seed times are sourced from YouTube walkthroughs — averaging 1–3 recordings per mission.
+                                        Community submissions refine these estimates over time.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg border-l-4" style={{ borderLeftColor: '#57534e' }}>
+                            <h3 className="text-sm font-bold font-display text-gray-300 mb-2">Keep in Mind</h3>
+                            <p className="text-sm text-gray-400 leading-relaxed">
+                                Time estimates reflect mission gameplay only and do not include travel between missions,
+                                unlocking prerequisites (e.g. masteries), or other non-mission activities.
+                                Actual playthroughs will take longer than the listed totals.
                             </p>
                         </div>
-                        <div>
-                            <h3 className="text-gw2-gold font-bold font-display mb-1">Methodology</h3>
-                            <p>
-                                Initial seed times are sourced from YouTube walkthroughs — averaging 1–3 recordings per mission.
-                                Community submissions refine these estimates over time.
+
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                            <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">Blish HUD Module</h2>
+                            <div className="space-y-3 text-sm text-gray-300 leading-relaxed">
+                                <p>
+                                    Want story time estimates right inside Guild Wars 2?
+                                    The <span className="text-gw2-gold-light font-medium">Story Times</span> module for{' '}
+                                    <a href="https://blishhud.com/" target="_blank" rel="noopener noreferrer" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">Blish HUD</a>{' '}
+                                    brings this entire database into the game as a compact overlay widget.
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-gray-400">
+                                    <li>Browse every story season and mission without alt-tabbing</li>
+                                    <li>Built-in stopwatch with color-coded pacing feedback</li>
+                                    <li>Submit your completion times directly from the overlay</li>
+                                    <li>Automatic race-based filtering for My Story missions</li>
+                                </ul>
+                                <p>
+                                    <a href="https://blishhud.com/modules/?module=mattygroch.storytimes" target="_blank" rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-gw2-gold-light font-medium text-xs px-3 py-2 rounded-lg transition-colors border border-stone-700">
+                                        <ExternalLink size={14} />
+                                        Get it on BlishHUD
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                            <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">Raidcore Nexus Addon</h2>
+                            <div className="space-y-3 text-sm text-gray-300 leading-relaxed">
+                                <p>
+                                    Prefer{' '}
+                                    <a href="https://raidcore.gg/Nexus" target="_blank" rel="noopener noreferrer" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">Raidcore Nexus</a>?
+                                    The <span className="text-gw2-gold-light font-medium">Story Times</span> addon is available directly
+                                    in the Nexus app and as a standalone download from the public repo.
+                                </p>
+                                <ul className="list-disc list-inside space-y-1 text-gray-400">
+                                    <li>Compact always-on timer widget</li>
+                                    <li>Pop-out mission browser with live data</li>
+                                    <li>Stopwatch with pacing feedback based on community averages</li>
+                                    <li>In-game time submissions tagged as Nexus</li>
+                                </ul>
+                                <p>
+                                    <a href="https://github.com/MattyGroch/gw2-storytimes-nexus" target="_blank" rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-gw2-gold-light font-medium text-xs px-3 py-2 rounded-lg transition-colors border border-stone-700">
+                                        <ExternalLink size={14} />
+                                        View on GitHub
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                )}
+
+                {tab === 'api' && (
+                    <React.Fragment>
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg border-l-4" style={{ borderLeftColor: '#c8a84e' }}>
+                            <h3 className="text-sm font-bold font-display text-gw2-gold-light mb-2">Attribution</h3>
+                            <p className="text-sm text-gray-300 leading-relaxed">
+                                If you use GW2 Story Times data on a public site or application, please include a visible note
+                                that the data is sourced from{' '}
+                                <a href="https://gw2storytimes.com" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">gw2storytimes.com</a>.
+                                Community contributions are encouraged — users can submit times on the website or through the{' '}
+                                <a href="https://blishhud.com/modules/?module=mattygroch.storytimes" target="_blank" rel="noopener noreferrer" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">Blish HUD</a>{' '}
+                                and Nexus addons.
                             </p>
                         </div>
-                    </div>
-                </div>
 
-                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg border-l-4" style={{ borderLeftColor: '#57534e' }}>
-                    <h3 className="text-sm font-bold font-display text-gray-300 mb-2">Keep in Mind</h3>
-                    <p className="text-sm text-gray-400 leading-relaxed">
-                        Time estimates reflect mission gameplay only and do not include travel between missions,
-                        unlocking prerequisites (e.g. masteries), or other non-mission activities.
-                        Actual playthroughs will take longer than the listed totals.
-                    </p>
-                </div>
+                        <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
+                            <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-2">Open API</h2>
+                            <p className="text-sm text-gray-400 mb-1">
+                                All data is available via a free REST API. CORS is open to all origins — any browser app can consume it directly.
+                            </p>
+                            <div className="bg-stone-800 rounded-lg px-3 py-2 mb-4 inline-block">
+                                <code className="text-xs text-gw2-gold-light font-mono">https://api.gw2storytimes.com/v1</code>
+                            </div>
 
-                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
-                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-4">Blish HUD Module</h2>
-                    <div className="space-y-3 text-sm text-gray-300 leading-relaxed">
-                        <p>
-                            Want story time estimates right inside Guild Wars 2?
-                            The <span className="text-gw2-gold-light font-medium">Story Times</span> module for{' '}
-                            <a href="https://blishhud.com/" target="_blank" rel="noopener noreferrer" className="text-gw2-gold-light underline hover:text-gw2-gold transition-colors">Blish HUD</a>{' '}
-                            brings this entire database into the game as a compact overlay widget.
-                        </p>
-                        <ul className="list-disc list-inside space-y-1 text-gray-400">
-                            <li>Browse every story season and mission without alt-tabbing</li>
-                            <li>Built-in stopwatch with color-coded pacing feedback</li>
-                            <li>Submit your completion times directly from the overlay</li>
-                            <li>Automatic race-based filtering for My Story missions</li>
-                        </ul>
-                        <p>
-                            <a href="https://blishhud.com/modules/?module=mattygroch.storytimes" target="_blank" rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-gw2-gold-light font-medium text-xs px-3 py-2 rounded-lg transition-colors border border-stone-700">
-                                <ExternalLink size={14} />
-                                Get it on BlishHUD
-                            </a>
-                        </p>
-                    </div>
-                </div>
+                            <div className="space-y-1 text-xs text-gray-400 mb-4">
+                                <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Rate Limits</p>
+                                <p>300 requests per 15 minutes (API endpoints)</p>
+                                <p>10 submissions per minute</p>
+                                <p>1 submission per mission per category per 24 hours (per IP)</p>
+                            </div>
 
-                <div className="card-bg rounded-lg border border-stone-800 p-4 sm:p-6 shadow-lg">
-                    <h2 className="text-xl sm:text-2xl font-bold font-display text-gw2-gold-light mb-2">Open API</h2>
-                    <p className="text-sm text-gray-400 mb-1">
-                        All data is available via a free REST API. CORS is open to all origins — any browser app can consume it directly.
-                    </p>
-                    <div className="bg-stone-800 rounded-lg px-3 py-2 mb-4 inline-block">
-                        <code className="text-xs text-gw2-gold-light font-mono">https://api.gw2storytimes.com/v1</code>
-                    </div>
+                            <h3 className="text-gw2-gold font-bold font-display mb-3">Endpoints</h3>
+                            <div className="space-y-3">
+                                <ApiEndpoint
+                                    method="GET" path="/v1/seasons"
+                                    desc="List all seasons with mission counts and total time estimates."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/seasons")\n  .then(r => r.json())'}
+                                    response={'[\n  {\n    "id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",\n    "name": "My Story",\n    "order": 0,\n    "mission_count": 313,\n    "total_full_mins": 3180.5,\n    "total_speed_mins": 0\n  },\n  ...\n]'}
+                                />
+                                <ApiEndpoint
+                                    method="GET" path="/v1/seasons/:id"
+                                    desc="Single season with nested stories and their missions."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/seasons/215AAA0F-CDAC-4F93-86DA-C155A99B5784")\n  .then(r => r.json())'}
+                                    response={'{\n  "id": "215AAA0F-...",\n  "name": "My Story",\n  "order": 0,\n  "stories": [\n    {\n      "id": 8,\n      "name": "My Story (Asura)",\n      "group_name": "Ch. 1-3",\n      "races": ["Asura"],\n      "missions": [\n        {\n          "id": 15,\n          "name": "Explosive Intellect",\n          "times": { "full": { ... }, "speed": { ... } }\n        },\n        ...\n      ]\n    },\n    ...\n  ]\n}'}
+                                />
+                                <ApiEndpoint
+                                    method="GET" path="/v1/missions"
+                                    desc="All missions with computed average times. Mission IDs correspond to GW2 API quest IDs."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/missions")\n  .then(r => r.json())'}
+                                    response={'[\n  {\n    "id": 15,\n    "name": "Explosive Intellect",\n    "story_id": 8,\n    "story_name": "My Story (Asura)",\n    "group_name": "Ch. 1-3",\n    "season_id": "215AAA0F-...",\n    "season_name": "My Story",\n    "order": 1,\n    "races": ["Asura"],\n    "times": {\n      "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n      "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n    }\n  },\n  ...\n]'}
+                                />
+                                <ApiEndpoint
+                                    method="GET" path="/v1/missions/:id"
+                                    desc="Single mission with full time data and submission statistics."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/missions/15")\n  .then(r => r.json())'}
+                                    response={'{\n  "id": 15,\n  "name": "Explosive Intellect",\n  "story_id": 8,\n  "story_name": "My Story (Asura)",\n  "group_name": "Ch. 1-3",\n  "season_id": "215AAA0F-...",\n  "season_name": "My Story",\n  "order": 1,\n  "races": ["Asura"],\n  "times": {\n    "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n    "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n  }\n}'}
+                                />
+                                <ApiEndpoint
+                                    method="POST" path="/v1/missions/:id/submit"
+                                    desc="Submit a completion time. Category must be 'full' or 'speed'. Duration must be between 1 and 480 minutes."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/missions/15/submit", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ category: "full", duration_mins: 14 })\n})'}
+                                    response={'{\n  "message": "Submission recorded",\n  "mission_id": 15,\n  "category": "full",\n  "duration_mins": 14\n}'}
+                                />
+                                <ApiEndpoint
+                                    method="GET" path="/v1/estimate?missions=id1,id2&category=full"
+                                    desc="Bulk time estimate for a set of mission IDs. Category defaults to 'full'."
+                                    example={'fetch("https://api.gw2storytimes.com/v1/estimate?missions=15,16,17&category=full")\n  .then(r => r.json())'}
+                                    response={'{\n  "category": "full",\n  "requested": 3,\n  "found": 3,\n  "with_data": 3,\n  "without_data": 0,\n  "total_mins": 36.5,\n  "total_hours": 0.61,\n  "missions": [\n    { "id": 15, "name": "Explosive Intellect", "avg_mins": 12 },\n    ...\n  ]\n}'}
+                                />
+                            </div>
 
-                    <div className="space-y-1 text-xs text-gray-400 mb-4">
-                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Rate Limits</p>
-                        <p>300 requests per 15 minutes (API endpoints)</p>
-                        <p>10 submissions per minute</p>
-                        <p>1 submission per mission per category per 24 hours (per IP)</p>
-                    </div>
-
-                    <h3 className="text-gw2-gold font-bold font-display mb-3">Endpoints</h3>
-                    <div className="space-y-3">
-                        <ApiEndpoint
-                            method="GET" path="/v1/seasons"
-                            desc="List all seasons with mission counts and total time estimates."
-                            example={'fetch("https://api.gw2storytimes.com/v1/seasons")\n  .then(r => r.json())'}
-                            response={'[\n  {\n    "id": "215AAA0F-CDAC-4F93-86DA-C155A99B5784",\n    "name": "My Story",\n    "order": 0,\n    "mission_count": 313,\n    "total_full_mins": 3180.5,\n    "total_speed_mins": 0\n  },\n  ...\n]'}
-                        />
-                        <ApiEndpoint
-                            method="GET" path="/v1/seasons/:id"
-                            desc="Single season with nested stories and their missions."
-                            example={'fetch("https://api.gw2storytimes.com/v1/seasons/215AAA0F-CDAC-4F93-86DA-C155A99B5784")\n  .then(r => r.json())'}
-                            response={'{\n  "id": "215AAA0F-...",\n  "name": "My Story",\n  "order": 0,\n  "stories": [\n    {\n      "id": 8,\n      "name": "My Story (Asura)",\n      "group_name": "Ch. 1-3",\n      "races": ["Asura"],\n      "missions": [\n        {\n          "id": 15,\n          "name": "Explosive Intellect",\n          "times": { "full": { ... }, "speed": { ... } }\n        },\n        ...\n      ]\n    },\n    ...\n  ]\n}'}
-                        />
-                        <ApiEndpoint
-                            method="GET" path="/v1/missions"
-                            desc="All missions with computed average times. Mission IDs correspond to GW2 API quest IDs."
-                            example={'fetch("https://api.gw2storytimes.com/v1/missions")\n  .then(r => r.json())'}
-                            response={'[\n  {\n    "id": 15,\n    "name": "Explosive Intellect",\n    "story_id": 8,\n    "story_name": "My Story (Asura)",\n    "group_name": "Ch. 1-3",\n    "season_id": "215AAA0F-...",\n    "season_name": "My Story",\n    "order": 1,\n    "races": ["Asura"],\n    "times": {\n      "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n      "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n    }\n  },\n  ...\n]'}
-                        />
-                        <ApiEndpoint
-                            method="GET" path="/v1/missions/:id"
-                            desc="Single mission with full time data and submission statistics."
-                            example={'fetch("https://api.gw2storytimes.com/v1/missions/15")\n  .then(r => r.json())'}
-                            response={'{\n  "id": 15,\n  "name": "Explosive Intellect",\n  "story_id": 8,\n  "story_name": "My Story (Asura)",\n  "group_name": "Ch. 1-3",\n  "season_id": "215AAA0F-...",\n  "season_name": "My Story",\n  "order": 1,\n  "races": ["Asura"],\n  "times": {\n    "full":  { "seed_mins": 12, "avg_mins": 12, "submissions": 0, "min_mins": null, "max_mins": null },\n    "speed": { "seed_mins": null, "avg_mins": null, "submissions": 0, "min_mins": null, "max_mins": null }\n  }\n}'}
-                        />
-                        <ApiEndpoint
-                            method="POST" path="/v1/missions/:id/submit"
-                            desc="Submit a completion time. Category must be 'full' or 'speed'. Duration must be between 1 and 480 minutes."
-                            example={'fetch("https://api.gw2storytimes.com/v1/missions/15/submit", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ category: "full", duration_mins: 14 })\n})'}
-                            response={'{\n  "message": "Submission recorded",\n  "mission_id": 15,\n  "category": "full",\n  "duration_mins": 14\n}'}
-                        />
-                        <ApiEndpoint
-                            method="GET" path="/v1/estimate?missions=id1,id2&category=full"
-                            desc="Bulk time estimate for a set of mission IDs. Category defaults to 'full'."
-                            example={'fetch("https://api.gw2storytimes.com/v1/estimate?missions=15,16,17&category=full")\n  .then(r => r.json())'}
-                            response={'{\n  "category": "full",\n  "requested": 3,\n  "found": 3,\n  "with_data": 3,\n  "without_data": 0,\n  "total_mins": 36.5,\n  "total_hours": 0.61,\n  "missions": [\n    { "id": 15, "name": "Explosive Intellect", "avg_mins": 12 },\n    ...\n  ]\n}'}
-                        />
-                    </div>
-
-                    <div className="mt-4 space-y-1 text-xs text-gray-400">
-                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Error Responses</p>
-                        <p><code className="text-gray-300">404</code> — Season or mission not found</p>
-                        <p><code className="text-gray-300">400</code> — Validation error (invalid ID, missing fields, duration out of range)</p>
-                        <p><code className="text-gray-300">429</code> — Rate limit exceeded or duplicate submission within 24 hours</p>
-                        <p className="mt-1">All errors return <code className="text-gray-300">{'{ "error": "..." }'}</code></p>
-                    </div>
-                </div>
+                            <div className="mt-4 space-y-1 text-xs text-gray-400">
+                                <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-1">Error Responses</p>
+                                <p><code className="text-gray-300">404</code> — Season or mission not found</p>
+                                <p><code className="text-gray-300">400</code> — Validation error (invalid ID, missing fields, duration out of range)</p>
+                                <p><code className="text-gray-300">429</code> — Rate limit exceeded or duplicate submission within 24 hours</p>
+                                <p className="mt-1">All errors return <code className="text-gray-300">{'{ "error": "..." }'}</code></p>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                )}
             </div>
         );
     }
@@ -1853,6 +1912,7 @@
         const parts = pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
         if (parts.length === 0) return { view: 'home', viewId: null, seasonId: null };
         if (parts[0] === 'about') return { view: 'about', viewId: null, seasonId: null };
+        if (parts[0] === 'api') return { view: 'about', viewId: 'api', seasonId: null };
         const seasonId = slugToId[parts[0]];
         if (!seasonId) return { view: 'home', viewId: null, seasonId: null };
         if (parts.length >= 2) {
@@ -1927,7 +1987,7 @@
             let path = '/';
             let seasonId = currentSeasonId;
             if (v === 'about') {
-                path = '/about';
+                path = id === 'api' ? '/api' : '/about';
                 seasonId = null;
             } else if (v === 'season') {
                 path = '/' + (idToSlug[id] || id);
@@ -1968,7 +2028,7 @@
                     {view === 'home' && <HomeView onSelectSeason={(id) => navigate('season', id)} />}
                     {view === 'season' && <SeasonView seasonId={viewId} onBack={() => navigate('home')} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} onNavigateToMission={(mId) => navigate('mission', mId, viewId)} />}
                     {view === 'mission' && <MissionView missionId={viewId} onBack={goBack} highlight={highlight} onHighlightDone={() => setHighlight(null)} showSynopses={showSynopses} />}
-                    {view === 'about' && <AboutView onBack={() => navigate('home')} />}
+                    {view === 'about' && <AboutView onBack={() => navigate('home')} initialTab={viewId === 'api' ? 'api' : 'about'} />}
                 </div>
                 <footer className="text-center text-xs text-gray-600 py-8">
                     <a href="/privacy.html" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
