@@ -268,6 +268,16 @@ All errors return JSON with an `error` field:
 | `404` | Season or mission not found |
 | `429` | Rate limit exceeded, or duplicate submission within 24 hours |
 
+## How to Credit
+
+If you use GW2 Story Times data in a public-facing project, we appreciate a visible attribution. Here's a snippet you can drop into your README, About page, or footer:
+
+```
+Data sourced from [GW2 Story Times](https://gw2storytimes.com). Community contributions welcome.
+```
+
+Linking back to [gw2storytimes.com](https://gw2storytimes.com) helps keep the database a community-supported resource. Users can contribute times directly on the site or through the [Blish HUD](https://blishhud.com/modules/?module=mattygroch.storytimes) and [Nexus](https://github.com/MattyGroch/gw2-storytimes-nexus) addons.
+
 ## Development
 
 ```bash
