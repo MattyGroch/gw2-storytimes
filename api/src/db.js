@@ -414,6 +414,20 @@ function createManualStory(seasonId, name, groupName, order) {
   return id;
 }
 
+function updateManualStory(id, fields) {
+  const sets = [];
+  const params = [];
+  if (fields.name !== undefined) { sets.push('name = ?'); params.push(fields.name); }
+  if (fields.group_name !== undefined) { sets.push('group_name = ?'); params.push(fields.group_name); }
+  if (fields.order !== undefined) { sets.push('"order" = ?'); params.push(fields.order); }
+  if (!sets.length) return false;
+  params.push(id);
+  const result = getDb().prepare(
+    `UPDATE stories SET ${sets.join(', ')} WHERE id = ? AND manual_id IS NOT NULL`
+  ).run(...params);
+  return result.changes > 0;
+}
+
 function deleteManualStory(id) {
   const story = getDb().prepare('SELECT manual_id FROM stories WHERE id = ?').get(id);
   if (!story) return { deleted: false, reason: 'not_found' };
@@ -512,5 +526,6 @@ module.exports = {
   deleteManualMission,
   getNextManualStoryId,
   createManualStory,
+  updateManualStory,
   deleteManualStory,
 };

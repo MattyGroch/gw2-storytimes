@@ -414,6 +414,7 @@
         const [storyForm, setStoryForm] = useState({ name: '', group_name: '', order: '' });
         const [submittingStory, setSubmittingStory] = useState(false);
         const [deletingStory, setDeletingStory] = useState(null);
+        const [editingStory, setEditingStory] = useState({ id: null, field: null, value: '' });
 
         useEffect(() => {
             (async () => {
@@ -453,6 +454,44 @@
             setSelectedStory('');
             setMissions([]);
             setStoryForm({ name: '', group_name: '', order: '' });
+        }
+
+        function startEditStory(st, field) {
+            const val = field === 'order' ? String(st.order) : (st[field] != null ? st[field] : '');
+            setEditingStory({ id: st.id, field, value: val });
+        }
+
+        async function saveEditStory() {
+            if (editingStory.id == null) return;
+            const body = {};
+            if (editingStory.field === 'order') {
+                const o = parseInt(editingStory.value, 10);
+                if (isNaN(o)) { setEditingStory({ id: null, field: null, value: '' }); return; }
+                body.order = o;
+            } else if (editingStory.field === 'group_name') {
+                body.group_name = editingStory.value.trim() || null;
+            } else {
+                if (!editingStory.value.trim()) { setEditingStory({ id: null, field: null, value: '' }); return; }
+                body[editingStory.field] = editingStory.value.trim();
+            }
+            try {
+                const res = await adminFetch(`/stories/${editingStory.id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify(body),
+                });
+                if (res.ok) {
+                    const updated = await adminFetch('/stories');
+                    if (updated.ok) setSeasons(await updated.json());
+                } else {
+                    alert((await res.json()).error || 'Update failed');
+                }
+            } catch { alert('Network error'); }
+            setEditingStory({ id: null, field: null, value: '' });
+        }
+
+        function handleEditStoryKeyDown(e) {
+            if (e.key === 'Enter') saveEditStory();
+            else if (e.key === 'Escape') setEditingStory({ id: null, field: null, value: '' });
         }
 
         async function handleSubmitStory(e) {
@@ -618,6 +657,7 @@
                                             <th className="px-3 py-2.5 font-medium">Story</th>
                                             <th className="px-3 py-2.5 font-medium">Group</th>
                                             <th className="px-3 py-2.5 font-medium">Missions</th>
+                                            <th className="px-3 py-2.5 font-medium">Order</th>
                                             <th className="px-3 py-2.5 font-medium">Type</th>
                                             <th className="px-3 py-2.5 font-medium w-16"></th>
                                         </tr>
@@ -625,14 +665,39 @@
                                     <tbody>
                                         {stories.map(st => (
                                             <tr key={st.id}
-                                                onClick={e => { if (e.target.closest('button')) return; setSelectedStory(String(st.id)); }}
+                                                onClick={e => { if (e.target.closest('button') || e.target.closest('input')) return; if (editingStory.id === st.id) return; setSelectedStory(String(st.id)); }}
                                                 className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors cursor-pointer ${st.mission_count === 0 ? 'bg-amber-900/10' : ''}`}>
-                                                <td className="px-3 py-2 text-gray-200">{st.name}</td>
-                                                <td className="px-3 py-2 text-gray-500">{st.group_name || '—'}</td>
+                                                <td className="px-3 py-2 text-gray-200" onClick={e => { if (st.manual_id) { e.stopPropagation(); startEditStory(st, 'name'); } }}>
+                                                    {editingStory.id === st.id && editingStory.field === 'name' ? (
+                                                        <input type="text" value={editingStory.value} autoFocus
+                                                            onChange={e => setEditingStory(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEditStory} onKeyDown={handleEditStoryKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-full focus:outline-none"
+                                                        />
+                                                    ) : <span className={st.manual_id ? 'cursor-text hover:text-gw2-gold-light transition-colors' : ''}>{st.name}</span>}
+                                                </td>
+                                                <td className="px-3 py-2 text-gray-500" onClick={e => { if (st.manual_id) { e.stopPropagation(); startEditStory(st, 'group_name'); } }}>
+                                                    {editingStory.id === st.id && editingStory.field === 'group_name' ? (
+                                                        <input type="text" value={editingStory.value} autoFocus
+                                                            onChange={e => setEditingStory(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEditStory} onKeyDown={handleEditStoryKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-24 focus:outline-none"
+                                                        />
+                                                    ) : <span className={st.manual_id ? 'cursor-text hover:text-gw2-gold-light transition-colors' : ''}>{st.group_name || '—'}</span>}
+                                                </td>
                                                 <td className="px-3 py-2">
                                                     <span className={st.mission_count === 0 ? 'text-amber-400 font-medium' : 'text-gray-500'}>
                                                         {st.mission_count}
                                                     </span>
+                                                </td>
+                                                <td className="px-3 py-2 font-mono text-gray-500" onClick={e => { if (st.manual_id) { e.stopPropagation(); startEditStory(st, 'order'); } }}>
+                                                    {editingStory.id === st.id && editingStory.field === 'order' ? (
+                                                        <input type="number" value={editingStory.value} autoFocus min="1"
+                                                            onChange={e => setEditingStory(p => ({ ...p, value: e.target.value }))}
+                                                            onBlur={saveEditStory} onKeyDown={handleEditStoryKeyDown}
+                                                            className="bg-stone-800 border border-gw2-gold-dark rounded px-2 py-0.5 text-xs text-gray-200 w-14 focus:outline-none"
+                                                        />
+                                                    ) : <span className={st.manual_id ? 'cursor-text hover:text-gw2-gold-light transition-colors' : ''}>{st.order}</span>}
                                                 </td>
                                                 <td className="px-3 py-2">
                                                     {st.manual_id ? (
