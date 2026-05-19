@@ -197,6 +197,33 @@ router.post('/stories', (req, res) => {
   res.status(201).json({ id, manual_id: id });
 });
 
+router.patch('/stories/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid story ID' });
+  }
+
+  const fields = {};
+  if (req.body.name !== undefined) fields.name = String(req.body.name).trim();
+  if (req.body.group_name !== undefined) fields.group_name = req.body.group_name === null ? null : String(req.body.group_name).trim();
+  if (req.body.order !== undefined) {
+    const o = parseInt(req.body.order, 10);
+    if (isNaN(o)) return res.status(400).json({ error: 'order must be an integer' });
+    fields.order = o;
+  }
+
+  if (!Object.keys(fields).length) {
+    return res.status(400).json({ error: 'No fields to update' });
+  }
+
+  const updated = db.updateManualStory(id, fields);
+  if (!updated) {
+    return res.status(404).json({ error: 'Manual story not found' });
+  }
+
+  res.json({ message: 'Story updated' });
+});
+
 router.delete('/stories/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id)) {
