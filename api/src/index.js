@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./db');
 const { globalLimiter } = require('./middleware/rateLimiter');
+const { importSeedData } = require('./lib/seed-import');
 const seasonsRouter = require('./routes/seasons');
 const missionsRouter = require('./routes/missions');
 const submissionsRouter = require('./routes/submissions');
@@ -53,78 +54,6 @@ app.use((err, _req, res, _next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({ error: 'Internal server error' });
 });
-
-function reconcileManualMissions(d, seedMissions) {
-  const manualMissions = d.prepare(
-    'SELECT id, story_id, "order", manual_id FROM missions WHERE manual_id IS NOT NULL'
-  ).all();
-  if (!manualMissions.length) return;
-
-  let reconciled = 0;
-  for (const manual of manualMissions) {
-    const match = seedMissions.find(
-      m => m.story_id === manual.story_id && m.order === manual.order
-    );
-    if (!match) continue;
-
-    const realExists = d.prepare('SELECT 1 FROM missions WHERE id = ?').get(match.id);
-    if (!realExists) continue;
-
-    d.prepare('UPDATE submissions SET mission_id = ? WHERE mission_id = ?')
-      .run(match.id, manual.id);
-    d.prepare('UPDATE missions SET manual_id = ? WHERE id = ?')
-      .run(manual.manual_id, match.id);
-    d.prepare('DELETE FROM missions WHERE id = ?').run(manual.id);
-    reconciled++;
-  }
-
-  if (reconciled) {
-    console.log(`Reconciled ${reconciled} manual mission(s) with API data`);
-  }
-}
-
-function importSeedData() {
-  const seedPath = path.join(__dirname, '..', 'seed-data.json');
-  if (!fs.existsSync(seedPath)) {
-    console.log('No seed-data.json found, skipping seed import');
-    return [];
-  }
-
-  const data = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
-  console.log(`Importing seed data: ${data.seasons?.length || 0} seasons, ${data.stories?.length || 0} stories, ${data.missions?.length || 0} missions`);
-
-  const d = db.getDb();
-  const importAll = d.transaction(() => {
-    for (const s of data.seasons || []) {
-      db.upsertSeason(s.id, s.name, s.order);
-    }
-    for (const st of data.stories || []) {
-      db.upsertStory(st.id, st.season_id, st.name, st.group_name, st.order, st.races);
-    }
-    for (const m of data.missions || []) {
-      db.upsertMission(m.id, m.story_id, m.name, m.order, m.seed_full_mins, m.seed_speed_mins, m.description, m.canonical_id);
-    }
-
-    reconcileManualMissions(d, data.missions || []);
-
-    // Remove API-sourced missions that are no longer in seed data (e.g. removed placeholders)
-    const seedMissionIds = new Set((data.missions || []).map(m => m.id));
-    const dbMissions = d.prepare('SELECT id, manual_id FROM missions').all();
-    let removed = 0;
-    for (const row of dbMissions) {
-      if (row.manual_id != null) continue; // keep manually-added missions
-      if (seedMissionIds.has(row.id)) continue;
-      d.prepare('DELETE FROM submissions WHERE mission_id = ?').run(row.id);
-      d.prepare('DELETE FROM missions WHERE id = ?').run(row.id);
-      removed++;
-    }
-    if (removed > 0) console.log(`Removed ${removed} mission(s) no longer in seed data`);
-  });
-
-  importAll();
-  console.log('Seed data imported successfully');
-  return (data.missions || []).map(m => m.id);
-}
 
 async function fetchDescriptions(missionIds) {
   if (!missionIds.length) return;

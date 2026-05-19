@@ -411,6 +411,9 @@
         const [form, setForm] = useState({ name: '', order: '', seed_full_mins: '', seed_speed_mins: '' });
         const [editing, setEditing] = useState({ id: null, field: null, value: '' });
         const [deleting, setDeleting] = useState(null);
+        const [storyForm, setStoryForm] = useState({ name: '', group_name: '', order: '' });
+        const [submittingStory, setSubmittingStory] = useState(false);
+        const [deletingStory, setDeletingStory] = useState(null);
 
         useEffect(() => {
             (async () => {
@@ -449,6 +452,48 @@
             setSelectedSeason(val);
             setSelectedStory('');
             setMissions([]);
+            setStoryForm({ name: '', group_name: '', order: '' });
+        }
+
+        async function handleSubmitStory(e) {
+            e.preventDefault();
+            if (!selectedSeason || !storyForm.name.trim() || !storyForm.order) return;
+            setSubmittingStory(true);
+            try {
+                const res = await adminFetch('/stories', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        season_id: selectedSeason,
+                        name: storyForm.name.trim(),
+                        group_name: storyForm.group_name.trim() || null,
+                        order: parseInt(storyForm.order, 10),
+                    }),
+                });
+                if (res.ok) {
+                    setStoryForm({ name: '', group_name: '', order: '' });
+                    const updated = await adminFetch('/stories');
+                    if (updated.ok) setSeasons(await updated.json());
+                } else {
+                    alert((await res.json()).error || 'Failed to create story');
+                }
+            } catch { alert('Network error'); }
+            setSubmittingStory(false);
+        }
+
+        async function handleDeleteStory(st) {
+            if (!confirm(`Delete manual story "${st.name}"?\nAll its missions and submissions will also be deleted.`)) return;
+            setDeletingStory(st.id);
+            try {
+                const res = await adminFetch(`/stories/${st.id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    if (selectedStory === String(st.id)) { setSelectedStory(''); setMissions([]); }
+                    const updated = await adminFetch('/stories');
+                    if (updated.ok) setSeasons(await updated.json());
+                } else {
+                    alert((await res.json()).error || 'Delete failed');
+                }
+            } catch { alert('Network error'); }
+            setDeletingStory(null);
         }
 
         async function handleSubmit(e) {
@@ -565,31 +610,84 @@
                     </div>
 
                     {selectedSeason && !selectedStory && (
-                        <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
-                            <table className="w-full text-xs">
-                                <thead>
-                                    <tr className="border-b border-stone-800 text-gray-500 text-left">
-                                        <th className="px-3 py-2.5 font-medium">Story</th>
-                                        <th className="px-3 py-2.5 font-medium">Group</th>
-                                        <th className="px-3 py-2.5 font-medium">Missions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {stories.map(st => (
-                                        <tr key={st.id}
-                                            onClick={() => setSelectedStory(String(st.id))}
-                                            className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors cursor-pointer ${st.mission_count === 0 ? 'bg-amber-900/10' : ''}`}>
-                                            <td className="px-3 py-2 text-gray-200">{st.name}</td>
-                                            <td className="px-3 py-2 text-gray-500">{st.group_name || '—'}</td>
-                                            <td className="px-3 py-2">
-                                                <span className={st.mission_count === 0 ? 'text-amber-400 font-medium' : 'text-gray-500'}>
-                                                    {st.mission_count}
-                                                </span>
-                                            </td>
+                        <div className="space-y-4">
+                            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                                <table className="w-full text-xs">
+                                    <thead>
+                                        <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                            <th className="px-3 py-2.5 font-medium">Story</th>
+                                            <th className="px-3 py-2.5 font-medium">Group</th>
+                                            <th className="px-3 py-2.5 font-medium">Missions</th>
+                                            <th className="px-3 py-2.5 font-medium">Type</th>
+                                            <th className="px-3 py-2.5 font-medium w-16"></th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {stories.map(st => (
+                                            <tr key={st.id}
+                                                onClick={e => { if (e.target.closest('button')) return; setSelectedStory(String(st.id)); }}
+                                                className={`border-b border-stone-800/50 hover:bg-white/[0.02] transition-colors cursor-pointer ${st.mission_count === 0 ? 'bg-amber-900/10' : ''}`}>
+                                                <td className="px-3 py-2 text-gray-200">{st.name}</td>
+                                                <td className="px-3 py-2 text-gray-500">{st.group_name || '—'}</td>
+                                                <td className="px-3 py-2">
+                                                    <span className={st.mission_count === 0 ? 'text-amber-400 font-medium' : 'text-gray-500'}>
+                                                        {st.mission_count}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {st.manual_id ? (
+                                                        <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-emerald-900/60 text-emerald-300">Manual</span>
+                                                    ) : (
+                                                        <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-stone-700 text-gray-400">API</span>
+                                                    )}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {st.manual_id ? (
+                                                        <button onClick={() => handleDeleteStory(st)} disabled={deletingStory === st.id}
+                                                            className="text-red-500/60 hover:text-red-400 transition-colors disabled:opacity-30 text-xs font-medium">
+                                                            {deletingStory === st.id ? '...' : 'Delete'}
+                                                        </button>
+                                                    ) : null}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="card-bg rounded-lg border border-stone-800 p-4">
+                                <h2 className="text-sm font-bold font-display mb-3" style={{color:'#e8e0d6'}}>Add Story</h2>
+                                <form onSubmit={handleSubmitStory} className="flex flex-wrap gap-3 items-end">
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Name</label>
+                                        <input type="text" value={storyForm.name} onChange={e => setStoryForm(f => ({ ...f, name: e.target.value }))}
+                                            placeholder="Story name"
+                                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 w-52 focus:outline-none focus:border-gw2-gold-dark"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Group</label>
+                                        <input type="text" value={storyForm.group_name} onChange={e => setStoryForm(f => ({ ...f, group_name: e.target.value }))}
+                                            placeholder="Act 3"
+                                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 w-24 focus:outline-none focus:border-gw2-gold-dark"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] text-gray-500 uppercase tracking-wider mb-1">Order</label>
+                                        <input type="number" value={storyForm.order} onChange={e => setStoryForm(f => ({ ...f, order: e.target.value }))}
+                                            placeholder="#"
+                                            min="1"
+                                            className="bg-stone-800 border border-stone-700 rounded-lg px-3 py-1.5 text-xs text-gray-300 w-16 focus:outline-none focus:border-gw2-gold-dark"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" disabled={submittingStory || !storyForm.name.trim() || !storyForm.order}
+                                        className="bg-gw2-gold-dark text-stone-900 font-bold text-xs px-4 py-1.5 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+                                        {submittingStory ? 'Adding...' : 'Add Story'}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     )}
 
@@ -711,6 +809,180 @@
         );
     }
 
+    function SyncPanel() {
+        const [checking, setChecking] = useState(false);
+        const [applying, setApplying] = useState(false);
+        const [preview, setPreview] = useState(null);
+        const [result, setResult] = useState(null);
+        const [error, setError] = useState(null);
+
+        async function handleCheck() {
+            setChecking(true);
+            setError(null);
+            setPreview(null);
+            setResult(null);
+            try {
+                const res = await adminFetch('/sync/preview', { method: 'POST' });
+                if (!res.ok) { setError((await res.json()).error || 'Preview failed'); return; }
+                setPreview(await res.json());
+            } catch { setError('Network error'); }
+            setChecking(false);
+        }
+
+        async function handleApply() {
+            if (!confirm('Apply these changes? The database will be updated and seed-data.json will be overwritten.')) return;
+            setApplying(true);
+            setError(null);
+            try {
+                const res = await adminFetch('/sync/apply', { method: 'POST' });
+                if (!res.ok) { setError((await res.json()).error || 'Apply failed'); return; }
+                setResult(await res.json());
+                setPreview(null);
+            } catch { setError('Network error'); }
+            setApplying(false);
+        }
+
+        const noChanges = preview && preview.summary.new_seasons === 0 && preview.summary.new_stories === 0 && preview.summary.new_missions === 0 && preview.summary.removed_missions === 0;
+
+        return (
+            <div className="max-w-6xl mx-auto px-4 py-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <h1 className="text-xl font-bold font-display" style={{color:'#e8e0d6'}}>API Sync</h1>
+                    <span className="text-xs text-gray-500">Fetch latest data from the GW2 API and preview changes before applying</span>
+                </div>
+
+                <button onClick={handleCheck} disabled={checking || applying}
+                    className="bg-gw2-gold-dark text-stone-900 font-bold text-xs px-4 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 mb-4">
+                    {checking ? 'Fetching from GW2 API...' : 'Check for API Updates'}
+                </button>
+
+                {error && <div className="text-red-400 text-sm mb-4">{error}</div>}
+
+                {result && (
+                    <div className="card-bg rounded-lg border border-emerald-900/40 p-4 mb-4 text-sm">
+                        <p className="text-emerald-300 font-medium mb-1">Changes applied successfully</p>
+                        <ul className="text-gray-400 text-xs space-y-0.5 list-disc list-inside">
+                            {result.reconciled_stories > 0 && <li>{result.reconciled_stories} manual stor{result.reconciled_stories === 1 ? 'y' : 'ies'} reconciled with API data</li>}
+                            {result.reconciled_missions > 0 && <li>{result.reconciled_missions} manual mission{result.reconciled_missions !== 1 ? 's' : ''} reconciled with API data</li>}
+                            {result.added > 0 && <li>{result.added} new mission{result.added !== 1 ? 's' : ''} added</li>}
+                            {result.removed > 0 && <li>{result.removed} mission{result.removed !== 1 ? 's' : ''} removed</li>}
+                            {result.reconciled_stories === 0 && result.reconciled_missions === 0 && result.added === 0 && result.removed === 0 && <li>No changes</li>}
+                        </ul>
+                    </div>
+                )}
+
+                {preview && noChanges && (
+                    <div className="card-bg rounded-lg border border-stone-800 p-4 text-sm text-gray-400">
+                        No changes found — the database is already up to date with the GW2 API.
+                    </div>
+                )}
+
+                {preview && !noChanges && (
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            {preview.summary.new_seasons > 0 && <span className="text-[11px] px-2 py-0.5 rounded font-medium bg-emerald-900/60 text-emerald-300">+{preview.summary.new_seasons} season{preview.summary.new_seasons !== 1 ? 's' : ''}</span>}
+                            {preview.summary.new_stories > 0 && <span className="text-[11px] px-2 py-0.5 rounded font-medium bg-emerald-900/60 text-emerald-300">+{preview.summary.new_stories} stor{preview.summary.new_stories !== 1 ? 'ies' : 'y'}</span>}
+                            {preview.summary.new_missions > 0 && <span className="text-[11px] px-2 py-0.5 rounded font-medium bg-emerald-900/60 text-emerald-300">+{preview.summary.new_missions} mission{preview.summary.new_missions !== 1 ? 's' : ''}</span>}
+                            {preview.summary.removed_missions > 0 && <span className="text-[11px] px-2 py-0.5 rounded font-medium bg-red-900/60 text-red-300">−{preview.summary.removed_missions} mission{preview.summary.removed_missions !== 1 ? 's' : ''} removed</span>}
+                        </div>
+
+                        {preview.new_seasons.length > 0 && (
+                            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                                <div className="px-3 py-2 border-b border-stone-800 text-[11px] font-medium text-gray-400 uppercase tracking-wider">New Seasons</div>
+                                <table className="w-full text-xs">
+                                    <tbody>
+                                        {preview.new_seasons.map(s => (
+                                            <tr key={s.id} className="border-b border-stone-800/50">
+                                                <td className="px-3 py-2 text-emerald-300">{s.name}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
+                        {preview.new_stories.length > 0 && (
+                            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                                <div className="px-3 py-2 border-b border-stone-800 text-[11px] font-medium text-gray-400 uppercase tracking-wider">New Stories</div>
+                                <table className="w-full text-xs">
+                                    <thead>
+                                        <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                            <th className="px-3 py-2 font-medium">Name</th>
+                                            <th className="px-3 py-2 font-medium">Group</th>
+                                            <th className="px-3 py-2 font-medium">Order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {preview.new_stories.map(s => (
+                                            <tr key={s.id} className="border-b border-stone-800/50">
+                                                <td className="px-3 py-2 text-emerald-300">{s.name}</td>
+                                                <td className="px-3 py-2 text-gray-500">{s.group_name || '—'}</td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono">{s.order}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
+                        {preview.new_missions.length > 0 && (
+                            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                                <div className="px-3 py-2 border-b border-stone-800 text-[11px] font-medium text-gray-400 uppercase tracking-wider">New Missions</div>
+                                <table className="w-full text-xs">
+                                    <thead>
+                                        <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                            <th className="px-3 py-2 font-medium">Name</th>
+                                            <th className="px-3 py-2 font-medium">Story</th>
+                                            <th className="px-3 py-2 font-medium">Order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {preview.new_missions.map(m => (
+                                            <tr key={m.id} className="border-b border-stone-800/50">
+                                                <td className="px-3 py-2 text-emerald-300">{m.name}</td>
+                                                <td className="px-3 py-2 text-gray-500">{m.story_name}</td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono">{m.order}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
+                        {preview.removed_missions.length > 0 && (
+                            <div className="card-bg rounded-lg border border-stone-800 overflow-hidden">
+                                <div className="px-3 py-2 border-b border-stone-800 text-[11px] font-medium text-gray-400 uppercase tracking-wider">Missions to Remove</div>
+                                <table className="w-full text-xs">
+                                    <thead>
+                                        <tr className="border-b border-stone-800 text-gray-500 text-left">
+                                            <th className="px-3 py-2 font-medium">Name</th>
+                                            <th className="px-3 py-2 font-medium">Story</th>
+                                            <th className="px-3 py-2 font-medium">ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {preview.removed_missions.map(m => (
+                                            <tr key={m.id} className="border-b border-stone-800/50">
+                                                <td className="px-3 py-2 text-red-400">{m.name}</td>
+                                                <td className="px-3 py-2 text-gray-500">{m.story_name}</td>
+                                                <td className="px-3 py-2 text-gray-500 font-mono">{m.id}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+
+                        <button onClick={handleApply} disabled={applying}
+                            className="bg-gw2-gold-dark text-stone-900 font-bold text-xs px-4 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50">
+                            {applying ? 'Applying...' : 'Apply Changes'}
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     function App() {
         const [authed, setAuthed] = useState(!!getToken());
         const [view, setView] = useState('submissions');
@@ -720,6 +992,7 @@
         const tabs = [
             { id: 'submissions', label: 'Submissions' },
             { id: 'missions', label: 'Missions' },
+            { id: 'sync', label: 'API Sync' },
         ];
 
         return (
@@ -751,6 +1024,7 @@
                 </nav>
                 {view === 'submissions' && <SubmissionsPanel />}
                 {view === 'missions' && <MissionsPanel />}
+                {view === 'sync' && <SyncPanel />}
             </div>
         );
     }
