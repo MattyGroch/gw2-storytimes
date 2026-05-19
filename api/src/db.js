@@ -73,6 +73,12 @@ function initSchema() {
   if (!cols.includes('canonical_id')) {
     db.exec("ALTER TABLE missions ADD COLUMN canonical_id INTEGER REFERENCES missions(id)");
   }
+
+  const storyCols = db.prepare("PRAGMA table_info(stories)").all().map(c => c.name);
+  if (!storyCols.includes('manual_id')) {
+    db.exec("ALTER TABLE stories ADD COLUMN manual_id INTEGER");
+    db.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_stories_manual_id ON stories(manual_id) WHERE manual_id IS NOT NULL");
+  }
 }
 
 // ---- Season queries ----
@@ -384,6 +390,7 @@ function getStoriesWithMissionCounts() {
     SELECT
       s.id AS season_id, s.name AS season_name, s."order" AS season_order,
       st.id AS story_id, st.name AS story_name, st.group_name, st."order" AS story_order,
+      st.manual_id AS story_manual_id,
       COUNT(m.id) AS mission_count
     FROM seasons s
     JOIN stories st ON st.season_id = s.id
@@ -391,6 +398,35 @@ function getStoriesWithMissionCounts() {
     GROUP BY st.id
     ORDER BY s."order", st."order"
   `).all();
+}
+
+function getNextManualStoryId() {
+  const row = getDb().prepare('SELECT MAX(id) AS max_id FROM stories WHERE id >= 90000').get();
+  return (row.max_id || 89999) + 1;
+}
+
+function createManualStory(seasonId, name, groupName, order) {
+  const id = getNextManualStoryId();
+  getDb().prepare(`
+    INSERT INTO stories (id, season_id, name, group_name, "order", manual_id)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(id, seasonId, name, groupName, order, id);
+  return id;
+}
+
+function deleteManualStory(id) {
+  const story = getDb().prepare('SELECT manual_id FROM stories WHERE id = ?').get(id);
+  if (!story) return { deleted: false, reason: 'not_found' };
+  if (story.manual_id == null) return { deleted: false, reason: 'not_manual' };
+
+  const d = getDb();
+  const run = d.transaction(() => {
+    d.prepare('DELETE FROM submissions WHERE mission_id IN (SELECT id FROM missions WHERE story_id = ?)').run(id);
+    d.prepare('DELETE FROM missions WHERE story_id = ?').run(id);
+    d.prepare('DELETE FROM stories WHERE id = ?').run(id);
+  });
+  run();
+  return { deleted: true };
 }
 
 function getNextManualId() {
@@ -474,4 +510,7 @@ module.exports = {
   getManualMissionsByStoryId,
   updateMission,
   deleteManualMission,
+  getNextManualStoryId,
+  createManualStory,
+  deleteManualStory,
 };
