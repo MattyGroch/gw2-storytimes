@@ -401,7 +401,15 @@ function getStoriesWithMissionCounts() {
 }
 
 function getNextManualStoryId() {
-  const row = getDb().prepare('SELECT MAX(id) AS max_id FROM stories WHERE id >= 90000').get();
+  // Check both id and manual_id columns — after reconciliation, manual story rows are
+  // deleted but the API story retains the old manual_id value in the unique index.
+  const row = getDb().prepare(`
+    SELECT MAX(max_val) AS max_id FROM (
+      SELECT MAX(id) AS max_val FROM stories WHERE id >= 90000
+      UNION ALL
+      SELECT MAX(manual_id) AS max_val FROM stories WHERE manual_id >= 90000
+    )
+  `).get();
   return (row.max_id || 89999) + 1;
 }
 
@@ -444,7 +452,13 @@ function deleteManualStory(id) {
 }
 
 function getNextManualId() {
-  const row = getDb().prepare('SELECT MAX(id) AS max_id FROM missions WHERE id >= 10000').get();
+  const row = getDb().prepare(`
+    SELECT MAX(max_val) AS max_id FROM (
+      SELECT MAX(id) AS max_val FROM missions WHERE id >= 10000
+      UNION ALL
+      SELECT MAX(manual_id) AS max_val FROM missions WHERE manual_id >= 10000
+    )
+  `).get();
   return (row.max_id || 9999) + 1;
 }
 
