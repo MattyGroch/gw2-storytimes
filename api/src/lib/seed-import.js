@@ -25,8 +25,8 @@ function reconcileManualStories(d, seedStories) {
     if (!apiStoryExists) continue;
 
     d.prepare('UPDATE missions SET story_id = ? WHERE story_id = ?').run(match.id, manual.id);
-    d.prepare('UPDATE stories SET manual_id = ? WHERE id = ?').run(manual.manual_id, match.id);
     d.prepare('DELETE FROM stories WHERE id = ?').run(manual.id);
+    d.prepare('UPDATE stories SET manual_id = ? WHERE id = ?').run(manual.manual_id, match.id);
     reconciled++;
   }
 
@@ -53,8 +53,8 @@ function reconcileManualMissions(d, seedMissions) {
     if (!realExists) continue;
 
     d.prepare('UPDATE submissions SET mission_id = ? WHERE mission_id = ?').run(match.id, manual.id);
-    d.prepare('UPDATE missions SET manual_id = ? WHERE id = ?').run(manual.manual_id, match.id);
     d.prepare('DELETE FROM missions WHERE id = ?').run(manual.id);
+    d.prepare('UPDATE missions SET manual_id = ? WHERE id = ?').run(manual.manual_id, match.id);
     reconciled++;
   }
 
