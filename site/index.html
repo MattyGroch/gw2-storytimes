@@ -278,24 +278,121 @@
 
     // --- Utility ---
 
+    // Rounded to whole minutes first, so 119.6 reads as "2h" rather than "1h 60m".
+    function splitTime(mins) {
+        const total = Math.round(mins);
+        return { h: Math.floor(total / 60), m: total % 60 };
+    }
+
     function formatTime(mins) {
         if (mins == null) return '—';
         if (mins < 60) return `${Math.round(mins)}m`;
-        const h = Math.floor(mins / 60);
-        const m = Math.round(mins % 60);
+        const { h, m } = splitTime(mins);
         return m > 0 ? `${h}h ${m}m` : `${h}h`;
     }
 
     function formatTimeVerbose(mins) {
         if (mins == null) return 'No data';
         if (mins < 60) return `${Math.round(mins)} minutes`;
-        const h = Math.floor(mins / 60);
-        const m = Math.round(mins % 60);
+        const { h, m } = splitTime(mins);
         return m > 0 ? `${h} hr ${m} min` : `${h} hr`;
     }
 
     function slugify(str) {
         return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
+    // --- Speedrun estimation ---
+    //
+    // Speedrun times are submitted far less often than full-experience times, so
+    // adding up only what has been submitted reads as though a season is over in
+    // an hour. Quests with no speedrun time are instead projected from their
+    // full-experience time, and any total holding a projection is marked with a
+    // "~". This mirrors the model in api/src/db.js — keep the two in sync.
+
+    const SPEED_RATIO_PRIOR_WEIGHT = 5;
+
+    function blendSpeedRatio(pairedCount, pairedFullMins, pairedSpeedMins, globalRatio) {
+        const localRatio = pairedFullMins > 0 ? pairedSpeedMins / pairedFullMins : null;
+        if (globalRatio == null) return localRatio;
+        if (localRatio == null) return globalRatio;
+        return (pairedCount * localRatio + SPEED_RATIO_PRIOR_WEIGHT * globalRatio)
+            / (pairedCount + SPEED_RATIO_PRIOR_WEIGHT);
+    }
+
+    // A season's own speedrun ratio, shrunk toward the site-wide one so that a
+    // season resting on a handful of times does not swing on those few quests.
+    function seasonSpeedRatio(missions, globalRatio) {
+        let paired = 0, fullMins = 0, speedMins = 0;
+        for (const m of missions) {
+            const f = m.times?.full?.avg_mins;
+            const s = m.times?.speed?.avg_mins;
+            if (f != null && s != null) { paired++; fullMins += f; speedMins += s; }
+        }
+        return blendSpeedRatio(paired, fullMins, speedMins, globalRatio);
+    }
+
+    // Hangs a projected speedrun time on every quest missing one, so the totals
+    // below can sum a whole season instead of the sliver that has been submitted.
+    function applySpeedEstimates(missions, ratio) {
+        for (const m of missions) {
+            if (!m.times?.speed) continue;
+            const full = m.times.full?.avg_mins;
+            m.times.speed.est_mins = (m.times.speed.avg_mins == null && full != null && ratio != null)
+                ? full * ratio
+                : null;
+        }
+    }
+
+    function annotateSeasonSpeed(season, globalRatio) {
+        const missions = [];
+        for (const story of season.stories || []) {
+            for (const m of story.missions) missions.push(m);
+        }
+        const ratio = seasonSpeedRatio(missions, globalRatio);
+        applySpeedEstimates(missions, ratio);
+        return { ratio, missions };
+    }
+
+    function missionSpeedMins(m) {
+        const speed = m?.times?.speed;
+        return speed?.avg_mins ?? speed?.est_mins ?? 0;
+    }
+
+    // How much of a total rests on submitted times rather than projections.
+    function speedCoverage(missions) {
+        let covered = 0, total = 0;
+        for (const m of missions) {
+            const hasSpeed = m.times?.speed?.avg_mins != null;
+            if (hasSpeed) covered++;
+            if (hasSpeed || m.times?.full?.avg_mins != null) total++;
+        }
+        return { covered, total };
+    }
+
+    // Shapes a total added up here into the fields /v1/seasons returns, so a card
+    // reads the same whether the API or the site did the adding up. A season with
+    // no submitted speedrun time at all is left without a total rather than
+    // projected out of thin air.
+    function speedTotals(mins, coverage, ratio) {
+        const hasMeasured = coverage.covered > 0;
+        return {
+            speed_mission_count: coverage.covered,
+            speed_quest_count: coverage.total,
+            speed_ratio: hasMeasured ? ratio : null,
+            est_total_speed_mins: hasMeasured && mins > 0 ? mins : null,
+            speed_is_estimated: hasMeasured && coverage.covered < coverage.total,
+        };
+    }
+
+    function speedEstimateTooltip(covered, total, ratio) {
+        const pct = total > 0 ? Math.round((covered / total) * 100) : 0;
+        const pace = ratio != null
+            ? ` at ${Math.round(ratio * 100)}% of their full-experience time`
+            : ' from their full-experience time';
+        return covered === 0
+            ? `Estimated total — no speedrun times submitted for these quests yet, so every one is projected${pace}.`
+            : `Estimated total — ${pct}% of these quests have a submitted speedrun time; the rest are projected${pace}.`;
     }
 
     const _apiCache = new Map();
@@ -561,7 +658,14 @@
     function SeasonCard({ season, onSelectSeason }) {
         const color = STORY_COLORS[season.name] || '#c8a84e';
         const fullHrs = season.total_full_mins > 0 ? formatTime(season.total_full_mins) : null;
-        const speedHrs = season.total_speed_mins > 0 ? formatTime(season.total_speed_mins) : null;
+        const speedMins = season.est_total_speed_mins != null
+            ? season.est_total_speed_mins
+            : season.total_speed_mins;
+        const speedEstimated = !!season.speed_is_estimated;
+        const speedHrs = speedMins > 0 ? (speedEstimated ? '~' : '') + formatTime(speedMins) : null;
+        const speedTitle = speedEstimated
+            ? speedEstimateTooltip(season.speed_mission_count, season.speed_quest_count ?? season.mission_count, season.speed_ratio)
+            : undefined;
 
         return (
             <button
@@ -590,12 +694,14 @@
                                 </div>
                             )}
                             {speedHrs && (
-                                <div className="text-right">
+                                <div className="text-right" title={speedTitle}>
                                     <div className="flex items-center gap-1 text-yellow-400">
                                         <Zap size={14} />
                                         <span className="text-sm font-bold">{speedHrs}</span>
                                     </div>
-                                    <p className="text-[10px] text-gray-500 hidden sm:block">Speedrun</p>
+                                    <p className="text-[10px] text-gray-500 hidden sm:block">
+                                        {speedEstimated ? 'Speedrun (est.)' : 'Speedrun'}
+                                    </p>
                                 </div>
                             )}
                             {!fullHrs && !speedHrs && (
@@ -611,8 +717,11 @@
 
     function TotalSummary({ seasons, totalSubmissions }) {
         const totalFull = seasons.reduce((s, se) => s + (se.total_full_mins || 0), 0);
-        const totalSpeed = seasons.reduce((s, se) => s + (se.total_speed_mins || 0), 0);
+        const totalSpeed = seasons.reduce((s, se) => s + (se.est_total_speed_mins ?? se.total_speed_mins ?? 0), 0);
         const totalMissions = seasons.reduce((s, se) => s + (se.mission_count || 0), 0);
+        const speedEstimated = seasons.some(se => se.speed_is_estimated);
+        const speedCovered = seasons.reduce((s, se) => s + (se.speed_mission_count || 0), 0);
+        const speedQuests = seasons.reduce((s, se) => s + (se.speed_quest_count ?? se.mission_count ?? 0), 0);
 
         return (
             <div className="card-bg rounded-lg border border-gw2-gold-dark/40 p-4 sm:p-6 mb-6 bg-gradient-to-r from-gw2-gold-dark/10 to-transparent">
@@ -623,9 +732,13 @@
                         <p className="text-2xl font-bold text-gw2-gold-light">{formatTime(totalFull)}</p>
                     </div>
                     {totalSpeed > 0 && (
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Speedrun</p>
-                            <p className="text-2xl font-bold text-yellow-400">{formatTime(totalSpeed)}</p>
+                        <div title={speedEstimated ? speedEstimateTooltip(speedCovered, speedQuests, null) : undefined}>
+                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">
+                                {speedEstimated ? 'Speedrun (est.)' : 'Speedrun'}
+                            </p>
+                            <p className="text-2xl font-bold text-yellow-400">
+                                {speedEstimated ? '~' : ''}{formatTime(totalSpeed)}
+                            </p>
                         </div>
                     )}
                     <div>
@@ -637,6 +750,14 @@
                         <p className="text-2xl font-bold text-gray-200">{totalSubmissions.toLocaleString()}</p>
                     </div>
                 </div>
+                {speedEstimated && (
+                    <p className="text-[11px] text-gray-500 mt-3 leading-snug">
+                        <span className="text-yellow-400">~</span> Speedrun totals are part estimate: only{' '}
+                        {speedQuests > 0 ? Math.round((speedCovered / speedQuests) * 100) : 0}% of quests have a
+                        submitted speedrun time, so the rest are projected from their full-experience time.{' '}
+                        <span className="text-gray-400">Submit your own times to sharpen them.</span>
+                    </p>
+                )}
             </div>
         );
     }
@@ -1178,16 +1299,21 @@
             if (!seen.has(m.name)) { seen.set(m.name, { ...m, _count: 1 }); continue; }
             const existing = seen.get(m.name);
             existing._count++;
-            const ef = existing.times?.full?.avg_mins || 0;
-            const mf = m.times?.full?.avg_mins || 0;
-            const es = existing.times?.speed?.avg_mins || 0;
-            const ms = m.times?.speed?.avg_mins || 0;
-            if (mf && ef) {
-                existing.times = { ...existing.times, full: { ...existing.times.full, avg_mins: (ef * (existing._count - 1) + mf) / existing._count } };
-            }
-            if (ms && es) {
-                existing.times = { ...existing.times, speed: { ...existing.times.speed, avg_mins: (es * (existing._count - 1) + ms) / existing._count } };
-            }
+            const mergeTime = (category, field) => {
+                const kept = existing.times?.[category]?.[field] || 0;
+                const added = m.times?.[category]?.[field] || 0;
+                if (!kept || !added) return;
+                existing.times = {
+                    ...existing.times,
+                    [category]: {
+                        ...existing.times[category],
+                        [field]: (kept * (existing._count - 1) + added) / existing._count,
+                    },
+                };
+            };
+            mergeTime('full', 'avg_mins');
+            mergeTime('speed', 'avg_mins');
+            mergeTime('speed', 'est_mins');
         }
         return [...seen.values()];
     }
@@ -1202,12 +1328,12 @@
                 let af = 0, as = 0, n = 0;
                 for (const alt of entry) {
                     const mi = byName[alt];
-                    if (mi) { af += mi.times?.full?.avg_mins || 0; as += mi.times?.speed?.avg_mins || 0; n++; }
+                    if (mi) { af += mi.times?.full?.avg_mins || 0; as += missionSpeedMins(mi); n++; }
                 }
                 if (n > 0) { fullMins += af / n; speedMins += as / n; }
             } else {
                 const mi = byName[entry];
-                if (mi) { fullMins += mi.times?.full?.avg_mins || 0; speedMins += mi.times?.speed?.avg_mins || 0; }
+                if (mi) { fullMins += mi.times?.full?.avg_mins || 0; speedMins += missionSpeedMins(mi); }
             }
         }
         return { quests, fullMins, speedMins };
@@ -1219,7 +1345,7 @@
             return {
                 quests: story.missions.length,
                 fullMins: story.missions.reduce((acc, m) => acc + (m.times?.full?.avg_mins || 0), 0),
-                speedMins: story.missions.reduce((acc, m) => acc + (m.times?.speed?.avg_mins || 0), 0),
+                speedMins: story.missions.reduce((acc, m) => acc + missionSpeedMins(m), 0),
             };
         }
         const byName = {};
@@ -1296,36 +1422,49 @@
         const [error, setError] = useState(null);
 
         useEffect(() => {
-            apiFetch('/stats').then(s => setTotalSubmissions(s.total_submissions || 0)).catch(() => {});
             Promise.all([
                 apiFetch('/seasons'),
+                apiFetch('/stats').catch(function() { return {}; }),
                 apiFetch('/seasons/' + MY_STORY_SEASON_ID),
                 ...DEDUP_SEASON_IDS.map(id => apiFetch('/seasons/' + id))
             ]).then(function(results) {
                 var allSeasons = results[0];
-                var myStory = results[1];
+                var stats = results[1];
+                var myStory = results[2];
+                setTotalSubmissions(stats.total_submissions || 0);
+
+                // These seasons are re-totalled here (single playthrough for My
+                // Story, race variants collapsed for the rest), so their speedrun
+                // estimates have to be recomputed to match.
+                var globalRatio = stats.speed_ratio != null ? stats.speed_ratio : null;
+                var myStorySpeed = annotateSeasonSpeed(myStory, globalRatio);
                 var adjusted = computePlaythroughStats(myStory.stories);
+                var myStoryCoverage = speedCoverage(myStorySpeed.missions);
                 var dedupMap = {};
                 for (var i = 0; i < DEDUP_SEASON_IDS.length; i++) {
-                    var sd = results[2 + i];
+                    var sd = results[3 + i];
+                    var seasonSpeed = annotateSeasonSpeed(sd, globalRatio);
+                    var coverage = speedCoverage(seasonSpeed.missions);
                     var mc = 0, tf = 0, ts = 0;
                     for (var j = 0; j < sd.stories.length; j++) {
                         var dm = deduplicateMissions(sd.stories[j].missions);
                         mc += dm.length;
                         for (var k = 0; k < dm.length; k++) {
                             tf += dm[k].times?.full?.avg_mins || 0;
-                            ts += dm[k].times?.speed?.avg_mins || 0;
+                            ts += missionSpeedMins(dm[k]);
                         }
                     }
-                    dedupMap[DEDUP_SEASON_IDS[i]] = { mission_count: mc, total_full_mins: tf, total_speed_mins: ts };
+                    dedupMap[DEDUP_SEASON_IDS[i]] = Object.assign(
+                        { mission_count: mc, total_full_mins: tf },
+                        speedTotals(ts, coverage, seasonSpeed.ratio)
+                    );
                 }
                 setSeasons(allSeasons.map(function(se) {
                     if (se.id === MY_STORY_SEASON_ID) {
                         return Object.assign({}, se, {
                             mission_count: adjusted.quests,
-                            total_full_mins: adjusted.fullMins,
-                            total_speed_mins: adjusted.speedMins
-                        });
+                            total_full_mins: adjusted.fullMins
+                        }, speedTotals(adjusted.speedMins, myStoryCoverage, myStorySpeed.ratio));
                     }
                     if (dedupMap[se.id]) {
                         return Object.assign({}, se, dedupMap[se.id]);
@@ -1355,6 +1494,7 @@
         const [season, setSeason] = useState(null);
         const [error, setError] = useState(null);
         const [selectedRace, setSelectedRace] = useState(null);
+        const [speedRatio, setSpeedRatio] = useState(null);
         const [drawerMissionId, setDrawerMissionId] = useState(null);
         const [closingMissionId, setClosingMissionId] = useState(null);
         const highlightRefs = useRef({});
@@ -1378,7 +1518,13 @@
         useEffect(() => {
             setSeason(null);
             setSelectedRace(null);
-            apiFetch(`/seasons/${seasonId}`).then(setSeason).catch(e => setError(e.message));
+            Promise.all([
+                apiFetch(`/seasons/${seasonId}`),
+                apiFetch('/stats').catch(() => ({})),
+            ]).then(([data, stats]) => {
+                setSpeedRatio(annotateSeasonSpeed(data, stats.speed_ratio ?? null).ratio);
+                setSeason(data);
+            }).catch(e => setError(e.message));
         }, [seasonId]);
 
         useEffect(() => {
@@ -1432,6 +1578,11 @@
         const totalFull = ptStats
             ? ptStats.fullMins
             : filteredStories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.full?.avg_mins || 0), 0), 0);
+        // Projections lean on the season's ratio, so an episode with no submitted
+        // speedrun times of its own still gets one as long as the season has some
+        // — otherwise the episodes would not add up to the season total.
+        const seasonHasSpeedData = season.stories.some(st =>
+            st.missions.some(m => m.times?.speed?.avg_mins != null));
 
         return (
             <div>
@@ -1466,7 +1617,12 @@
                         : stories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.full?.avg_mins || 0), 0), 0);
                     const groupSpeed = gStats
                         ? gStats.speedMins
-                        : stories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + (m.times?.speed?.avg_mins || 0), 0), 0);
+                        : stories.reduce((s, st) => s + deduplicateMissions(st.missions).reduce((ms, m) => ms + missionSpeedMins(m), 0), 0);
+                    const groupCoverage = speedCoverage(
+                        stories.reduce((all, st) => all.concat(deduplicateMissions(st.missions)), [])
+                    );
+                    const showGroupSpeed = groupSpeed > 0 && seasonHasSpeedData;
+                    const groupSpeedEstimated = groupCoverage.covered < groupCoverage.total;
                     return (
                         <div key={groupName} className="mb-6">
                             <div className="flex items-center justify-between mb-2 px-1">
@@ -1477,9 +1633,12 @@
                                             <BookOpen size={12} /> {formatTime(groupFull)}
                                         </span>
                                     )}
-                                    {groupSpeed > 0 && (
-                                        <span className="flex items-center gap-1 text-xs text-yellow-400">
-                                            <Zap size={12} /> {formatTime(groupSpeed)}
+                                    {showGroupSpeed && (
+                                        <span className="flex items-center gap-1 text-xs text-yellow-400"
+                                            title={groupSpeedEstimated
+                                                ? speedEstimateTooltip(groupCoverage.covered, groupCoverage.total, speedRatio)
+                                                : undefined}>
+                                            <Zap size={12} /> {groupSpeedEstimated ? '~' : ''}{formatTime(groupSpeed)}
                                         </span>
                                     )}
                                 </div>

@@ -24,6 +24,7 @@ CORS is open to all origins. Any browser app can consume it directly.
 | `GET` | `/v1/missions/:id` | Single mission with seed times, user averages, and submission count |
 | `POST` | `/v1/missions/:id/submit` | Submit a time entry |
 | `GET` | `/v1/estimate?missions=id1,id2,...` | Bulk time estimate for a set of missions |
+| `GET` | `/v1/stats` | Submission count and the site-wide speedrun ratio |
 
 ### Rate Limits
 
@@ -51,7 +52,11 @@ curl https://api.gw2storytimes.com/v1/seasons
     "order": 0,
     "mission_count": 313,
     "total_full_mins": 3180.5,
-    "total_speed_mins": 0
+    "total_speed_mins": 478.54,
+    "speed_mission_count": 88,
+    "speed_ratio": 0.29,
+    "est_total_speed_mins": 1673.21,
+    "speed_is_estimated": true
   },
   {
     "id": "A515A1D3-4BD7-4594-AE30-2C5D05FF5960",
@@ -59,10 +64,30 @@ curl https://api.gw2storytimes.com/v1/seasons
     "order": 1,
     "mission_count": 46,
     "total_full_mins": 540,
-    "total_speed_mins": 0
+    "total_speed_mins": 0,
+    "speed_mission_count": 0,
+    "speed_ratio": null,
+    "est_total_speed_mins": null,
+    "speed_is_estimated": false
   }
 ]
 ```
+
+**Speedrun totals.** Speedrun times are submitted far less often than
+full-experience times, so `total_speed_mins` — the plain sum of what has been
+submitted — reads as though a season is over in an hour. Use
+`est_total_speed_mins` for a season total: missions with no speedrun time are
+projected from their full-experience time at `speed_ratio`, the season's own
+speedrun ratio shrunk toward the site-wide one (see `/v1/stats`) so a season
+resting on a handful of times does not swing on those few missions.
+
+| Field | Meaning |
+|-------|---------|
+| `total_speed_mins` | Sum of submitted speedrun times only — a floor, not a season total |
+| `speed_mission_count` | Missions in the season that have a speedrun time |
+| `speed_ratio` | Speedrun time as a share of full-experience time, used for the projection |
+| `est_total_speed_mins` | Season total including projections, or `null` when the season has no speedrun times at all |
+| `speed_is_estimated` | `true` when the total contains at least one projected mission |
 
 ### GET /v1/seasons/:id
 
@@ -253,6 +278,28 @@ curl "https://api.gw2storytimes.com/v1/estimate?missions=15,16,17&category=full"
   ]
 }
 ```
+
+### GET /v1/stats
+
+Site-wide totals.
+
+```bash
+curl https://api.gw2storytimes.com/v1/stats
+```
+
+**Response:**
+
+```json
+{
+  "total_submissions": 628,
+  "speed_ratio": 0.433
+}
+```
+
+`speed_ratio` is speedrun time as a share of full-experience time across every
+mission that has both — the prior that `/v1/seasons` shrinks each season's own
+ratio toward when projecting missing speedrun times. `null` if no mission has
+both times yet.
 
 ### Error Responses
 
