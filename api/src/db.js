@@ -83,28 +83,21 @@ function initSchema() {
 
 // ---- Season queries ----
 
-function getAllSeasons() {
-  return getDb().prepare(`
+// Per-mission blended times (seed value averaged in with user submissions),
+// with race/canonical duplicates resolved to a single set of submissions.
+const MISSION_TIMES_CTE = `
+  mission_times AS (
     SELECT
-      s.id,
-      s.name,
-      s."order",
-      COUNT(m.id) AS mission_count,
-      COALESCE(SUM(
-        CASE WHEN sub_full.avg_mins IS NOT NULL AND m.seed_full_mins IS NOT NULL
-          THEN (sub_full.avg_mins * sub_full.cnt + m.seed_full_mins) / (sub_full.cnt + 1)
-          ELSE COALESCE(sub_full.avg_mins, m.seed_full_mins)
-        END
-      ), 0) AS total_full_mins,
-      COALESCE(SUM(
-        CASE WHEN sub_speed.avg_mins IS NOT NULL AND m.seed_speed_mins IS NOT NULL
-          THEN (sub_speed.avg_mins * sub_speed.cnt + m.seed_speed_mins) / (sub_speed.cnt + 1)
-          ELSE COALESCE(sub_speed.avg_mins, m.seed_speed_mins)
-        END
-      ), 0) AS total_speed_mins
-    FROM seasons s
-    LEFT JOIN stories st ON st.season_id = s.id
-    LEFT JOIN missions m ON m.story_id = st.id
+      m.id AS mission_id,
+      CASE WHEN sub_full.avg_mins IS NOT NULL AND m.seed_full_mins IS NOT NULL
+        THEN (sub_full.avg_mins * sub_full.cnt + m.seed_full_mins) / (sub_full.cnt + 1)
+        ELSE COALESCE(sub_full.avg_mins, m.seed_full_mins)
+      END AS full_mins,
+      CASE WHEN sub_speed.avg_mins IS NOT NULL AND m.seed_speed_mins IS NOT NULL
+        THEN (sub_speed.avg_mins * sub_speed.cnt + m.seed_speed_mins) / (sub_speed.cnt + 1)
+        ELSE COALESCE(sub_speed.avg_mins, m.seed_speed_mins)
+      END AS speed_mins
+    FROM missions m
     LEFT JOIN (
       SELECT COALESCE(mi.canonical_id, mi.id) AS resolved_id, AVG(sub.duration_mins) AS avg_mins, COUNT(*) AS cnt
       FROM submissions sub
@@ -119,9 +112,92 @@ function getAllSeasons() {
       WHERE sub.category = 'speed'
       GROUP BY resolved_id
     ) sub_speed ON sub_speed.resolved_id = COALESCE(m.canonical_id, m.id)
+  )
+`;
+
+// Speedrun coverage is far thinner than full-experience coverage, so a plain
+// SUM of the submitted speedrun times understates a season badly (it reads as
+// "the whole season takes 47 minutes"). Instead, missions with no speedrun time
+// are projected from their full-experience time using a speedrun ratio.
+//
+// The ratio for a season is its own measured ratio shrunk toward the global
+// ratio, weighted by how many missions back it. With few samples the season
+// leans on the global ratio; as coverage grows it converges on its own.
+// NOTE: site/index.html repeats this model for the aggregates it computes
+// client-side — keep the two in sync.
+const SPEED_RATIO_PRIOR_WEIGHT = 5;
+
+function blendSpeedRatio(pairedCount, pairedFullMins, pairedSpeedMins, globalRatio) {
+  const localRatio = pairedFullMins > 0 ? pairedSpeedMins / pairedFullMins : null;
+  if (globalRatio == null) return localRatio;
+  if (localRatio == null) return globalRatio;
+  return (pairedCount * localRatio + SPEED_RATIO_PRIOR_WEIGHT * globalRatio)
+    / (pairedCount + SPEED_RATIO_PRIOR_WEIGHT);
+}
+
+// Ratio of speedrun time to full-experience time across every mission that has
+// both, used as the prior for seasons with little speedrun data of their own.
+function getGlobalSpeedRatio() {
+  const row = getDb().prepare(`
+    WITH ${MISSION_TIMES_CTE}
+    SELECT
+      COUNT(*) AS paired_count,
+      SUM(full_mins) AS full_mins,
+      SUM(speed_mins) AS speed_mins
+    FROM mission_times
+    WHERE speed_mins IS NOT NULL AND full_mins IS NOT NULL
+  `).get();
+  if (!row || !row.paired_count || !row.full_mins) return null;
+  return row.speed_mins / row.full_mins;
+}
+
+function getAllSeasons() {
+  const globalRatio = getGlobalSpeedRatio();
+  const rows = getDb().prepare(`
+    WITH ${MISSION_TIMES_CTE}
+    SELECT
+      s.id,
+      s.name,
+      s."order",
+      COUNT(m.id) AS mission_count,
+      COALESCE(SUM(mt.full_mins), 0) AS total_full_mins,
+      COALESCE(SUM(mt.speed_mins), 0) AS total_speed_mins,
+      COALESCE(SUM(mt.speed_mins IS NOT NULL), 0) AS speed_mission_count,
+      COALESCE(SUM(mt.speed_mins IS NOT NULL AND mt.full_mins IS NOT NULL), 0) AS paired_count,
+      COALESCE(SUM(CASE WHEN mt.speed_mins IS NOT NULL AND mt.full_mins IS NOT NULL
+        THEN mt.full_mins END), 0) AS paired_full_mins,
+      COALESCE(SUM(CASE WHEN mt.speed_mins IS NOT NULL AND mt.full_mins IS NOT NULL
+        THEN mt.speed_mins END), 0) AS paired_speed_mins,
+      COALESCE(SUM(CASE WHEN mt.speed_mins IS NULL THEN mt.full_mins END), 0) AS unmeasured_full_mins
+    FROM seasons s
+    LEFT JOIN stories st ON st.season_id = s.id
+    LEFT JOIN missions m ON m.story_id = st.id
+    LEFT JOIN mission_times mt ON mt.mission_id = m.id
     GROUP BY s.id
     ORDER BY s."order"
   `).all();
+
+  return rows.map(row => {
+    const ratio = blendSpeedRatio(
+      row.paired_count, row.paired_full_mins, row.paired_speed_mins, globalRatio
+    );
+    // Never project a season that has no measured speedrun time of its own.
+    const canEstimate = row.speed_mission_count > 0 && ratio != null;
+    return {
+      id: row.id,
+      name: row.name,
+      order: row.order,
+      mission_count: row.mission_count,
+      total_full_mins: row.total_full_mins,
+      total_speed_mins: row.total_speed_mins,
+      speed_mission_count: row.speed_mission_count,
+      speed_ratio: canEstimate ? round2(ratio) : null,
+      est_total_speed_mins: canEstimate
+        ? round2(row.total_speed_mins + ratio * row.unmeasured_full_mins)
+        : null,
+      speed_is_estimated: canEstimate && row.unmeasured_full_mins > 0,
+    };
+  });
 }
 
 function getSeasonById(id) {
@@ -517,6 +593,7 @@ function deleteSubmissions(ids) {
 module.exports = {
   getDb,
   getAllSeasons,
+  getGlobalSpeedRatio,
   getSeasonById,
   getAllMissions,
   getMissionById,

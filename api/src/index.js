@@ -37,7 +37,13 @@ app.use('/v1/estimate', estimateRouter);
 app.use('/v1/admin', adminRouter);
 
 app.get('/v1/stats', (_req, res) => {
-  res.json({ total_submissions: db.getSubmissionCount() });
+  const speedRatio = db.getGlobalSpeedRatio();
+  res.json({
+    total_submissions: db.getSubmissionCount(),
+    // Speedrun time as a share of full-experience time across every mission
+    // that has both, used to project speedrun totals where times are missing.
+    speed_ratio: speedRatio == null ? null : Math.round(speedRatio * 1000) / 1000,
+  });
 });
 
 if (fs.existsSync(sitePath)) {
